@@ -107,6 +107,9 @@ async function init() {
   initScrollManager();
   initAnimations();
   initAudioManager();
+
+  // Show page once everything is ready
+  document.body.classList.add('ready');
 }
 
 init();
