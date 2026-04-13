@@ -1,7 +1,34 @@
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
+import purgecss from 'vite-plugin-purgecss'
 
 export default defineConfig({
+  plugins: [
+    purgecss({
+      content: [
+        './*.html',
+        './src/**/*.html',
+        './src/**/*.js',
+        './public/components/*.html',
+      ],
+      safelist: [
+        // Classes added dynamically by JS — never purge these
+        'dark-mode',
+        'ready',
+        'open',
+        'active',
+        'visible',
+        'hidden',
+        'sidebar-open',
+        'project-card--visible',
+        'animate-fade-up',
+        'animate-fade-in',
+        'typing-complete',
+        /^body/,
+        /^dark-mode/,
+      ],
+    }),
+  ],
   build: {
     rollupOptions: {
       input: {
