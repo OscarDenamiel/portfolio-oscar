@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="canonical" href="https://oscardenamiel.com">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <meta name="format-detection" content="telephone=no">
+
+  <link rel="icon" href="/images/favicons/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/images/favicons/safari-pinned-tab.svg" color="#19171C">
+
+  <meta name="msapplication-TileColor" content="#19171C">
+  <meta name="msapplication-TileImage" content="/images/favicons/mstile-150x150.png">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F9F8F6">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#19171C">
+
+  <title>Oscar Denamiel · Senior Product Designer</title>
+
+  <meta property="og:title" content="Oscar Denamiel · Senior Product Designer" />
+  <meta property="og:site_name" content="Oscar Denamiel · Senior Product Designer">
+  <meta property="og:url" content="https://oscardenamiel.com" />
+  <meta property="og:description" content="I'm a Product Designer specialized in Conversion Rate Optimization, Experimentation and User Research." />
+  <meta property="og:image" content="https://oscardenamiel.com/images/og-image.webp">
+  <meta property="og:type" content="website">
+
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+
+<body class="gradient-background dark-mode">
+
+  <div class="preloader">
+    <div class="preloader-content">
+      <span class="preloader-title">Cargando...</span>
+    </div>
+  </div>
+
+  <span class="blob b1"></span>
+  <span class="blob b2"></span>
+  <span class="blob b3"></span>
+  <span class="blob b4"></span>
+  <span class="blob b5"></span>
+
+  <div class="content-container content-container--visible">
+
+    <!-- Header se inyecta aquí -->
+    <div id="header-placeholder"></div>
+
+    <!-- Sidebar se inyecta aquí -->
+    <div id="sidebar-placeholder"></div>
+
+    <div class="main-container home-page-layout">
+      <div class="hero-projects-container">
+
+        <!-- Hero -->
+        <div class="hero-text">
+          <h1 id="typewriter"></h1>
+          <p class="p-large">
+            <span class="p-largebold">Senior Product Designer | Data-Driven & Growth Specialist | UX Engineer</span><br>
+            Over the last 7 years, I've helped startups, scale-ups and big businesses increase conversion rate, reduce churn and optimize operational workflows.
+          </p>
+          <div id="footer-placeholder"></div>
+        </div>
+
+        <!-- Las tarjetas de proyecto se generan desde data/projects.js -->
+        <div class="projects-grid" id="projects-grid"></div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer móvil se inyecta aquí -->
+  <div id="footer-sm-placeholder"></div>
+
+  <script type="module" src="/src/main.js"></script>
+
+</body>
+
+</html>

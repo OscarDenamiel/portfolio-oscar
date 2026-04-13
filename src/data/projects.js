@@ -1,0 +1,38 @@
+export const projects = [
+  {
+    id: 'map',
+    title: 'Reshaping location search',
+    description: 'How strategic refinement of the map experience increased user session duration (+40%), CTR (+17%) and CVR (+25%).',
+    thumbnail: '/images/projects/map/Map Thumbnail.webp',
+    thumbnailAlt: 'Location reshape project thumbnail',
+    audio: '/audio/map.mp3',
+    url: '/map.html',
+  },
+  {
+    id: 'self-service',
+    title: 'Self-service bookings',
+    description: 'Led redesign of hotel booking management experience. Reduced avg. contact per booking (-17%) and booking cancellations (-7%).',
+    thumbnail: '/images/projects/self-service/Self-service Thumbnail.webp',
+    thumbnailAlt: 'Self-service bookings project thumbnail',
+    audio: '/audio/self-service.mp3',
+    url: '/self-service-booking.html',
+  },
+  {
+    id: 'smart-suggester',
+    title: 'Smart Suggester',
+    description: "Led redesign of Stayforlong's search engine. Reduced search time (40%) and increased traffic to next step (9%).",
+    thumbnail: '/images/projects/smart-suggester/Smart Suggester Thumbnail.webp',
+    thumbnailAlt: 'Smart Suggester project thumbnail',
+    audio: '/audio/smart-suggester.mp3',
+    url: '/smart-suggester.html',
+  },
+  {
+    id: 'mobile-first',
+    title: 'Mobile First',
+    description: 'Led reconceptualization for the mobile experience at Leadtech. Reduced refunds (-12%) and increased daily profit (+7%).',
+    thumbnail: '/images/projects/mobile-first/Mobile-first Thumbnail.webp',
+    thumbnailAlt: 'Mobile First project thumbnail',
+    audio: '/audio/mobile-first.mp3',
+    url: '/mobile-first.html',
+  },
+];

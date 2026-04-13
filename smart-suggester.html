@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="canonical" href="https://oscardenamiel.com/smart-suggester.html">
+
+  <link rel="icon" href="/images/favicons/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F9F8F6">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#19171C">
+
+  <title>Smart Suggester · Product Design Case Study</title>
+
+  <meta property="og:title" content="Smart Suggester · Oscar Denamiel" />
+  <meta property="og:site_name" content="Oscar Denamiel · Senior Product Designer">
+  <meta property="og:url" content="https://oscardenamiel.com/smart-suggester.html" />
+  <meta property="og:description" content="Led redesign of Stayforlong's search engine. Reduced search time (40%) and increased traffic to next step (9%)." />
+  <meta property="og:image" content="https://oscardenamiel.com/images/og-image.webp">
+  <meta property="og:type" content="website">
+
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+
+<body class="dark-mode">
+
+  <div class="content-container content-container--visible">
+
+    <div id="header-placeholder"></div>
+    <div id="sidebar-placeholder"></div>
+
+    <div class="content-container content-container--visible">
+            <div class="main-container-no-home">
+                <div class="project-container">
+                <!-- Project Hero Section -->
+                <div class="project-hero">
+                    <div class="project-info animate-fade-up">
+                        <h2>Smart Suggester</h2>
+                        <p class="p-large" style="max-width: var(--text-container-max); margin: 0 auto 2em auto;">I led the redesign of Stayforlong’s search engine, resulting in a 40% reduction in search time, a 9% increase of traffic to next step, and 8% reduction in input user reset.
+                        </p>
+                        <div class="project-tags">
+                            <span class="project-tag">Stayforlong</span>
+                            <span class="project-tag">UX Design</span>
+                            <span class="project-tag">UI Design</span>
+                            <span class="project-tag">Stakeholder alignment</span>
+                        </div>
+                    </div>
+                    <div class="project-hero-image animate-fade-in delay-600">
+                        <img src="/images/projects/smart-suggester/Smart Suggester Hero.webp" alt="Project hero image">
+                    </div>
+                </div>
+                
+                <!-- Text Section - full width with container -->
+                <div class="section-text section-spacer">
+                    <h3>Executive Summary</h3>
+                    <p class="p-large">I led the redesign of Stayforlong's search engine, focusing on improving user satisfaction, result relevance, and overall usability. The first iteration of the Smart Suggester was implemented on the homepage, where we could test the production database of results and refine the solution with a smaller, more controlled audience. This approach allowed us to validate the design before scaling it to high-traffic pages like the Search Engine Results Page (SERP). <br><br> The project resulted in a <span class="p-largebold">+40%</span> reduction in search time, a <span class="p-largebold">+9%</span> increase in traffic from the homepage to Results page (next step in funnel) and a reduction of <span class="p-largebold">8%</span> in user resets in the search input.</p>
+                </div>
+
+                <!-- Full Width Image Section -->
+                <div class="section-image section-spacer">
+                    <img src="/images/projects/smart-suggester/Smart Suggester 1.webp" alt="Full width project image">
+                </div>
+
+                <!-- Text Section - full width with container -->
+                <div class="section-text section-spacer">
+                    <h6>CONTEXT</h6>
+                    <h3>Your Stay, Your Rules</h3>
+                    <p class="p-small">Founded in Barcelona in 2015, <a target="_blank" href="https://www.stayforlong.co.uk/?market=uk&lang=en&adults=2" class="text-link">Stayforlong</a> is a fast-growing travel tech scaleup operating across Europe and America. The company has expanded its services to 22 countries, providing access to a global portfolio of over 720,000 hotels. It is an Online Travel Agency focused at offering unique and valued travel experiences to their clients, working with the largest bedbanks in the travel industry and other OTAs such as Booking, Tripadvisor, Expedia, Trivago, Skyscanner, Vio and many others with sustained 100k daily sessions and 5k daily bookings. The annual gross of the company in 2024 was over 300M euros.<br><br>
+
+                        The <span class="p-smallbold">main challenges</span> faced by the company is to offer competitive advantages to its customers in a market where there is a clear domination by 2 players (Booking and Expedia) in which the rest of the companies must fight to find their gap in the market. Stayforlong wants to differentiate itself by promoting the best prices for long stays.<br><br>
+                        
+                        On the tech side, Stayforlong also presents the great challenge that all web content is provided by third parties, so the flexibility, quality and quantity of this content represent great additional constraints.<br><br>
+                        
+                        As Product Designer I defined the entire Design Process and the Research Plan, developed and designed the complete visual experience and interaction of the new features and planned, next to the Engeniering Manager, Project Manager and Data Analyst the data requirements to validate each iteration. This project has been developed in a timeframe of 6 months.</p>
+                </div>
+                
+                <!-- Process Section - Two Columns with Images -->
+                <div class="full-width-section background-section section-spacer">
+                    <div class="container-full">
+                        <h3>Problem statement</h3>
+                        <p class="p-large" style="margin-bottom: 48px;">The existing search engine on Stayforlong had several critical issues:</p>
+                            <div class="section-columns">
+                                <div class="section-column">
+                                    <img class="image-grid" src="/images/projects/smart-suggester/Smart Suggester 2.webp" alt="Research phase">
+                                    <h4>Low relevance of suggestions</h4>
+                                    <p class="small">Users struggled to find accurate results, and the response was very strict to the input of the user. Any misspelling, missed words or even its order was critical to find specific results, for both locations and hotels.                        </p>
+                                </div>
+                                <div class="section-column">
+                                    <img class="image-grid" src="/images/projects/smart-suggester/Smart Suggester 3.gif" alt="Prototype phase" style="width: 100%; border-radius: 32px; margin-bottom: 16px;">
+                                    <h4>Poor usability and frictions</h4>
+                                    <p class="small">During the research phase, we were able to detect several UX frictions in the search process, that led to user frustration. We will go into detail on these later.                        </p>
+                                </div>
+                            </div>
+                    
+                            <div class="section-columns" style="margin-bottom: 0;">
+                                <div class="section-column">
+                                    <img class="image-grid" src="/images/projects/smart-suggester/Smart Suggester 4.webp" alt="Testing phase">
+                                    <h4>Lack of competitive features</h4>
+                                    <p class="small">The search engine lagged behind industry standards and there was a great opportunity to implement new features with the search engine that could bring value to our users.</p>
+                                </div>
+                                <div class="section-column">
+                                    <img class="image-grid" src="/images/projects/smart-suggester/Smart Suggester 5.webp" alt="Implementation phase">
+                                    <h4>Traffic and navigation</h4>
+                                    <p class="small">Most traffic comes from meta-searchers like Tripadvisor or Trivago. This means that a large volume of users no longer have to search organically in our search engine, often landing directly on the Hotel Details Page, bypassing the SERP or Homepage.</p>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+
+
+                 <!-- Title + text section -->
+                  <div class="container-full section-spacer">
+                    <h6>GOALS</h6>
+                    <h3>Project Objectives</h3>
+                    <p class="p-large">This are the project objectives that we set at the start of the project:</p>
+                    <div class="section-columns-text">
+                        <div class="section-column">
+                            <h4>Understand user behavior</h4>
+                        </div>
+                        <div class="section-column">
+                            <p class="small">Identify common patterns on how users interact with the search engine. Be able to identify the main frictions or stoppers our users could be having and develop solutions tailored to their needs.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="section-columns-text">
+                        <div class="section-column">
+                            <h4>Improve result relevance</h4>
+                        </div>
+                        <div class="section-column">
+                            <p class="small">Deliver more accurate and relevant suggestions based on the user input. If users have to clear the search input less times, spend less time interacting with the search engine and select the suggestions we deliver on the first positions in a higher volume would mean we achieved to improve the experience.
+                            </p>
+                        </div>
+                    </div>
+                  <div class="section-columns-text">
+                    <div class="section-column">
+                        <h4>Validate the solution</h4>
+                    </div>
+                    <div class="section-column">
+                        <p class="small">Test and perform an exhaust QA process with the Smart Suggester on the homepage before scaling to high-traffic pages, so we can be sure if we are working in a correct direction for the development. Since the interaction has lots of different and small interactions, live testing would be the best option.
+
+                        </p>
+                    </div>
+                </div>
+                <div class="section-columns-text">
+                    <div class="section-column">
+                        <h4>Increase user satisfaction</h4>
+                    </div>
+                    <div class="section-column">
+                        <p class="small">By completing the 3 objectives mentioned before, we can expect offer a more intuitive and satisfying search experience.
+                        </p>
+                    </div>
+                </div>
+                <div class="section-columns-text">
+                    <div class="section-column">
+                        <h4>Maximize traffic to next step</h4>
+                    </div>
+                    <div class="section-column">
+                        <p class="small">The final clear clue that indicates success in this project will be if we achieve to improve the percentage of users navigating from the homepage to the search engine results page, this would mean the optimized Smart Suggester has a direct impact in business metrics and then, we could implement the same solution to the SERP page.
+                        </p>
+                    </div>
+                </div>
+              </div>
+
+
+
+            <!-- Text Section - full width with container -->
+            <div class="container-full section-spacer">
+                <h6>RESEARCH</h6>
+                <h3>UX Discovery Kickoff</h3>
+                <p class="p-large section-text" style="margin-left: 0;">During Q3 of 2024 I started the <span class="p-largebold">Research Plan</span> approach to tackle the search engine optimization project and the suggestions we were offering to our users. First, I defined the objectives I wanted to achieve with the research.
+                </p>
+                <h4 style="padding-top: 40px;">Research Goals</h4>
+                <ul>
+                    <li class="p-small">Understand user expectations and behaviors when using the search input.</li>
+                    <li class="p-small">Identify pain points and areas of confusion or frustration with the current search experience.</li>
+                    <li class="p-small">Improve the relevance of suggested search results.</li>
+                    <li class="p-small">Enhance overall usability and satisfaction with the search functionality.</li>
+                </ul>
+                <p class="p-small" style="padding-top: 40px;">This led me to ask myself a series of questions that I wanted to resolve by carrying out the research.</p>
+                <h4 style="padding-top: 40px;">Research Questions</h4>
+                <ul>
+                    <li class="p-small">What are users looking for when they use the search engine on the homepage?</li>
+                    <li class="p-small">How do users interact with suggested results on the homepage?</li>
+                    <li class="p-small">What are the most common issues users face with the current search suggestions?</li>
+                    <li class="p-small">What terms and filters do users frequently use?</li>
+                    <li class="p-small">How do competitors handle search suggestions, and what can we learn from them?</li>
+                </ul>
+                <p class="p-large" style="padding-top: 40px;">Defining the objectives and initial questions is key in my opinion for any UX research plan, to ensure that the research moves in the right direction to reach conclusions that allow working on a solution that really brings value to users, in relation to the initial state.</p>
+                <p class="p-large" style="padding-top: 40px;">Based on the objectives and research questions, I needed to perform the following research methodologies to come up with the required data:</p>
+                <h4 style="padding-top: 40px;">Methodologies</h4>
+                <ul>
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Hotjar Recordings + Heatmaps:</span> analyzed search usage patterns in order to identify bugs, problems or opportunities with focus on the interaction of the old search system. This allowed me to uncover most of the problems with the actual UI.
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Surveys:</span> collect feedback on user satisfaction with the actual search feature, measure the System Usability Scale of the actual UI to be able to compare it with the new UI planned, uncover specific issues and obtain suggestions for improvement.
+                        </div>
+                    </li>   
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">User Interviews:</span> conduct deep-dive interviews to understand user frustrations and expectations with the search feature.
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Competitor Analysis:</span> performed a heuristic evaluation in several competitor websites in order to identify best practices, different approaches to solutions to problems we identified at our system, and discovery of features that other competitors were offering that could potentially also benefit our users.
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Usability Testing:</span> validate with a live prototype the new Search Feature with all the solutions to the problems identified in the first phase, with both in-house and external users before starting in the development.
+                        </div>
+                    </li>  
+                </ul>
+            </div>
+
+            <!-- Text Section - full width with container -->
+            <div class="container-full section-spacer">
+                <h6>ANALIZE</h6>
+                <h3>Data Requirements</h3>
+                <p class="p-large section-text" style="margin-left: 0;">At Stayforlong we used to hold sync meetings of the Product Trio (Engineering Manager, Product Manager and Product Designer) together with the Data Analyst of the project on a weekly basis. We worked in independent squads with a member of the Data team within the team attending all the dailies, and working like this way is very positive in my opinion because this way the Data has all the context of the projects we developed from the discovery phase. 
+                </p>
+                <p class="p-large" style="padding-top: 40px;">As we started to develop the research and discovery plan, we were able to determine what data requirements we had:</p>
+
+                <ul>
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">CTR% Suggestion:</span> the overall click-through conversion rate of suggested results.
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">CTR by suggestion type:</span> since we were planning to add new types of suggestions, we needed to know which type of suggestions would perform better.
+                        </div>
+                    </li>
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Suggestion Type Clicked:</span> the suggester was able to offer different types of results and we needed to know the % of click of each one (city, hotel, zone, apartment, neighborhood, hostel, point of interest, etc.).
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Suggestion to booking:</span>  the % of users that end up making a booking after clicking on a suggested result.
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">CTR of suggestions by page:</span> the overall % of CTR for suggested results on different pages. This will help us understand the difference between the new Search Engine we were going to optimize in the homepage as opposed with the one in the search results page, to help us understand the impact of the improvements.
+                        </div>
+                    </li>  
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">% of click suggestion position:</span> since we wanted to offer more relevant results, we understand that if the users click the suggestions in the first places means that the results are more relevant (from 0 to the last suggestion we offer).
+                        </div>
+                    </li>  
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Search queries when suggestion is clicked:</span> this metric would help us understand what are the most repeated specific search terms by our users, and would help us know their preferences (E.g. Barcelona, Spain).
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Avg. length of input:</span> average number of characters needed to find a result (e.g., 2.3 characters).
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Reset button click details:</span> clicks on reset button in the input on average per session, and the specific query the user inputs when the reset button is clicked.
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Avg. search time:</span> time taken to find a result, from the click on the input until the click on a suggested result (e.g., 4.6 seconds on average).
+                        </div>
+                    </li> 
+                </ul>
+
+                <div class="quote-section section-spacer">
+                    <div class="quote-content">
+                        <h4 style="margin: 0;">“The observability of end-to-end metrics is a major concern for the team of Data Engineers at Stayforlong. That is why we have specialized dashboards for each page of the user flow to keep track of them.”</h4>
+                    </div>
+                </div>
+
+                <p class="p-large" style="padding-top: 40px;">Being able to observe the progression over time of these metrics would help us understand if we were being able to generate a positive impact on business metrics with the implementation of the changes and improvements made in this project. The Data team built a specific Dashboard in Looker Studio with several graphs and with the ability to apply certain filters to queries by date, device type, market (there are several available on the web) and source of user traffic (organic, adwords, etc.). <br><br>
+
+                    On the other hand, measuring the success of the different implementations and progressive improvements of the search functionality in this way would allow us to be more agile and not having to develop AB Test to validate each iteration, as well as being able to understand in much better detail its performance.
+                    </p>
+
+            </div>
+
+            <!-- Process Section - Two Columns with Images -->
+            <div class="full-width-section background-section section-spacer">
+                <div class="container-full">
+                    <h3>Competitor Analysis</h3>
+                    <p class="p-large" style="margin-bottom: 48px;">For the competitor benchmark, we reviewed the experience and interaction in detail of the search functionality on the following websites of direct competitors and market leaders: Expedia, Booking.com, Kayak, Hostelworld, Vio.com, Athotel and Agoda. <br><br> <span class="p-largebold">Key findings</span> from the competitor benchmark showed that: </p>
+                        <div class="section-columns">
+                            <div class="section-column">
+                                <img  class="image-grid" src="/images/projects/smart-suggester/Smart Suggester 6.webp" alt="Research phase">
+                                <h4>Number of Results</h4>
+                                <p class="small">Competitors generally displayed more suggestions, offering us also the possibility to extend the number of results after user input. More results mean more possibilities to be more relevant.</p>
+                            </div>
+                            <div class="section-column">
+                                <img  class="image-grid" src="/images/projects/smart-suggester/Smart Suggester 7.webp" alt="Research phase">
+                                <h4>Proximity-Based Search</h4>
+                                <p class="small">Features like searching near POIs (points of interest) were common. E. g. hotels near a specific popular monument, airport or train station.
+                                </p>
+                            </div>
+                        </div>
+                
+                        <div class="section-columns" style="margin-bottom: 48px;">
+                            <div class="section-column">
+                                <img  class="image-grid" src="/images/projects/smart-suggester/Smart Suggester 8.webp" alt="Research phase">
+                                <h4>Share based on location</h4>
+                                <p class="small">Very practical for users that browse directly on the phone and already in the location where they want to stay, for last minute bookings. This approach would help us generate a better experience for mobile users.</p>
+                            </div>
+                            <div class="section-column">
+                                <img  class="image-grid" src="/images/projects/smart-suggester/Smart Suggester 9.webp" alt="Research phase">
+                                <h4>Empty State Handling</h4>
+                                <p class="small">Competitors ensured users always saw suggestions, it had to be almost impossible for a user to submit a search with 0 results, even if generic. For example, showing popular destinations rather than nothing. We also needed to include an empty state for cases in which the search engine couldn’t offer results (we were lacking that state).</p>
+                            </div>
+                        </div>
+
+                        <div class="section-columns" style="margin-bottom: 48px;">
+                            <div class="section-column">
+                                <img  class="image-grid" src="/images/projects/smart-suggester/Smart Suggester 10.webp" alt="Research phase">
+                                <h4>Loading Indicators</h4>
+                                <p class="small">Competitors offered different types of clear loading states (e.g., spinners or status bars), letting users know that results offered are still not the definitive.</p>
+                            </div>
+                            <div class="section-column">
+                                <img  class="image-grid" src="/images/projects/smart-suggester/Smart Suggester 11.webp" alt="Research phase">
+                                <h4>Standard Icon set</h4>
+                                <p class="small">There was room for improvement in the use of icons to differentiate the different types of suggested results (e.g., bed for hotels, pin for locations). At Stayforlong we wanted to offer too many different types of icons for each type of accommodation, which meant that users did not correctly understand their meaning.</p>
+                            </div>
+                        </div>
+
+                        <div class="section-columns" style="margin-bottom: 0;">
+                            <div class="section-column">
+                                <img  class="image-grid" src="/images/projects/smart-suggester/Smart Suggester 12.webp" alt="Research phase">
+                                <h4>Pre-Search Suggestions</h4>
+                                <p class="small">Competitors displayed results even before the user input, such as a top destinations list or recent searches. This implies several benefits: first, it sets expectations to the user of the type of results offered, and also, allows you to be able to save the input since your search can be the one we already offer.</p>
+                            </div>
+                            <div class="section-column">
+                                <img  class="image-grid" src="/images/projects/smart-suggester/Smart Suggester 13.webp" alt="Research phase">
+                                <h4>Variety in type of results</h4>
+                                <p class="small">Competitors offered more varied types of results, mixing a list of accommodation, locations and points of interest. More varied results could also mean more possibilities to offer the type of result the user is searching for.</p>
+                            </div>
+                        </div>
+                </div>
+            </div>
+
+
+            <!-- Text Section - full width with container -->
+            <div class="section-text section-spacer">
+                <h6>DESIGN PROCESS</h6>
+                <h3>Solution Design</h3>
+                <p class="p-large">Based on all the research metholodogies performed, we identified the most critical and blocking elements for users with the current suggester and started working on optimizing those elements first. <br><br>
+
+                    As stated at the beginning of the project, the incremental improvements would be applied only to the Home Page, where due to the characteristics of the project there is a much lower volume of traffic than in the following pages of the user flow. This would allow us to measure the impact of the improvements already in production in a less critical part of the flow and without the risk of affecting 100% of the traffic. <br><br>
+                    
+                    This is the complete <span class="p-largebold">list of design solutions</span> that I proposed to the different problems that I detected during the initial phases of the user research, arranged in chronological order in which they were implemented. <br><br>
+                    
+                    I created a document in Confluence with this same information so that the different stakeholders of the company, especially the CEO and CTO could validate the direction of the optimization before the development team started working on the new design:
+                    </p>
+            </div>
+            <div class="quote-section">
+                <div class="quote-content">
+                    <h4 style="margin: 0;">“From the combination of customer feedback from user interviews, analizing recordings and heatmaps and competitor analysis I came up with a list of problems and opportunities with their respective design solution for the Search Experience”</h4>
+                </div>
+            </div>
+
+            <div class="container-full section-spacer">
+                <h3>Optimization list:</h3>
+                <ul>
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Problem/Opportunity:</span> our search system was very strict in the search term the user inputs in order to deliver results, that brought to very low typo tolerance and that the user had to type exactly the names of the accommodations in order to find them.
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Solution:</span> work in pair with the Back-End team to find a more tolerant way of offering suggestion results by manually adjusting the ElasticSearch Index and lots of fine-tuning.
+                        </div>
+                    </li>    
+                </ul>
+            </div>
+            <!-- Full Width Image Section -->
+            <div class="section-image">
+                <img src="/images/projects/smart-suggester/Smart Suggester 14.webp" alt="Full width project image">
+            </div>
+            <p class="p-small pie-foto">Now the search results are more flexible, admitting typos and missing characters.</p>
+
+
+            <div class="container-full section-spacer">
+                <ul>
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Problem/Opportunity:</span> we do not show with visual clues when our suggester system is not able to deliver results, leading to frustrated users.
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Solution:</span> display an empty state for the suggester with no results, prompting the user to perform a different search, giving also a top destination list as a backup.
+                        </div>
+                    </li>    
+                </ul>
+            </div>
+            <!-- Full Width Image Section -->
+            <div class="section-image">
+                <img src="/images/projects/smart-suggester/Smart Suggester 15.webp" alt="Full width project image">
+            </div>
+            <p class="p-small pie-foto">Empty State UI (missing in old UI)</p>
+
+
+            <div class="container-full section-spacer">
+                <ul>
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Problem/Opportunity:</span> the load of new suggested results is done by flashing the dropdown with all the suggestions (see recording below), which makes difficult to actually see the new results provided while typing new characters, especially causing a bad experience for large searches such as long hotel names.
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Solution:</span> avoid flashing the results dropdown hiding the results while also showing a fixed element indicating the load of new results in the background, while users are already able to see the new updated results as it continues typing.
+                        </div>
+                    </li>    
+                </ul>
+            </div>
+            <div class="section-columns">
+                <div class="section-column">
+                    <img class="image-grid" src="/images/projects/smart-suggester/Smart Suggester 3.gif" alt="Prototype phase" style="width: 100%; border-radius: 32px; margin-bottom: 16px;">
+                    <p class="p-small pie-foto">Old load interaction (flashing the results each new load, without load indicator)</p>
+                </div>
+                <div class="section-column">
+                    <img class="image-grid" src="/images/projects/smart-suggester/Smart Suggester 16.gif" alt="Prototype phase" style="width: 100%; border-radius: 32px; margin-bottom: 16px;">
+                    <p class="p-small pie-foto">New load interaction (without flashes, adding a loading indicator but preserving previous results)</p>
+                </div>
+            </div>
+
+            <div class="container-full section-spacer">
+                <ul>
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Problem/Opportunity:</span> the search bar CTA with the button “Search” is disabled by default.
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Solution:</span> always show the “Search” button enabled. If a user clicks that button without adding an input in the destination field, display en error message indicating that the user has to fill that before. This offers a much better experience since such a large disabled CTA could lead to confused users who do not understand what information they need to fill in in order to move forward.
+                        </div>
+                    </li>    
+                </ul>
+            </div>
+            <!-- Full Width Image Section -->
+            <div class="section-image">
+                <img src="/images/projects/smart-suggester/Smart Suggester 17.gif" alt="Full width project image">
+            </div>
+            <p class="p-small pie-foto" style="margin-bottom: 80px;">Old UI (CTA "Search" is disabled, blocking users who don't select a suggestion)</p>
+
+            <!-- Full Width Image Section -->
+            <div class="section-image">
+                <img src="/images/projects/smart-suggester/Smart Suggester 18.webp" alt="Full width project image">
+            </div>
+            <p class="p-small pie-foto" style="margin-bottom: 80px;">New UI (CTA "Search" is always enabled, with an error state if users don't enter a destination)</p>
+
+            <div class="container-full section-spacer">
+                <ul>
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Problem/Opportunity:</span> after the user input, if they don’t click on a suggestion the system does not identify it as a valid search parameter and does not enable the search, leading to errors and lots of rage clicks by users.
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Solution:</span> automatically pre-select the first suggestion when a user fills the destination input but does not select any of the suggestions. This is a slightly critical solution, because it could lead to users performing unwanted searches, but we preferred it to having blocked users not being able to perform a search.
+                        </div>
+                    </li>    
+                </ul>
+            </div>
+            <!-- Full Width Image Section -->
+            <div class="section-image">
+                <img style="max-width: 640px; margin: auto; border-radius: 32px;" src="/images/projects/smart-suggester/Smart Suggester 19.gif" alt="Full width project image">
+            </div>
+            <p class="p-small pie-foto">New interaction (more permissive, less blocking)</p>
+
+
+            <div class="container-full section-spacer">
+                <ul>
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Problem/Opportunity:</span> users do not know how to correctly interpret the meaning of the icons showing the type of result offered, leading to users selecting a type of result that is not the desired one (for example, they select a neighborhood when they wanted to select a monument).
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Solution:</span> use a single, standardised icon for all the different accommodation types that users understand (avoid using a specific icon for all the different types of accommodation). Same with all the different results related with locations, with a single unified icon of a location-pin for all the location based results. As well, we differentiated the POI from all the other location based results with an independent standarized icon.
+                        </div>
+                    </li>    
+                </ul>
+            </div>
+            <div class="section-columns">
+                <div class="section-column">
+                    <img class="image-grid" src="/images/projects/smart-suggester/Smart Suggester 20.webp" alt="Prototype phase" style="width: 100%; border-radius: 32px; margin-bottom: 16px;">
+                    <p class="p-small pie-foto" style="margin-top: 0; padding-top: 0;">Old UI (different misleading icons)</p>
+
+                </div>
+                <div class="section-column">
+                    <img class="image-grid" src="/images/projects/smart-suggester/Smart Suggester 21.webp" alt="Prototype phase" style="width: 100%; border-radius: 32px; margin-bottom: 16px;">
+                    <p class="p-small pie-foto" style="margin-top: 0; padding-top: 0;">New UI (unified simpler icons)</p>
+                </div>
+            </div>
+
+
+            <div class="container-full section-spacer">
+                <ul>
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Problem/Opportunity:</span> our suggestion system does not provide results prior to the user input.
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Solution:</span> deliver market-driven top destination results before the user input as a reference. Since we already new the top destinations in each market, using them as example results was an easy quick win.
+
+                        </div>
+                    </li>    
+                </ul>
+            </div>
+            <!-- Full Width Image Section -->
+            <div class="section-image">
+                <img src="/images/projects/smart-suggester/Smart Suggester 22.webp" alt="Full width project image">
+            </div>
+            <p class="p-small pie-foto">Popular destinations pre-populated results list</p>
+
+
+
+            <div class="container-full section-spacer">
+                <ul>
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Problem/Opportunity:</span> our search suggestion system does not allow our users to retrieve their recent searches.
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Solution:</span> as a measure to help generate greater retention in our users, we added in the suggested results the last searches performed that could be cached the user devices.
+
+                        </div>
+                    </li>    
+                </ul>
+            </div>
+            <!-- Full Width Image Section -->
+            <div class="section-image">
+                <img src="/images/projects/smart-suggester/Smart Suggester 23.webp" alt="Full width project image">
+            </div>
+            <p class="p-small pie-foto">Recent searches pre-populated results</p>
+
+
+
+            <div class="container-full section-spacer">
+                <ul>
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Problem/Opportunity:</span> we do not offer results based on location, neither for prioritising results. That could have a great impact in increasing the relevance of the results.
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Solution:</span> offer results prioritised by location. E. g. the search term “P” returns “Punta Cana” in United States market, but “Portugal” in Spain.
+
+                        </div>
+                    </li>    
+                </ul>
+            </div>
+            <!-- Full Width Image Section -->
+            <div class="section-image">
+                <img src="/images/projects/smart-suggester/Smart Suggester 24.webp" alt="Full width project image">
+            </div>
+            <p class="p-small pie-foto">Results are delivered depending on the relevance for the specific market</p>
+
+
+
+            <div class="container-full section-spacer">
+                <ul>
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Problem/Opportunity:</span> we have a hard limitation of 5 results for the suggestions.
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Solution:</span> increase the number of results that the suggester is able to deliver, since more results could mean more varied and accurate suggestions.
+                        </div>
+                    </li>    
+                </ul>
+            </div>
+            <!-- Full Width Image Section -->
+            <div class="section-image">
+                <img src="/images/projects/smart-suggester/Smart Suggester 25.webp" alt="Full width project image">
+            </div>
+            <p class="p-small pie-foto">Extended results list</p>
+
+
+
+            <div class="container-full section-spacer">
+                <ul>
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Problem/Opportunity:</span> we do not offer variety in the available suggestion result types.
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Solution:</span> create a system that balances the different result types available so that a user can choose between different result types when inputs a search (e. g. points of interest, accommodation, airport, stations, locations, etc.)
+                        </div>
+                    </li>    
+                </ul>
+            </div>
+            <!-- Full Width Image Section -->
+            <div class="section-image">
+                <img src="/images/projects/smart-suggester/Smart Suggester 25.webp" alt="Full width project image">
+            </div>
+            <p class="p-small pie-foto">Varied results depending on the type of suggestion</p>
+
+
+
+
+
+            <!-- Text Section - full width with container -->
+            <div class="section-text section-spacer">
+                <h3>Validation and Testing</h3>
+                <p class="p-large">For the validation test of the new Suggestion System, I was mainly interested in being able to obtain <span class="p-largebold">feedback from users comparing</span> the current old experience with the new one with all the improvements that were proposed, allowing me to obtain qualitative feedback from users navigating and comparing both versions. <br><br>
+
+                    I also wanted to be able to obtain feedback and validation on users' impressions with the new system, verify that the <span class="p-largebold">Success Rate</span>  with the new design offered sufficient guarantees of success and that the <span class="p-largebold">System Usability Scale</span> of the new design improved on that obtained during the initial surveys with the old system. <br><br>
+                    
+                    Overall results on the new UI showed that <span class="p-largebold">85%</span> of users preferred the new UI vs the old one and a <span class="p-largebold">66.7%</span> success rate with the new system, indicating also good expectations of users in relation with the new features planned for location based search and retrieving the search history. Also helped validate the new standarized icon set for the results and the specific adjustments in the loading and searching interaction, which also provided positive results.
+                    </p>
+            </div>
+
+            <!-- Text Section - full width with container -->
+            <div class="container-full section-spacer">
+                <h6 class="section-text" style="margin-bottom: 9px;">IMPACT</h6>
+                <h3 class="section-text">Implementation of the solution</h3>
+                <p class="p-large section-text">To measure the success of the Smart Suggester project, we analyzed user paths from the homepage to the Search Engine Results Page (SERP) before and after the implementation, since the changes could impact the volume of traffic that went from the homepage to the search results page. <br><br>
+
+                    Also, it was very easy to monitor the different changes and improvements that we were developing thanks to the dashboards created by the data team and the timeline evolution of the different metrics, as well as detect any possible bug when seeing a drop in any of them.
+                    
+                    
+                    
+                </p>
+                <h4 style="padding-top: 40px;">Key achievements of the project:</h4>
+
+                <ul>
+                    <li class="p-small">
+                        <div class="li-content">
+                            A <span class="p-smallbold">+9%</span> increase in traffic from the homepage to Results page (from 41% of users to 45%, +4 percentage points).
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            A <span class="p-smallbold">+8%</span> of users selecting suggestions after interacting with the search input (from 36% to 39% of users).
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            The project resulted in a <span class="p-smallbold">40%</span> reduction in search time.
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            A reduction of <span class="p-smallbold">8%</span> in user clicks in the resets button of the search input.
+                        </div>
+                    </li> 
+                    
+                </ul>
+            </div>
+
+
+            
+            <div class="project-hero-image section-spacer">
+                <img src="/images/projects/smart-suggester/Smart Suggester Hero.webp" alt="Project hero image">
+            </div>
+
+
+
+            <!-- Text Section - full width with container -->
+            <div class="section-text section-spacer">
+                <h6>LEARNINGS</h6>
+                <h3>Personal thoughts</h3>
+                <p class="p-small">The project has been a <span class="p-smallbold">technological challenge</span> in which I have had to work closely with the Backend team when adjusting the relevance of the results we offered, as well as with the Frontend team to eliminate the various frictions and UX errors detected. <br><br>
+
+                    One of the keys to the project has been the close work with the Data team, which has allowed us to <span class="p-smallbold">monitor the project's success metrics</span> at all times, controlling their variations at all times. <br><br>
+                    
+                    Also, <span class="p-smallbold">involving our users</span> in the first phases of the project was key to the success of the project, since we had very good control over the different problems that the old search system presented and also a clear vision for the solutions and opportunities discovered during the competitor benchmark and validation phases. <br><br>
+                    
+                    Another great success was the approach to <span class="p-smallbold">strategic escalation</span>, which has allowed us to optimize a critical part of our product without compromising key business metrics and committing risks in the deployment.
+                    </p>
+            </div>
+
+
+
+            </div>
+
+    
+            <hr style="margin: auto;">
+    <!-- Projects grid -->
+     <div class="container-full section-spacer">
+        <h3 style="text-align: center;">More projects</h3>
+        <div class="more-projects-grid-no-home" style="padding-top: 20px;">
+            <!-- Project 1 -->
+            <div class="project-card">
+                <!-- Project Image Area - Clickable for audio -->
+                <div class="project-image-container">
+                    <img src="/images/projects/map/Map Thumbnail.webp" alt="Location reshape project thumbnail" class="project-image">
+                    <div class="tooltip-container">
+                        <button class="audio-control" aria-label="Play audio">
+                            <img class="icon play-icon" src="/images/speaker-icon.svg" alt="">
+                            <img class="icon pause-icon hidden" src="/images/pause-icon.svg" alt="">
+                        </button>
+                        <span class="tooltip tooltip-text">🐣 Easter Egg!</span>
+                    </div>
+                </div>
+                
+                <!-- Card Content - Clickable for navigation -->
+                <a href="map.html" class="card-content-link">
+                    <div class="card-content">
+                        <h3 class="card-title">Reshaping location search</h3>
+                        <p class="card-description">How strategic refinement of the map experience increased user session duration (+43%), CTR (+17%) and CVR (+24%).</p>
+                        <div class="card-actions">
+                            <div class="tooltip-container-button">
+                                <span class="btn-primary"><span class="arrow-icon"></span></span>
+                                <span class="tooltip tooltip-text tooltip-button">Read case study</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Hidden audio element -->
+                <audio class="project-audio">
+                    <source src="audio/project-audio.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+            
+            <!-- Project 2 -->
+            <div class="project-card">
+                <!-- Project Image Area - Clickable for audio -->
+                <div class="project-image-container">
+                    <img src="/images/projects/self-service/Self-service Thumbnail.webp" alt="Self-service image" class="project-image">
+                    <div class="tooltip-container">
+                        <button class="audio-control" aria-label="Play audio">
+                            <img class="icon play-icon" src="/images/speaker-icon.svg" alt="">
+                            <img class="icon pause-icon hidden" src="/images/pause-icon.svg" alt="">
+                        </button>
+                        <span class="tooltip tooltip-text">Hear preview</span>
+                    </div>
+                </div>
+                
+                <!-- Card Content - Clickable for navigation -->
+                <a href="self-service-booking.html" class="card-content-link">
+                    <div class="card-content">
+                        <h3 class="card-title">Self-service bookings</h3>
+                        <p class="card-description">Led redesign of hotel booking management experience. Reduced avg. contact per booking (-17%) and booking cancellations (-7%).</p>
+                        <div class="card-actions">
+                            <div class="tooltip-container-button">
+                                <span class="btn-primary"><span class="arrow-icon"></span></span>
+                                <span class="tooltip tooltip-text tooltip-button">Read case study</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Hidden audio element -->
+                <audio class="project-audio">
+                    <source src="audio/self-service.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+        </div>
+     </div>
+     
+
+
+        <div class="social-footer-project">
+          <div class="social-icons" style="justify-content: center;">
+            <a target="_blank" href="mailto:oscardenamiel@gmail.com" class="social-icon" aria-label="Send email">
+              <img class="icon" src="/images/Email.svg" alt="">
+            </a>
+            <a target="_blank" href="https://wa.link/92htwm" class="social-icon" aria-label="Contact on WhatsApp">
+              <img class="icon" src="/images/WhatsApp.svg" alt="">
+            </a>
+            <a target="_blank" href="https://www.instagram.com/oscardenamiel/" class="social-icon" aria-label="Instagram profile">
+              <img class="icon" src="/images/Instagram.svg" alt="">
+            </a>
+            <a target="_blank" href="https://linkedin.com/in/oscardenamiel" class="social-icon" aria-label="LinkedIn profile">
+              <img class="icon" src="/images/LinkedIn 2.svg" alt="">
+            </a>
+          </div>
+          <p class="footer-text-sm">Website design and content © 2026 Oscar Denamiel.</p>
+        </div>
+    </div>
+  </div>
+
+  <button id="scrollToTopBtn" class="scroll-to-top-btn" aria-label="Scroll to top">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+  <script type="module" src="/src/main.js"></script>
+
+</body>
+
+</html>

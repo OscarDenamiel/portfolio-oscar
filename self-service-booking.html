@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="canonical" href="https://oscardenamiel.com/self-service-booking.html">
+
+  <link rel="icon" href="/images/favicons/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F9F8F6">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#19171C">
+
+  <title>Self-service Bookings · Product Design Case Study</title>
+
+  <meta property="og:title" content="Self-service Bookings · Oscar Denamiel" />
+  <meta property="og:site_name" content="Oscar Denamiel · Senior Product Designer">
+  <meta property="og:url" content="https://oscardenamiel.com/self-service-booking.html" />
+  <meta property="og:description" content="Led redesign of hotel booking management experience. Reduced avg. contact per booking (-17%) and booking cancellations (-7%)." />
+  <meta property="og:image" content="https://oscardenamiel.com/images/og-image.webp">
+  <meta property="og:type" content="website">
+
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+
+<body class="dark-mode">
+
+  <div class="content-container content-container--visible">
+
+    <div id="header-placeholder"></div>
+    <div id="sidebar-placeholder"></div>
+
+    <div class="content-container content-container--visible">
+            <div class="main-container-no-home">
+                <div class="project-container">
+                <!-- Project Hero Section -->
+                <div class="project-hero">
+                    <div class="project-info animate-fade-up">
+                        <h2>Self-Service Bookings</h2>
+                        <p class="p-large" style="max-width: var(--text-container-max); margin: 0 auto 2em auto;">I led the redesign of the hotel booking management experience for Stayforlong. Reduced Average Contact per Booking (-17%) and Booking Cancellation (-7%) and increased eNPS (+6%) and Customer Retention (+8%).
+                        </p>
+                        <div class="project-tags">
+                            <span class="project-tag">Stayforlong</span>
+                            <span class="project-tag">UX Design</span>
+                            <span class="project-tag">Data analyzing</span>
+                            <span class="project-tag">Stakeholder alignment</span>
+                        </div>
+                    </div>
+                    <div class="project-hero-image animate-fade-in delay-600">
+                        <img src="/images/projects/self-service/Self-service Hero.webp" alt="Project hero image">
+                    </div>
+                </div>
+                
+                <!-- Text Section - full width with container -->
+                <div class="section-text section-spacer">
+                    <h3>Executive Summary</h3>
+                    <p class="p-large">As Senior Product Designer at Stayforlong, I led the strategic redesign of the hotel booking management experience to address a critical scalability challenge: an unsustainable volume of customer support contacts. By enabling a fully <span class="p-largebold">self-service experience</span> through a redesigned interface and process logic, we reduced average contact per booking by <span class="p-largebold">17%</span>, decreased booking cancellations by <span class="p-largebold">7%</span>, and improved customer eNPS by <span class="p-largebold">6%</span>, directly contributing to a <span class="p-largebold">8%</span> increase in retention. The project not only <span class="p-largebold">improved operational efficiency</span>, but also positioned <span class="p-largebold">design as a lever for business performance</span>.</p>
+                </div>
+
+                <!-- Full Width Image Section -->
+                <div class="section-image section-spacer">
+                    <img src="/images/projects/self-service/Self-service 2.webp" alt="Stayforlong Image Logo">
+                </div>
+
+                <!-- Text Section - full width with container -->
+                <div class="section-text section-spacer">
+                    <h6>CONTEXT</h6>
+                    <h3>Your Stay, Your Rules</h3>
+                    <p class="p-small">Founded in Barcelona in 2015, <a target="_blank" href="https://www.stayforlong.co.uk/?market=uk&lang=en&adults=2" class="text-link">Stayforlong</a> is a fast-growing travel tech scaleup operating across Europe and America. The company has expanded its services to 22 countries, providing access to a global portfolio of over 720,000 hotels. It is an Online Travel Agency focused at offering unique and valued travel experiences to their clients, working with the largest bedbanks in the travel industry and other OTAs such as Booking, Tripadvisor, Expedia, Trivago, Skyscanner, Vio and many others with sustained 100k daily sessions and 5k daily bookings. The annual gross of the company in 2024 was over 300M euros.<br><br>
+
+                        The <span class="p-smallbold">main challenges</span> faced by the company is to offer competitive advantages to its customers in a market where there is a clear domination by 2 players (Booking and Expedia) in which the rest of the companies must fight to find their gap in the market. Stayforlong wants to differentiate itself by promoting the best prices for long stays.<br><br>
+                        
+                        On the tech side, Stayforlong also presents the great challenge that all web content is provided by third parties, so the flexibility, quality and quantity of this content represent great additional constraints.</p>
+                </div>
+                
+                <!-- Process Section - Two Columns with Images -->
+                <div class="full-width-section background-section section-spacer">
+                    <div class="section-text" style="margin-bottom: 0;">
+                        <h3>Problem statement</h3>
+                        <p class="p-small">Founded in 2015, Stayforlong has grown into one of the top 10 OTAs in Trivago rankings, with over 5,000 bookings daily and a €300M+ annual gross revenue. <br><br>
+
+                            Despite the growth, the post-booking UX had not evolved. Customers struggled to manage their reservations, which led to <span class="p-smallbold">over 10,000 support contacts per week</span>, stretching the 60-agent Customer Experience (CX) team to its limit—especially during seasonal peaks.<br><br>
+                            
+                            This created a critical need to <span class="p-smallbold">rethink the booking management experience</span> as a scalable product solution, not just a support issue.</p>
+                    </div>
+                </div>
+
+
+                 <!-- Title + text section -->
+                  <div class="container-full section-spacer">
+                    <h6>CHALLENGE</h6>
+                    <h3>Reduce contact per booking by -15%</h3>
+                    <div class="section-columns-text">
+                        <div class="section-column">
+                            <h4>Business goal</h4>
+                        </div>
+                        <div class="section-column">
+                            <p class="small">Reduce average support contacts per booking by 15%, while maintaining or improving user satisfaction and retention.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="section-columns-text">
+                        <div class="section-column">
+                            <h4>Strategic hypothesis</h4>
+                        </div>
+                        <div class="section-column" style="padding-bottom: 40px;">
+                            <p class="small">Empowering users to self-manage their bookings via an intuitive interface would reduce the load on the support team and improve overall customer satisfaction—without compromising the complexity of hotel policies and booking flows.
+                            </p>
+                        </div>
+                    </div>
+                    <p class="p-large">We also tracked additional success indicators: Customer Retention Rate, eNPS, Contact Handling Time and Booking Cancellation Rate.</p>
+              </div>
+
+
+
+            <!-- Text Section - full width with container -->
+            <div class="container-full section-spacer">
+                <h3>My role & team</h3>
+                <p class="p-large section-text" style="margin-left: 0;">As <span class="p-largebold">Senior Product Designer</span>, I led the redesign of the hotel booking management experience between December 2023 and June 2024. My responsibilities included:
+                </p>
+                <ul>
+                    <li class="p-small">Shaping the strategic vision in partnership with the Chief Customer Officer.</li>
+                    <li class="p-small">Defining UX priorities based on stakeholder goals and user pain points.</li>
+                    <li class="p-small">Leading and executing research, ideation, prototyping, and testing.</li>
+                    <li class="p-small">Aligning product, engineering, and CX teams around user-centric solutions.</li>
+                </ul>
+                <p class="p-small" style="padding-top: 40px;">We worked in a <span class="p-smallbold">Cross-functional team</span> in collaboration with the Chief Customer Officer and a Customer Experience Real Time Analyst, two Data Engineers, the Operations Product Manager and the Engineering Manager.</p>
+            </div>
+
+            <!-- Full Width Image Section -->
+            <div class="section-image section-spacer" style="padding-bottom: 0; margin-bottom: 0;">
+                <img src="/images/projects/self-service/Self-service 3.webp" alt="Full width project image">
+            </div>
+            <p class="p-small pie-foto">At Stayforlong I used to hold several workshops for all the team</p>
+
+            <!-- Process Section - Two Columns with Images -->
+            <div class="full-width-section background-section section-spacer">
+                <div class="container-full">
+                    <h6>KICKOFF</h6>
+                    <h3>UX Research</h3>
+                    <p class="p-large">Many usability issues had been long known by the CX team but had never been prioritized, due to a product focus primarily on pre-sale conversion. I facilitated alignment meetings with stakeholders to extract assumptions, which I documented and validated through qualitative data.</p>
+                    <h4 style="padding-top: 80px;">User Interviews</h4>
+                    <p class="p-large" style="margin-bottom: 40px;">I conducted <span class="p-largebold">12 in-depth user interviews</span> in December and January focused on post-booking pain points. I also analyzed previous interviews conducted in the project. Key findings included:</p>    
+                    <div class="section-columns">
+                            <div class="section-column">
+                                <img  class="image-grid" src="/images/projects/self-service/Self-service 4.webp" alt="Research phase">
+                                <h5>Lack of booking status clarity</h5>
+                                <p class="small">Users didn’t understand the meaning or progression of the different booking statuses we can offer, or didn’t know clearly what their current booking status was.</p>
+                            </div>
+                            <div class="section-column">
+                                <img  class="image-grid" src="/images/projects/self-service/Self-service 5.webp" alt="Research phase">
+                                <h5>Reservation codes</h5>
+                                <p class="small">The presence of two different booking codes (Stayforlong and provider) caused friction at hotel check-in and made users feel unconfident about their bookings.
+                                </p>
+                            </div>
+                    </div>
+                
+                    <div class="section-columns" style="margin-bottom: 48px;">
+                            <div class="section-column">
+                                <img  class="image-grid" src="/images/projects/self-service/Self-service 6.webp" alt="Research phase">
+                                <h5>On-the-go accessibility</h5>
+                                <p class="small">Mobile access to booking confirmation was unreliable when arriving at the hotel. Users needed a fast way to reach their booking confirmation page.</p>
+                            </div>
+                            <div class="section-column">
+                                <img  class="image-grid" src="/images/projects/self-service/Self-service 7.webp" alt="Research phase">
+                                <h5>Friction in managing bookings</h5>
+                                <p class="small">There were several actions regarding the bookings, such as date changes, cancellations, and invoices, that were either hidden or required manual contact with CX.</p>
+                            </div>
+                    </div>
+                    <p class="p-large">These interviews also revealed <span class="p-largebold">multiple opportunity areas</span>, such as allowing users to resend booking confirmation email or send it to different emails, modify meal plan, add guest details prior to check-in date, improving amenity descriptions & self-serve invoice generation, all this required manual contact with CX.<br><br>These unmet needs were mapped into a <span class="p-largebold">Jobs-To-Be-Done framework</span> to guide prioritization and solution definition.</p>
+                    <h4 style="padding-top: 80px;">Competitor Analysis</h4>
+                    <p class="p-large" style="margin-bottom: 40px;">In order to detect whether our reservation management experience was below industry standards, a thorough competitor analysis was conducted. The objective with this analysis was to detect opportunities for new features and to review how they solved (if at all) some of the problems we had detected with the user research. <span class="p-largebold">Key findings</span> from the competitor benchmark showed that:</p>    
+                    <div class="section-columns">
+                        <div class="section-column">
+                            <img  class="image-grid" src="/images/projects/self-service/Self-service 8.webp" alt="Research phase">
+                            <h5>Visibility of key elements</h5>
+                            <p class="small">Competitors generally offered an immediate and prominent view of important elements such as reservation codes and status, main actions to manage the reservation, access to the printable version, etc.</p>
+                        </div>
+                        <div class="section-column">
+                            <img  class="image-grid" src="/images/projects/self-service/Self-service 9.webp" alt="Research phase">
+                            <h5>Booking management area</h5>
+                            <p class="small">An interesting approach proposed by many competitors to bring together in one place all the actions related to the reservation.
+                            </p>
+                        </div>
+                </div>
+            
+                <div class="section-columns" style="margin-bottom: 48px;">
+                        <div class="section-column">
+                            <img  class="image-grid" src="/images/projects/self-service/Self-service 10.webp" alt="Research phase">
+                            <h5>On-the-go accessibility</h5>
+                            <p class="small">Features such as downloading the reservation in pdf or accessing the reservation through the app without requiring an internet connection were common.</p>
+                        </div>
+                        <div class="section-column">
+                            <img  class="image-grid" src="/images/projects/self-service/Self-service 11.webp" alt="Research phase">
+                            <h5>Additional services</h5>
+                            <p class="small">As a measure to increase revenue sources, many competitors were offering extra services at this point in the experience, which offered a great opportunity for Stayforlong.</p>
+                        </div>
+                </div>
+                <h4 style="padding-top: 80px;">Stakeholder interviews</h4>
+                <div class="section-image">
+                    <img src="/images/projects/self-service/Self-service 20.webp" alt="Full width project image">
+                </div>
+                <p class="p-small pie-foto">Regular Huddle meetings with CX teams to align feedback</p>
+   
+                    <p class="p-large" style="padding-top: 32px;">This format for obtaining insights was key to understanding on a large scale what the main problems of the current experience were. I worked hand in hand with the CX team and through their feedback we were able to map the main customer issues and doubts and detect common patterns and top priority issues.</p>
+                     <!-- Full Width Image Section -->
+                
+                </div>
+            </div>
+
+
+            <!-- Text Section - full width with container -->
+            <div class="section-text section-spacer">
+                <h3>Deeper insights</h3>
+                <p class="p-large">Digging into the data revealed some big insights into the booking management experience. To ensure that our design efforts addressed real business pain points—not just surface-level UX issues—we built a deep, data-informed understanding of the post-booking experience by combining <span class="p-largebold">quantitative analysis, user research, and operational insights</span>.</p>
+                <h4 style="padding-top: 80px;">Operational pain made visible</h4>
+                <p class="p-small">Using an ad-hoc dashboard created specifically for this project, we gained real-time visibility into the most frequent and costly contact drivers.</p>
+            </div>
+            <div class="section-image">
+                <img src="/images/projects/self-service/Self-service 13.webp" alt="Full width project image">
+            </div>
+            <p class="p-small pie-foto">The dashboard revealed that over 300,000 contacts had been generated in the period, with top drivers including booking confirmations, cancellations, and modification requests—many of which stemmed from usability friction in the booking management experience. </p>
+            <p class="p-large" style="padding-top: 32px; max-width: var(--text-container-max); margin: auto;">This analysis, done in close collaboration with the <span class="p-largebold">Operations Project Manager</span>, allowed us to validate the impact of known UX issues.</p>
+            <div class="section-text section-spacer">
+                <h4>Data that drives action</h4>
+                <p class="p-small">This hybrid approach (bridging quant and qual) helped us reframe usability issues as operational bottlenecks with real cost and volume impact. For instance, the contact tag “booking confirmation” alone accounted for over 17,000 tickets—an easily solvable issue through clearer UI and automated confirmations, saving thousands of euros in support cost.</p>
+            </div>
+
+            <!-- Text Section - full width with container -->
+            <div class="section-text section-spacer">
+                <h3>Reframing the problem</h3>
+                <p class="p-small">What initially appeared as a UX issue was reframed as a product scalability challenge. Our new guiding question became:</p>
+            </div>
+
+            <div class="quote-section">
+                <div class="quote-content">
+                    <h4 style="margin: 0;">“How might we empower customers to resolve booking-related needs independently, while reducing operational load and improving retention?”</h4>
+                </div>
+            </div>
+
+            <div class="section-text">
+                <p class="p-small">This shift allowed us to move from tactical fixes to a system-wide redesign strategy. This reframe of the problem also served to understand the priority of this project over others in Stayforlong.</p>
+            </div>
+            
+
+
+
+
+
+            <!-- Text Section - full width with container -->
+            <div class="section-text section-spacer">
+                <h6>SOLUTION</h6>
+                <h3>The redesign strategy</h3>
+                <p class="p-large">We approached the redesign of the voucher page with 3 guiding principles:</p>
+                <ul>
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Transparency:</span> users must understand their booking at a glance.
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Autonomy:</span> every action should be executable without CX intervention.
+                        </div>
+                    </li>  
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Fail-safe systems:</span> design edge-case handling to prevent escalation.
+                        </div>
+                    </li>    
+                </ul>
+                <p class="p-small" style="padding-top: 40px;">To simplify the post-booking experience, I led a pragmatic, research-driven strategy focused on team alignment and fast iteration. We documented each <span class="p-smallbold">user issue</span>—found through continuous research and support feedback—alongside a <span class="p-smallbold">proposed solution</span> and categorized them (e.g., confirmation, cancellations). This became a shared dashboard, helping us prioritize based on metrics like contact ratio and drop-off rates. <br><br> Each issue was linked to a Jira ticket, and improvements were validated through user tests and feedback loops. For lower-confidence solutions, we ran remote usability tests aiming for at least 70% success and strong SUS scores before implementation. <br><br>By combining quick wins (e.g., copy changes, trust signals) with larger UX and tech updates (e.g., new flows, async logic), we delivered continuous value and progressively enhanced the booking management experience in close collaboration with the dev team. </p>
+            </div>
+            <div class="section-image" style="margin-bottom: 0;">
+                <img src="/images/projects/self-service/Self-service 21.webp" alt="Full width project image">
+            </div>
+            <p class="p-small pie-foto">Through various feedback loops we validated each iteration with the team.</p>
+            <div class="quote-section section-spacer">
+                <div class="quote-content">
+                    <h4 style="margin: 0;">"Focusing on transparency, autonomy, and fail-safes, we iterated quickly to simplify the post-booking experience, driving continuous improvement through research and collaboration."</h4>
+                </div>
+            </div>
+
+
+            <!-- Text Section - full width with container -->
+            <div class="section-text section-spacer">
+                <h3>User persona</h3>
+                <p class="p-large">At this point we had a clear scope of the several UX problems generated by the current UI, so when we came up with design solutions we had our user persona at the center to ensure that the solutions were user-centric. Here is a brief summary of the main user persona at Stayforlong:</p>
+                <h4 style="padding-top: 40px;">📍 Demographics</h4>
+                <ul>
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Age:</span> 40–55 years
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Location:</span> primarily Europe (UK, Spain, France, Germany, Italy)
+                        </div>
+                    </li>  
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Occupation:</span> working professionals, parents, freelancers, small business owners.
+                        </div>
+                    </li>
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Travel Type:</span> family holidays, solo leisure, couples, business fairs
+                        </div>
+                    </li>      
+                </ul>
+
+                <45 style="padding-top: 40px;">🎯 Goals</h4>
+                <p class="p-small">Their main goals when using Stayforlong are to find the best hotel prices with flexible payment and cancellation options, complete their booking easily from any device, receive fast, human-centered customer support if needed, and access rich, detailed information about their hotel and destination.</p>
+                <h4 style="padding-top: 40px;">🧠 Motivations</h4>
+                <p class="p-small">They are motivated by saving time and money, reducing the risks involved with online bookings, and discovering flexible deals for longer stays. They want to plan their trips smoothly, especially when traveling with families or tied to specific dates like school holidays or work events, and they deeply value stress-free experiences where they feel confident in every step.</p>
+                <h4 style="padding-top: 40px;">💥 Pain Points</h4>
+                <p class="p-small">However, they experience frustration when customer support is slow or non-human (bots), when information about hotel services like “all-inclusive” offers is incomplete or vague, and when technical mishaps like accidental cancellations on mobile interfaces occur. They often worry about the confirmation of their bookings at the hotel, especially after encountering negative online reviews.</p>
+                <h4 style="padding-top: 40px;">📲 User Behaviors</h4>
+                <p class="p-small">The Practical Planner always double-checks information by visiting other sources like Booking.com, TripAdvisor, or the hotel's direct website. They often start with price comparison tools and prioritize flexibility, preferring partial payment options whenever possible. Their trip planning behavior is highly methodical, handling flights, transfers, and hotels as separate bookings to maximize savings and flexibility.</p>
+                <h4 style="padding-top: 40px;">❤️ Preferred Features</h4>
+                <p class="p-small">They prefer Stayforlong features that offer easy partial payments, rich visual content with detailed hotel descriptions, a real-human live chat for quick problem-solving, secure payment methods like PayPal, and easy ways to filter hotels by amenities, board types, and flexible conditions.</p>
+                <h4 style="padding-top: 40px;">🎭 Emotional Drivers</h4>
+                <p class="p-small">Their emotional connection with Stayforlong is built around security, trust, and convenience. They want to feel protected during the booking process, stay in full control of their reservations, trust that the platform will reliably handle their needs, and enjoy a streamlined, simple experience without unnecessary obstacles.</p>
+                <h4 style="padding-top: 40px;">🗣️ User Quotes on Booking Management Experience</h4>
+                <ul>
+                    <li>😣 "I was just trying to check my payment date, but instead I accidentally canceled the booking because it wasn’t clear where I needed to click."</li>
+                    <li>😕 "I wish I could edit small things on the booking page — like adding special requests — without having to cancel and rebook everything."</li>
+                    <li>😟 "When I clicked on the voucher page, I couldn’t tell easily if the hotel had already confirmed my booking. It made me really nervous."</li>
+                    <li>😤 "It should be easier to rebook or modify the existing voucher without losing the deposit — not force me to start from scratch."</li>
+                    <li>🤔 "I wanted to see a clear summary of what was included (especially meals) right there on my booking page — I didn’t expect to have to email the hotel separately."</li>
+                </ul>
+            </div>
+
+            
+
+            <!-- Text Section - full width with container -->
+            <div class="section-text section-spacer">
+                <h6>FINAL UI</h6>
+                <h3>Redesigned experience</h3>
+                <p class="p-large">The side-by-side comparison below highlights the evolution from a dense, transactional layout to a more modern and user-centric experience. Every visual and structural change was guided by user feedback, usability testing, and business metrics.</p>
+                
+            </div>
+            
+            <h4 style="padding-top: 80px;">Before vs. After:</h4>
+                <p class="p-small">The redesigned booking experience introduced substantial improvements in clarity, usability, and trust.</p>
+            <div class="section-columns" style="max-width: none; padding-top: 40px;">
+                <div class="section-column">
+                    <img class="image-grid-large" src="/images/projects/self-service/Self-service 22.webp" alt="Prototype phase" style="width: 100%; border-radius: 32px; margin-bottom: 16px; height: auto;">
+                    <p class="p-small pie-foto">Old UI (desktop)</p>
+
+                </div>
+                <div class="section-column">
+                    <img class="image-grid-large" src="/images/projects/self-service/Self-service 23.webp" alt="Prototype phase" style="width: 100%; border-radius: 32px; margin-bottom: 16px; height: auto;">
+                    <p class="p-small pie-foto">New UI (desktop)</p>
+                </div>
+            </div>
+            <div class="section-text section-spacer">
+                <p class="p-small">The new design version incorporates several benefits: a clear display of the booking status, actions taken by the system and confirmation codes, as well as a better visualization of the main actions that users can take. It also incorporates improvements in navigation with the introduction of a new navigation-bar and organizing the content in a clearer way grouped by sections.</p>
+            </div>
+            <div class="section-columns" style="max-width: none; padding-top: 80px;">
+                <div class="section-column">
+                    <img class="image-grid-large" src="/images/projects/self-service/Self-service 24.webp" alt="Prototype phase" style="max-width: 500px; display: flex; margin: auto; border-radius: 32px; margin-bottom: 16px; height: auto;">
+                    <p class="p-small pie-foto">Old UI (mobile)</p>
+
+                </div>
+                <div class="section-column">
+                    <img class="image-grid-large" src="/images/projects/self-service/Self-service 25.webp" alt="Prototype phase" style="max-width: 500px; display: flex; margin: auto; border-radius: 32px; margin-bottom: 16px; height: auto;">
+                    <p class="p-small pie-foto">New UI (mobile)</p>
+                </div>
+            </div>
+            <div class="section-text section-spacer">
+                <p class="p-small">For the mobile version, which in the end is the most important one that the users will be viewing on-the-go, we applied the same upgrades than in the desktop version. Now the new layout is mobile-first and makes it a lot easier to scan the important information at a glance than it used to.</p>
+            </div>
+            <div class="section-columns" style="max-width: none; padding-top: 80px;">
+                <div class="section-column">
+                    <img class="image-grid-large" src="/images/projects/self-service/Self-service 26.webp" alt="Prototype phase" style="max-width: 500px; display: flex; margin: auto; border-radius: 32px; margin-bottom: 16px; height: auto;">
+                    <p class="p-small pie-foto">Old UI (mobile)</p>
+
+                </div>
+                <div class="section-column">
+                    <img class="image-grid-large" src="/images/projects/self-service/Self-service 27.webp" alt="Prototype phase" style="max-width: 500px; display: flex; margin: auto; border-radius: 32px; margin-bottom: 16px; height: auto;">
+                    <p class="p-small pie-foto">New UI (mobile)</p>
+                </div>
+            </div>
+            <div class="section-text section-spacer">
+                <p class="p-small">The new version now makes more accessible the dates change feature. Also for the room details, we added more information with a clearer layout, , adding the most important room facilities and the room images.</p>
+            </div>
+            <div class="section-columns" style="max-width: none; padding-top: 80px;">
+                <div class="section-column">
+                    <img class="image-grid-large" src="/images/projects/self-service/Self-service 28.webp" alt="Prototype phase" style="max-width: 500px; display: flex; margin: auto; border-radius: 32px; margin-bottom: 16px; height: auto;">
+                    <p class="p-small pie-foto">Old UI (mobile)</p>
+
+                </div>
+                <div class="section-column">
+                    <img class="image-grid-large" src="/images/projects/self-service/Self-service 29.webp" alt="Prototype phase" style="max-width: 500px; display: flex; margin: auto; border-radius: 32px; margin-bottom: 16px; height: auto;">
+                    <p class="p-small pie-foto">New UI (mobile)</p>
+                </div>
+            </div>
+            <div class="section-text section-spacer">
+                <p class="p-small">Users can now view the complete history of special requests from the reservation, with the dates and times of their requests. In the long run, this section could become a general CX communication area with the user, and this design makes us an unlocker. We have applied the progressive disclosure principle to the important information block, making the critical info more visible and structuring the information that is not so important, so that it is easier to scan.</p>
+            </div>
+            
+            <div class="section-image section-spacer" style="margin-bottom: 0;">
+                <img src="/images/projects/self-service/Self-service 30.webp" style="max-width: 750px; display: flex; margin: auto; border-radius: 32px; margin-bottom: 16px; height: auto;" alt="Full width project image">
+            </div>
+            <p class="p-small pie-foto">Downloadable .pdf version of the booking confirmation</p>
+
+
+            <div class="section-text section-spacer">
+                <p class="p-small">To allow users to not depend on an internet connection to check-in, we have created a downloadable .pdf version of the booking confirmation. This measure has allowed us to meet the needs of our users to allow them to access their reservation on-the-go, with minimal development effort. <br><br> We have optimized the design for this support and applied it in the same way for the print version of the website. This version purposely hides critical information, done in collaboration with CX, to avoid possible customer problems when checking in at the hotel. The printable version highlights the most important information and allows users to check-in without friction.</p>
+            </div>
+
+            <div class="section-image section-spacer" style="margin-bottom: 0;">
+                <img src="/images/projects/self-service/Self-service 31.webp" style="max-width: 750px; display: flex; margin: auto; border-radius: 32px; margin-bottom: 16px; height: auto;" alt="Full width project image">
+            </div>
+            <p class="p-small pie-foto">Information of the booking status and booking codes available.</p>
+
+
+            <div class="section-text section-spacer">
+                <p class="p-small"><span class="p-smallbold">Transparency is key:</span> we have added an explanation of all the different booking statuses and the use of the booking codes, so that users can understand and use them without friction or doubts. We worked hand in hand with the Project Manager and the Chief Customer Officer to ensure that we complied with GDPR and privacy regulations. </p>
+            </div>
+
+
+            <div class="section-text section-spacer">
+                <h4>Key benefits of the new design</h4>
+                <ul>
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Actionable Overview:</span> critical data like booking code, dates, guest info and payment status are surfaced early, minimizing friction and unnecessary support requests.
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Streamlined Information Architecture:</span> content is grouped in intuitive tabs and sections, reducing cognitive load and allowing users to find what they need faster. The layout is cleaner with improved spacing, contrast, and alignment enhances scannability and reduces cognitive load.
+
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Improved Visual Hierarchy:</span> primary actions like managing the booking or canceling are now more accessible and intuitive, reducing friction for the user.
+
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Stronger Trust Signals:</span> visual enhancements like payment encryption icons, refund info, and success indicators help users feel safe and in control.
+                        </div>
+                    </li> 
+                    <li class="p-small">
+                        <div class="li-content">
+                            <span class="p-smallbold" style="text-decoration: underline;">Mobile-first Layouts:</span> the new structure adapts better to smaller screens, maintaining legibility and touch targets without overwhelming the user.
+                        </div>
+                    </li>    
+                </ul>
+            </div>
+            
+            <div class="project-hero-image section-spacer">
+                <img src="/images/projects/self-service/Self-service Hero.webp" alt="Project hero image">
+            </div>
+
+
+            <!-- Text Section - full width with container -->
+            <div class="section-text section-spacer">
+                <h6>IMPACT</h6>
+                <h3>Launching the new design</h3>
+                <p class="p-small">We launched the new self-service experience in phases between May and June 2024—an impressive achievement by the team, considering this was an integral redesign and rebuild from scratch. The results after 3 months since launch:</p>
+            </div>
+            <div class="section-columns">
+                <div class="section-column" style="text-align: center;">
+                    <div class="data-card">
+                        <h2 style="margin: 0;">-17%</h2>
+                    </div>
+                    <h5 style="padding-top: 16px;">Avg. contacts per booking</h5>
+                </div>
+                <div class="section-column" style="text-align: center;">
+                    <div class="data-card">
+                        <h2 style="margin: 0;">-7%</h2>
+                    </div>
+                    <h5 style="padding-top: 16px;">Booking cancellation rate</h5>
+                </div>
+            </div>
+            <div class="section-columns">
+                <div class="section-column" style="text-align: center;">
+                    <div class="data-card">
+                        <h2 style="margin: 0;">+6%</h2>
+                    </div>
+                    <h5 style="padding-top: 16px;">Customer experience NPS</h5>
+                </div>
+                <div class="section-column" style="text-align: center;">
+                    <div class="data-card">
+                        <h2 style="margin: 0;">+8%</h2>
+                    </div>
+                    <h5 style="padding-top: 16px;">Customer retention</h5>
+                </div>
+            </div>
+            <div class="section-text section-spacer">
+                <p class="p-small">Additionally, we saw a reduction in average contact handling time, allowing the CX team to focus on high-impact cases. Also, the resolution rate for complex bookings increased (measured internally). However, there are still certain actions and new features that have had a <span class="p-smallbold">lower adoption rate than expected</span>, such as the redesign of the date change flow. I think this is due to the type of Stayforlong user and needs a behavioral change that may come more in the long term. We will continue to work on eliminating friction for this type of features.</p>
+            </div>
+            
+            
+            
+            <!-- Text Section - full width with container -->
+            <div class="section-text section-spacer">
+                <h6>LEARNINGS</h6>
+                <h3>Personal thoughts</h3>
+                <p class="p-small">This project was a turning point in how I understand the impact of design in operational scalability—not just as a UX improvement, but as a strategic tool to unlock business growth.</p>
+                
+
+            </div>
+            <div class="section-columns">
+                <div class="section-column">
+                    <img  class="image-grid" src="/images/projects/self-service/Self-service 14.webp" alt="Research phase">
+                    <h4>Designing for complexity, not for perfection</h4>
+                    <p class="small">One of the key takeaways was learning to design not just for the ideal user, but for a diverse range of scenarios: different levels of digital literacy, different cultural expectations when interacting with hotel staff, users with low connectivity on mobile, or even last-minute check-in stress. Creating a seamless experience meant accounting for edge cases and designing resilient systems that work under less-than-ideal conditions.</p>
+                </div>
+                <div class="section-column">
+                    <img  class="image-grid" src="/images/projects/self-service/Self-service 15.webp" alt="Research phase">
+                    <h4>Operational empathy and cross-team alignment</h4>
+                    <p class="small">Working closely with the Customer Experience team gave me a deeper appreciation of what it means to design for internal operations. Their feedback and frontline perspective were invaluable in shaping features that genuinely reduced workload—not just in theory, but in daily reality. This experience taught me to translate “user needs” into company-wide efficiency.
+                    </p>
+                </div>
+            </div>
+
+            <div class="section-columns">
+                <div class="section-column">
+                    <img  class="image-grid" src="/images/projects/self-service/Self-service 16.webp" alt="Research phase">
+                    <h4>Iterating beyond launch</h4>
+                    <p class="small">Although we saw immediate results, we also discovered new issues post-launch—such as misunderstandings around certain tooltips or edge cases for specific types of bookings. Continuous iteration, based on both quantitative data and human behavior, will be critical to achieve long-term success for this project.</p>
+                </div>
+                <div class="section-column">
+                    <img  class="image-grid" src="/images/projects/self-service/Self-service 17.webp" alt="Research phase">
+                    <h4>Post-sale UX matters</h4>
+                    <p class="small">A well-designed post-booking experience can drive retention and brand trust, not just support efficiency. I believe that post-booking experiences are still very undervalued in the ecommerce and travel industries.
+                    </p>
+                </div>
+            </div>
+
+            <div class="section-columns">
+                <div class="section-column">
+                    <img  class="image-grid" src="/images/projects/self-service/Self-service 18.webp" alt="Research phase">
+                    <h4>Collaboration is key</h4>
+                    <p class="small">Working closely with CX and ops teams ensured that we didn’t just build a good interface—but the right system.</p>
+                </div>
+                <div class="section-column">
+                    <img  class="image-grid" src="/images/projects/self-service/Self-service 19.webp" alt="Research phase">
+                    <h4>Next Steps</h4>
+                    <p class="small">Explore proactive support features (e.g., real-time check-in alerts, booking change reminders), extend the self-service model to multi-room and group bookings, leverage behavioral data to personalize the post-booking experience even further.
+                        
+                    </p>
+                </div>
+            </div>
+            </div>
+
+    
+            <hr style="margin: auto;">
+    <!-- Projects grid -->
+     <div class="container-full section-spacer">
+        <h2 style="text-align: center;">More projects</h2>
+        <div class="more-projects-grid-no-home" style="padding-top: 20px;">
+            <!-- Project 1 -->
+            <div class="project-card">
+                <!-- Project Image Area - Clickable for audio -->
+                <div class="project-image-container">
+                    <img src="/images/projects/smart-suggester/Smart Suggester Thumbnail.webp" alt="Smart Suggester" class="project-image">
+                    <button class="audio-control" aria-label="Play audio">
+                        <img class="icon play-icon" src="/images/speaker-icon.svg" alt="">
+                        <img class="icon pause-icon hidden" src="/images/pause-icon.svg" alt="">
+                    </button>
+                </div>
+                
+                <!-- Card Content - Clickable for navigation -->
+                <a href="smart-suggester.html" class="card-content-link">
+                    <div class="card-content">
+                        <h3 class="card-title">Smart Suggester</h3>
+                        <p class="card-description">Led redesign of Stayforlong’s search engine. Reduced search time (40%) and increased traffic to next step (9%).
+                        </p>
+                        <div class="card-actions">
+            
+                            <span class="btn-primary"><span class="arrow-icon"></span></span>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Hidden audio element -->
+                <audio class="project-audio">
+                    <source src="audio/smart-suggester.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+            
+            <!-- Project 3 -->
+            <div class="project-card">
+                <!-- Project Image Area - Clickable for audio -->
+                <div class="project-image-container">
+                    <img src="/images/projects/mobile-first/Mobile-first Thumbnail.webp" alt="Mobile app analytics showing performance graph" class="project-image">
+                    <button class="audio-control" aria-label="Play audio">
+                        <img class="icon play-icon" src="/images/speaker-icon.svg" alt="">
+                        <img class="icon pause-icon hidden" src="/images/pause-icon.svg" alt="">
+                    </button>
+                </div>
+                
+                <!-- Card Content - Clickable for navigation -->
+                <a href="mobile-first.html" class="card-content-link">
+                    <div class="card-content">
+                        <h3 class="card-title">Mobile First</h3>
+                        <p class="card-description">Led reconceptualization for the mobile experience at Leadtech. Reduced refunds (-12%) and increased daily profit (+7%).</p>
+                        <div class="card-actions">
+            
+                            <span class="btn-primary"><span class="arrow-icon"></span></span>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Hidden audio element -->
+                <audio class="project-audio">
+                    <source src="audio/mobile-first.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+        </div>
+     </div>
+     
+
+
+        <div class="social-footer-project">
+          <div class="social-icons" style="justify-content: center;">
+            <a target="_blank" href="mailto:oscardenamiel@gmail.com" class="social-icon" aria-label="Send email">
+              <img class="icon" src="/images/Email.svg" alt="">
+            </a>
+            <a target="_blank" href="https://wa.link/92htwm" class="social-icon" aria-label="Contact on WhatsApp">
+              <img class="icon" src="/images/WhatsApp.svg" alt="">
+            </a>
+            <a target="_blank" href="https://www.instagram.com/oscardenamiel/" class="social-icon" aria-label="Instagram profile">
+              <img class="icon" src="/images/Instagram.svg" alt="">
+            </a>
+            <a target="_blank" href="https://linkedin.com/in/oscardenamiel" class="social-icon" aria-label="LinkedIn profile">
+              <img class="icon" src="/images/LinkedIn 2.svg" alt="">
+            </a>
+          </div>
+          <p class="footer-text-sm">Website design and content © 2026 Oscar Denamiel.</p>
+        </div>
+    </div>
+  </div>
+
+  <button id="scrollToTopBtn" class="scroll-to-top-btn" aria-label="Scroll to top">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+  <script type="module" src="/src/main.js"></script>
+
+</body>
+
+</html>
