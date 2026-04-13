@@ -6,7 +6,7 @@ export const projects = [
     thumbnail: '/images/projects/map/Map Thumbnail.webp',
     thumbnailAlt: 'Location reshape project thumbnail',
     audio: '/audio/map.mp3',
-    url: '/map.html',
+    url: '/map',
   },
   {
     id: 'self-service',
@@ -15,7 +15,7 @@ export const projects = [
     thumbnail: '/images/projects/self-service/Self-service Thumbnail.webp',
     thumbnailAlt: 'Self-service bookings project thumbnail',
     audio: '/audio/self-service.mp3',
-    url: '/self-service-booking.html',
+    url: '/self-service-booking',
   },
   {
     id: 'smart-suggester',
@@ -24,7 +24,7 @@ export const projects = [
     thumbnail: '/images/projects/smart-suggester/Smart Suggester Thumbnail.webp',
     thumbnailAlt: 'Smart Suggester project thumbnail',
     audio: '/audio/smart-suggester.mp3',
-    url: '/smart-suggester.html',
+    url: '/smart-suggester',
   },
   {
     id: 'mobile-first',
@@ -33,6 +33,6 @@ export const projects = [
     thumbnail: '/images/projects/mobile-first/Mobile-first Thumbnail.webp',
     thumbnailAlt: 'Mobile First project thumbnail',
     audio: '/audio/mobile-first.mp3',
-    url: '/mobile-first.html',
+    url: '/mobile-first',
   },
 ];
