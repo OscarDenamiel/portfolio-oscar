@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/about", "destination": "/about.html" },
+    { "source": "/map", "destination": "/map.html" },
+    { "source": "/self-service-booking", "destination": "/self-service-booking.html" },
+    { "source": "/smart-suggester", "destination": "/smart-suggester.html" },
+    { "source": "/mobile-first", "destination": "/mobile-first.html" }
+  ]
+}
