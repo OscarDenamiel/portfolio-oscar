@@ -88,10 +88,10 @@ function initAnimations() {
 async function init() {
   // Load all components in parallel
   await Promise.all([
-    loadComponent('header-placeholder', '/src/components/header.html'),
-    loadComponent('sidebar-placeholder', '/src/components/sidebar.html'),
-    loadComponent('footer-placeholder', '/src/components/footer.html'),
-    loadComponent('footer-sm-placeholder', '/src/components/footer-sm.html'),
+    loadComponent('header-placeholder', '/components/header.html'),
+    loadComponent('sidebar-placeholder', '/components/sidebar.html'),
+    loadComponent('footer-placeholder', '/components/footer.html'),
+    loadComponent('footer-sm-placeholder', '/components/footer-sm.html'),
   ]);
 
   // Render dynamic content
