@@ -13,10 +13,8 @@ body {
     opacity: 1;
   }
 
-
-
- :root {
-    /* Color styles */
+  :root {
+    /* Colors */
     --white: #FFFFFF;
     --dark: #19171C;
     --light: #F9F8F6;
@@ -25,64 +23,34 @@ body {
     --primary: #DCFF93;
     --accent: #E24737;
     --dark-grey: #5C5C61;
+
+    /* Layout */
     --container-large-max: 1400px;
     --container-max: 960px;
     --text-container-max: 640px;
     --gap: 40px;
-    /* 👉 Colores de las bolas (cámbialos libremente) */
-    --blob-1: #ff6b6b00;   /* coral */
-    --blob-2: #6c5ce700;   /* violeta */
-    --blob-3: #db28008f;   /* cian */
-    --blob-4: #ad76088b;   /* amarillo */
-    --blob-5: #ffd16695;   /* verde  */
 
-    /* Tamaño base de cada bola (usa vmin/vmax para responsivo) */
+    /* Blobs */
+    --blob-1: #ff6b6b00;
+    --blob-2: #6c5ce700;
+    --blob-3: #db28008f;
+    --blob-4: #ad76088b;
+    --blob-5: #ffd16695;
     --blob-size: 55vmax;
-    /* Difuminado (más alto = más suave) */
     --blur: 90px;
-    /* Opacidad global de las bolas */
     --blob-opacity: 0.6;
-}
-/* Variables de tamaño de texto base (para móviles) */
 
- :root {
-    /* Párrafos */
+    /* Typography - mobile base */
     --p---large: 18px;
     --p---largebold: 18px;
     --p---small: 16px;
     --p---smallbold: 16px;
-    /* Encabezados - tamaños para móvil */
     --h1: 64px;
-    /* h1---mobile */
     --h2: 40px;
-    /* h2---mobile */
     --h3: 32px;
-    /* h3---mobile */
     --h4: 24px;
-    /* h4---mobile */
     --h5: 20px;
-    /* h5---mobile */
     --h6: 14px;
-    /* h6---mobile */
-}
-/* Clases de utilidad para párrafos */
-
-.p-large {
-    font-size: var(--p---large);
-}
-
-.p-largebold {
-    font-size: var(--p---largebold);
-    font-weight: bold;
-}
-
-.p-small {
-    font-size: var(--p---small);
-}
-
-.p-smallbold {
-    font-size: var(--p---smallbold);
-    font-weight: bold;
 }
 /* Estilos para encabezados */
 
