@@ -1,9 +1,12 @@
 {
-  "rewrites": [
-    { "source": "/about", "destination": "/about.html" },
-    { "source": "/map", "destination": "/map.html" },
-    { "source": "/self-service-booking", "destination": "/self-service-booking.html" },
-    { "source": "/smart-suggester", "destination": "/smart-suggester.html" },
-    { "source": "/mobile-first", "destination": "/mobile-first.html" }
+  "outputDirectory": ".",
+  "routes": [
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/about.html", "dest": "/about.html" },
+    { "src": "/map.html", "dest": "/map.html" },
+    { "src": "/self-service-booking.html", "dest": "/self-service-booking.html" },
+    { "src": "/smart-suggester.html", "dest": "/smart-suggester.html" },
+    { "src": "/mobile-first.html", "dest": "/mobile-first.html" },
+    { "src": "/(.*)", "dest": "/$1" }
   ]
 }
