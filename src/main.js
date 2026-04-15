@@ -12,12 +12,86 @@ async function loadComponent(placeholderId, componentPath) {
   const response = await fetch(componentPath);
   const html = await response.text();
 
-  // Create a temporary container to parse the HTML
   const temp = document.createElement('div');
   temp.innerHTML = html;
 
-  // Replace placeholder with actual nodes (avoids outerHTML timing issues)
   placeholder.replaceWith(...temp.childNodes);
+}
+
+// --- MORE PROJECTS MAP (slug → component file) ---
+const MORE_PROJECTS_MAP = {
+  '/map':                  'more-projects-map.html',
+  '/self-service-booking': 'more-projects-self-service.html',
+  '/smart-suggester':      'more-projects-smart-suggester.html',
+  '/mobile-first':         'more-projects-mobile-first.html',
+};
+
+// --- LOAD PROJECT PAGE COMPONENTS ---
+async function loadProjectComponents() {
+  const path = window.location.pathname;
+  const moreProjectsFile = MORE_PROJECTS_MAP[path];
+
+  const loads = [];
+
+  if (moreProjectsFile) {
+    loads.push(loadComponent('more-projects-placeholder', `/components/${moreProjectsFile}`));
+  }
+
+  if (document.getElementById('footer-project-placeholder')) {
+    loads.push(loadComponent('footer-project-placeholder', '/components/footer-project.html'));
+  }
+
+  await Promise.all(loads);
+}
+
+// --- YEARS OF EXPERIENCE ---
+function initYearsExperience() {
+  const years = new Date().getFullYear() - 2018;
+  document.querySelectorAll('.years-experience').forEach(el => {
+    el.textContent = years + '+';
+  });
+}
+
+// --- CAROUSEL CONTROLS ---
+function initCarouselControls() {
+  const carousels = [
+    { carousel: 'travel-carousel', prev: 'travel-prev', next: 'travel-next' },
+    { carousel: 'about-carousel', prev: 'about-prev', next: 'about-next' },
+    { carousel: 'adventure-carousel', prev: 'adventure-prev', next: 'adventure-next' },
+    { carousel: 'world-carousel',     prev: 'world-prev',     next: 'world-next' },
+    { carousel: 'hobbies-carousel',   prev: 'hobbies-prev',   next: 'hobbies-next' },
+  ];
+
+  carousels.forEach(({ carousel: carouselId, prev: prevId, next: nextId }) => {
+    const carousel = document.getElementById(carouselId);
+    const prevBtn = document.getElementById(prevId);
+    const nextBtn = document.getElementById(nextId);
+    if (!carousel || !prevBtn || !nextBtn) return;
+
+    function getItemWidth() {
+      const firstItem = carousel.querySelector('.about-column');
+      if (!firstItem) return 0;
+      return firstItem.offsetWidth + 16;
+    }
+
+    prevBtn.addEventListener('click', () => {
+      const atStart = carousel.scrollLeft < getItemWidth() / 2;
+      if (atStart) {
+        carousel.scrollTo({ left: carousel.scrollWidth, behavior: 'smooth' });
+      } else {
+        carousel.scrollBy({ left: -getItemWidth(), behavior: 'smooth' });
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      const atEnd = carousel.scrollLeft >= carousel.scrollWidth - carousel.clientWidth - 1;
+      if (atEnd) {
+        carousel.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        carousel.scrollBy({ left: getItemWidth(), behavior: 'smooth' });
+      }
+    });
+  });
 }
 
 // --- RENDER PROJECT CARDS ---
@@ -86,29 +160,27 @@ function initAnimations() {
 
 // --- INIT ---
 async function init() {
-  // Load all components in parallel
   await Promise.all([
     loadComponent('header-placeholder', '/components/header.html'),
     loadComponent('sidebar-placeholder', '/components/sidebar.html'),
     loadComponent('footer-placeholder', '/components/footer.html'),
     loadComponent('footer-sm-placeholder', '/components/footer-sm.html'),
+    loadProjectComponents(),
   ]);
 
-  // Render dynamic content
   renderProjects();
   initTypewriter();
+  initYearsExperience();
 
-  // Wait one frame to ensure all injected DOM is fully processed
   await new Promise(resolve => requestAnimationFrame(resolve));
 
-  // Init all modules — DOM is guaranteed ready at this point
   initDarkMode();
   initMobileMenu();
   initScrollManager();
   initAnimations();
   initAudioManager();
+  initCarouselControls();
 
-  // Show page once everything is ready
   document.body.classList.add('ready');
 }
 

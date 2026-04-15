@@ -28,7 +28,7 @@
   <meta property="og:type" content="website">
   <meta name="google-site-verification" content="E06EgI3K2DFjuuTZ8t5pJUF4Wn5x-dAXYvAeaJFMZNQ" />
 
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/src/style.css">
   <!-- Microsoft Clarity -->
   <script type="text/javascript">
@@ -54,137 +54,424 @@
       <div class="main-container-no-home">
         <div class="project-container">
 
-          <!-- Hero -->
+          <!-- ============================================================
+               PATRÓN 1: PROJECT HERO
+               Uso: siempre al inicio de cada case study, único por página.
+               Estructura fija: h2 + p.p-large + project-tags + imagen hero.
+               Reglas:
+               - El h2 es el título del proyecto (no el nombre de la empresa)
+               - p.p-large es la descripción corta con métricas principales
+               - Siempre lleva animate-fade-up en project-info
+               - Siempre lleva animate-fade-in delay-600 en project-hero-image
+          =============================================================== -->
           <div class="project-hero">
+
             <div class="project-info animate-fade-up">
-              <h3 style="margin-left: auto; margin-right: auto;">Hi, I'm Oscar!</h3>
-              <p style="max-width: var(--text-container-max); margin: auto; margin-bottom: 32px; text-align: center;" class="p-large">With 7+ years of experience, I've led product design for international startups and scale-ups in the Travel and E-commerce sectors. From Series A startups to consolidated platforms, I help organizations define processes, optimize workflows, and drive growth through design.</p>
-              <button style="display: block; margin: auto; cursor: pointer;" class="btn-primary" onclick="window.open('https://drive.google.com/uc?export=download&id=1nvxUNm1693SgYEKQGExxxnDI-gNvVTKF', '_blank');">Get CV</button>
+              <h2>Hi, I'm Oscar Denamiel.</h2>
+              <p class="p-large project-hero-description">
+                <strong>Senior Product Designer specializing in Data Analysis, Growth, UX Research & Scalable Systems with <span class="years-experience"></span> years of experience.</strong>
+              </p>
+              <div class="hero-buttons">
+                <a href="https://drive.google.com/uc?export=download&id=1nvxUNm1693SgYEKQGExxxnDI-gNvVTKF" download class="btn-primary" style="margin-left: 0;">Download CV</a>
+                <a href="https://linkedin.com/in/oscardenamiel" target="_blank" class="btn-primary" style="margin-left: 0; background-color: #0A66C2; color: white !important; display: inline-flex; align-items: center; gap: 8px;">
+                  <img class="icon" src="/images/LinkedIn 2.svg" alt="" style="filter: brightness(0) invert(1); width: 20px; height: 20px;">
+                  Connect on LinkedIn
+                </a>
+              </div>
             </div>
-            <div class="about-columns section-spacer animate-fade-in delay-600">
-              <div class="about-column">
-                <img style="width: 100%; border-radius: 24px;" src="/images/about-2.webp" alt="Oscar Denamiel photo">
+          
+            <div class="scroll-carousel-wrapper animate-fade-in delay-600">
+              <div class="about-columns about-columns--scroll" id="about-carousel">
+                <div class="scroll-spacer"></div>
+                <div class="about-column">
+                  <img style="width: 100%; border-radius: 24px;" src="/images/about-2.webp" alt="">
+                </div>
+                <div class="about-column">
+                  <img style="width: 100%; border-radius: 24px;" src="/images/about-1.webp" alt="">
+                </div>
+                <div class="about-column">
+                  <img style="width: 100%; border-radius: 24px;" src="/images/about-3.webp" alt="">
+                </div>
               </div>
-              <div class="about-column">
-                <img style="width: 100%; border-radius: 24px;" src="/images/about-1.webp" alt="Oscar Denamiel photo">
+              <div class="carousel-controls">
+                <button class="carousel-btn carousel-btn--prev" id="about-prev" aria-label="Previous">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(270deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <button class="carousel-btn carousel-btn--next" id="about-next" aria-label="Next">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(90deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
               </div>
-              <div class="about-column">
-                <img style="width: 100%; border-radius: 24px;" src="/images/about-3.webp" alt="Oscar Denamiel photo">
+            </div>
+          
+          </div>
+
+          <!-- ============================================================
+               PATRÓN 3: SECTION IMAGE (full width)
+               Uso: imagen a ancho completo (máx 960px en desktop).
+               Variantes:
+               - Default: ancho completo
+               - section-image--narrow: max-width 350px, centrada (mobile screenshots)
+               - section-image--medium: max-width 750px (imágenes medianas)
+               - section-image--centered: display flex, justify center
+               Reglas:
+               - Siempre lleva section-spacer + reveal
+               - Cuando lleva caption, el .pie-foto va FUERA del section-image
+               - Los vídeos usan el mismo wrapper que las imágenes
+          =============================================================== -->
+
+          <!-- SECTION TEXT — Variante B: con h6 label + h3 -->
+          <div class="section-text section-spacer reveal">
+            <h6>ABOUT ME</h6>
+            <h3>Balance user needs and business growth.</h3>
+            <p class="p-small">
+              Senior Product Designer with over <strong><span class="years-experience"></span> years of experience</strong> building high-performing products in Travel Tech, E-commerce, and Retail. I specialize in Conversion Rate Optimization (CRO) and End-to-end User Research, bridging the gap between deep qualitative insights and measurable ROI. <br><br> I have a proven track record of scaling products from <strong>Series A startups to global corporations</strong>, implementing data-driven design processes that prioritize high-impact experiments in multicultural environments. My focus is on creating seamless user journeys that perform technically and commercially at scale.
+            </p>
+          </div>
+          <!-- / SECTION TEXT B -->
+
+          <!-- ============================================================
+               PATRÓN 7: METRICS GRID (data-cards)
+               Uso: resultados e impacto del proyecto.
+               Reglas:
+               - La PRIMERA fila lleva section-spacer, las siguientes no
+               - Animación escalonada: reveal-delay-1 y reveal-delay-2 por columna
+               - El número grande siempre es h2 con style="margin: 0"
+               - El label debajo SIEMPRE es h5 (nunca h4)
+               - Agrupar de 2 en 2 (máximo 3 filas = 6 métricas)
+          =============================================================== -->
+
+          <!-- Primera fila de métricas: lleva section-spacer, columnas escalonadas -->
+          <div class="section-columns section-columns--metrics section-spacer">
+            <div class="section-column reveal reveal-delay-1" style="text-align: center;">
+              <div class="data-card">
+                <h2 style="margin: 0;">3M+</h2>
+              </div>
+              <h5 style="padding-top: 16px;">Global users impacted</h5>
+            </div>
+            <div class="section-column reveal reveal-delay-2" style="text-align: center;">
+              <div class="data-card">
+                <h2 style="margin: 0;">+7%</h2>
+              </div>
+              <h5 style="padding-top: 16px;">Increase in daily profit</h5>
+            </div>
+          </div>
+
+          <!-- Filas siguientes: sin section-spacer, columnas escalonadas -->
+          <div class="section-columns section-columns--metrics">
+            <div class="section-column reveal reveal-delay-3" style="text-align: center;">
+              <div class="data-card">
+                <h2 style="margin: 0;">-20%</h2>
+              </div>
+              <h5 style="padding-top: 16px;">Reduction in user drop-off</h5>
+            </div>
+            <div class="section-column reveal reveal-delay-4" style="text-align: center;">
+              <div class="data-card">
+                <h2 style="margin: 0;">100+</h2>
+              </div>
+              <h5 style="padding-top: 16px;">Experiments validated</h5>
+            </div>
+          </div>
+          <!-- / PATRÓN 7: METRICS GRID -->
+
+          
+
+          <div class="section-spacer reveal">
+            <div class="scroll-carousel-wrapper">
+              <div class="about-columns about-columns--scroll" id="adventure-carousel">
+                <div class="scroll-spacer"></div>
+                <div class="about-column">
+                  <div class="about-chip">Monad Shoal, PH🇵🇭</div>
+                  <video autoplay loop muted playsinline webkit-playsinline style="width: 100%; border-radius: 24px;" src="/videos/shark.mp4" type="video/mp4">Your browser does not support the video tag.</video>
+                </div>
+                <div class="about-column">
+                  <div class="about-chip">Lofoten, NO🇳🇴</div>
+                  <img style="width: 100%; border-radius: 24px;" src="/images/about-8.webp" alt="Lofoten Norway">
+                </div>
+                <div class="about-column">
+                  <div class="about-chip">Chiang Mai, TH🇹🇭</div>
+                  <img style="width: 100%; border-radius: 24px;" src="/images/about-10.webp" alt="Chiang Mai Thailand">
+                </div>
+              </div>
+              <div class="carousel-controls">
+                <button class="carousel-btn carousel-btn--prev" id="adventure-prev" aria-label="Previous">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(270deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <button class="carousel-btn carousel-btn--next" id="adventure-next" aria-label="Next">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(90deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
               </div>
             </div>
           </div>
 
-          <!-- About me -->
-          <div class="section-text section-spacer">
-            <h4>About me</h4>
-            <p class="p-large">I am passionate about bridging the gap between Design, Tech, and Business. My expertise lies in leading UX/UI and CRO projects that solve complex problems for B2B and B2C markets. I have successfully navigated diverse environments—from agile Series A startups to established international corporations—helping them define robust processes and integrate a data-driven, human-centered approach. My goal is simple: to design products in the Retail and Travel industries that users love and that businesses can scale.</p>
-          </div>
-
-          <div class="section-spacer">
-            <div class="about-columns">
-              <div class="about-column">
-                <div class="about-chip">Monad Shoal, PH🇵🇭</div>
-                <video autoplay loop muted playsinline webkit-playsinline style="width: 100%; border-radius: 24px;" src="/videos/shark.mp4" type="video/mp4">Your browser does not support the video tag.</video>
-              </div>
-              <div class="about-column">
-                <div class="about-chip">Lofoten, NO🇳🇴</div>
-                <img style="width: 100%; border-radius: 24px;" src="/images/about-8.webp" alt="Lofoten Norway">
-              </div>
-              <div class="about-column">
-                <div class="about-chip">Chiang Mai, TH🇹🇭</div>
-                <img style="width: 100%; border-radius: 24px;" src="/images/about-10.webp" alt="Chiang Mai Thailand">
-              </div>
-            </div>
-          </div>
-
-          <div class="container-full section-spacer">
-            <div class="section-columns-text">
+          <!-- ============================================================
+               PATRÓN 12: SECTION COLUMNS TEXT (sin imágenes)
+               Uso: objetivos en dos columnas label/descripción,
+               secciones de heuristic evaluation, desk research findings...
+               Reglas:
+               - Siempre va dentro de un container-full que lleva section-spacer
+               - NO lleva section-spacer propio — el espaciado lo da el wrapper
+               - Usa section-columns-text (no section-columns)
+               - El h4 va en la columna izquierda
+               - El párrafo va en la columna derecha
+               - No lleva imágenes
+          =============================================================== -->
+ 
+          <!-- Wrapper container-full lleva section-spacer, los section-columns-text no -->
+          <div class="container-full section-spacer reveal">
+            <h6>PROCESS</h6>
+            <h3>This is how I work.</h3>
+            <div class="section-columns-text reveal reveal-delay-1">
               <div class="section-column">
-                <h5>🚀 Focused on Strategic Impact</h5>
+                <h4>🚀 Growth & Experimentation</h4>
               </div>
               <div class="section-column">
-                <p class="small">I turn data into design decisions. My process focuses on generating actionable insights from user data and validating hypotheses that drive measurable growth. As an End-to-end Product Designer, I specialize in User Research, Experimentation, and Data Analysis. I don't just solve problems; I build solutions that perform.</p>
+                <p class="small">I don't believe in "gut feelings" or team assumptions. I design through a hypothesis-driven approach, utilizing A/B testing and multivariate experiments to optimize funnels. My goal is always to find the sweet spot where user friction decreases and business conversion rises.</p>
+              </div>
+            </div>
+ 
+            <div class="section-columns-text reveal reveal-delay-2">
+              <div class="section-column">
+                <h4>🔎 Research-led strategy</h4>
+              </div>
+              <div class="section-column">
+                <p class="small">Specialized in user research and data analysis. I turn complex data sets into actionable design artifacts. By practicing active listening and deep-dive discovery, I identify the "why" behind the numbers, ensuring we build the right solutions before building them right.</p>
+              </div>
+            </div>
+ 
+            <div class="section-columns-text reveal reveal-delay-3">
+              <div class="section-column">
+                <h4>🤖 Innovation & efficiency</h4>
+              </div>
+              <div class="section-column">
+                <p class="small">As an early adopter of AI-driven workflows, I build custom automation scripts and leverage emerging tech to speed up the design-to-development handoff and team alignment. I focus on building robust AI-Ready Design Systems that allow teams to scale without losing visual or functional consistency.</p>
+              </div>
+            </div>
+ 
+          </div>
+          <!-- / PATRÓN 12: SECTION COLUMNS TEXT -->
+
+
+          <div class="section-spacer reveal">
+            <div class="scroll-carousel-wrapper">
+              <div class="about-columns about-columns--scroll" id="travel-carousel">
+                <div class="scroll-spacer"></div>
+                <div class="about-column">
+                  <div class="about-chip">New York, US🇺🇸</div>
+                  <img style="width: 100%; border-radius: 24px;" src="/images/about-7.webp" alt="New York">
+                </div>
+                <div class="about-column">
+                  <div class="about-chip">Malapascua, PH🇵🇭</div>
+                  <img style="width: 100%; border-radius: 24px;" src="/images/about-9.webp" alt="Malapascua Philippines">
+                </div>
+                <div class="about-column">
+                  <div class="about-chip">Chiang Mai, TH🇹🇭</div>
+                  <video autoplay loop muted playsinline webkit-playsinline style="width: 100%; border-radius: 24px;" src="/videos/thailand.mp4" type="video/mp4">Your browser does not support the video tag.</video>
+                </div>
+              </div>
+              <div class="carousel-controls">
+                <button class="carousel-btn carousel-btn--prev" id="travel-prev" aria-label="Previous">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(270deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                
+                <!-- Botón derecha — arrow-up rotada 90deg -->
+                <button class="carousel-btn carousel-btn--next" id="travel-next" aria-label="Next">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(90deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
               </div>
             </div>
           </div>
 
-          <div class="section-spacer">
-            <div class="about-columns">
-              <div class="about-column">
-                <div class="about-chip">New York, US🇺🇸</div>
-                <img style="width: 100%; border-radius: 24px;" src="/images/about-7.webp" alt="New York">
+          <!-- ============================================================
+               PATRÓN 12: SECTION COLUMNS TEXT (sin imágenes)
+               Uso: objetivos en dos columnas label/descripción,
+               secciones de heuristic evaluation, desk research findings...
+               Reglas:
+               - Siempre va dentro de un container-full que lleva section-spacer
+               - NO lleva section-spacer propio — el espaciado lo da el wrapper
+               - Usa section-columns-text (no section-columns)
+               - El h4 va en la columna izquierda
+               - El párrafo va en la columna derecha
+               - No lleva imágenes
+          =============================================================== -->
+ 
+          <!-- Wrapper container-full lleva section-spacer, los section-columns-text no -->
+          <div class="container-full section-spacer reveal">
+            <h6>SKILLS & EXPERTISE</h6>
+            <h3>What I bring to the table.</h3>
+          
+            <div class="skills-grid">
+          
+              <div class="skill-card">
+                <div class="skill-card-icon">✈️</div>
+                <h5>Domain Expertise</h5>
+                <div class="project-tags">
+                  <span class="project-tag">Travel Tech</span>
+                  <span class="project-tag">E-commerce & Retail</span>
+                  <span class="project-tag">B2B & B2C Platforms</span>
+                  <span class="project-tag">Agile & Lean Startups</span>
+                </div>
               </div>
-              <div class="about-column">
-                <div class="about-chip">Malapascua, PH🇵🇭</div>
-                <img style="width: 100%; border-radius: 24px;" src="/images/about-9.webp" alt="Malapascua Philippines">
+          
+              <div class="skill-card">
+                <div class="skill-card-icon">⚡</div>
+                <h5>Core Specialisms</h5>
+                <div class="project-tags">
+                  <span class="project-tag">Growth Design (CRO)</span>
+                  <span class="project-tag">UX Research (Qual/Quant)</span>
+                  <span class="project-tag">Product Strategy</span>
+                  <span class="project-tag">User Flow Optimization</span>
+                  <span class="project-tag">A/B Testing & Validation</span>
+                </div>
               </div>
-              <div class="about-column">
-                <div class="about-chip">Chiang Mai, TH🇹🇭</div>
-                <video autoplay loop muted playsinline webkit-playsinline style="width: 100%; border-radius: 24px;" src="/videos/thailand.mp4" type="video/mp4">Your browser does not support the video tag.</video>
+          
+              <div class="skill-card">
+                <div class="skill-card-icon">🎨</div>
+                <h5>Technical Expertise</h5>
+                <div class="project-tags">
+                  <span class="project-tag">Design Systems</span>
+                  <span class="project-tag">Information Architecture</span>
+                  <span class="project-tag">Prototyping (High-Fidelity)</span>
+                  <span class="project-tag">Visual Design (UI)</span>
+                  <span class="project-tag">AI-Powered Workflows</span>
+                </div>
+              </div>
+          
+              <div class="skill-card">
+                <div class="skill-card-icon">📊</div>
+                <h5>Tools</h5>
+                <div class="project-tags">
+                  <span class="project-tag">Figma</span>
+                  <span class="project-tag">Hotjar</span>
+                  <span class="project-tag">Mixpanel</span>
+                  <span class="project-tag">Google Analytics</span>
+                  <span class="project-tag">Jira</span>
+                </div>
+              </div>
+          
+              <div class="skill-card">
+                <div class="skill-card-icon">🌍</div>
+                <h4>Languages</h4>
+                <div class="project-tags">
+                  <span class="project-tag">🇪🇸 Spanish — Native</span>
+                  <span class="project-tag">🗺️ Catalan — Native</span>
+                  <span class="project-tag">🇬🇧 English — Professional</span>
+                  <span class="project-tag">🇩🇪 German — Basic</span>
+
+                </div>
+              </div>
+          
+            </div>
+          </div>
+          <!-- / PATRÓN 12: SECTION COLUMNS TEXT -->
+
+
+          <div class="section-spacer reveal">
+            <div class="scroll-carousel-wrapper">
+              <div class="about-columns about-columns--scroll" id="world-carousel">
+                <div class="scroll-spacer"></div>
+                <div class="about-column">
+                  <div class="about-chip">Bergen, NO🇳🇴</div>
+                  <video autoplay loop muted playsinline webkit-playsinline style="width: 100%; border-radius: 24px;" src="/videos/norway.mp4" type="video/mp4">Your browser does not support the video tag.</video>
+                </div>
+                <div class="about-column">
+                  <div class="about-chip">Moscow, RU🇷🇺</div>
+                  <img style="width: 100%; border-radius: 24px;" src="/images/about-11.webp" alt="Moscow Russia">
+                </div>
+                <div class="about-column">
+                  <div class="about-chip">Linapacan, PH🇵🇭</div>
+                  <video autoplay loop muted playsinline webkit-playsinline style="width: 100%; border-radius: 24px;" src="/videos/turtle.mp4" type="video/mp4">Your browser does not support the video tag.</video>
+                </div>
+              </div>
+              <div class="carousel-controls">
+                <button class="carousel-btn carousel-btn--prev" id="world-prev" aria-label="Previous">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(270deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <button class="carousel-btn carousel-btn--next" id="world-next" aria-label="Next">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(90deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
               </div>
             </div>
           </div>
 
-          <div class="container-full section-spacer">
-            <div class="section-columns-text">
-              <div class="section-column">
-                <h5>🧘🏻 Natural listener and empathetic</h5>
-              </div>
-              <div class="section-column">
-                <p class="small">I practice active listening. Colleagues and stakeholders often value my capacity to take a step back and let others shine. This approach allows me to truly understand the root of the problem—whether from a user or a business perspective—and foster a collaborative environment where the best ideas win, not the loudest voices.</p>
-              </div>
-            </div>
-          </div>
+          <!-- ============================================================
+               PATRÓN 3: SECTION IMAGE (full width)
+               Uso: imagen a ancho completo (máx 960px en desktop).
+               Variantes:
+               - Default: ancho completo
+               - section-image--narrow: max-width 350px, centrada (mobile screenshots)
+               - section-image--medium: max-width 750px (imágenes medianas)
+               - section-image--centered: display flex, justify center
+               Reglas:
+               - Siempre lleva section-spacer + reveal
+               - Cuando lleva caption, el .pie-foto va FUERA del section-image
+               - Los vídeos usan el mismo wrapper que las imágenes
+          =============================================================== -->
 
-          <div class="section-spacer">
-            <div class="about-columns">
-              <div class="about-column">
-                <div class="about-chip">Bergen, NO🇳🇴</div>
-                <video autoplay loop muted playsinline webkit-playsinline style="width: 100%; border-radius: 24px;" src="/videos/norway.mp4" type="video/mp4">Your browser does not support the video tag.</video>
-              </div>
-              <div class="about-column">
-                <div class="about-chip">Moscow, RU🇷🇺</div>
-                <img style="width: 100%; border-radius: 24px;" src="/images/about-11.webp" alt="Moscow Russia">
-              </div>
-              <div class="about-column">
-                <div class="about-chip">Linapacan, PH🇵🇭</div>
-                <video autoplay loop muted playsinline webkit-playsinline style="width: 100%; border-radius: 24px;" src="/videos/turtle.mp4" type="video/mp4">Your browser does not support the video tag.</video>
-              </div>
-            </div>
+          <!-- SECTION TEXT — Variante B: con h6 label + h3 -->
+          <div class="section-text section-spacer reveal">
+            <h6>CULTURE</h6>
+            <h3>Beyond the screen.</h3>
+            <p class="p-small">
+              I’m a <strong>natural listener who thrives in collaborative environments.</strong> I believe the best products are born from radical empathy and cross-functional synergies, not from the loudest voice in the room. I'm always exploring the latest hardware trends or automating my own life - my productivity loves it, even if my wallet doesn't. You can also find me <strong>travelling 🛫</strong>, exploring the <strong>ocean 🤿</strong>, out for a <strong>run 🏃🏻</strong> or in the <strong>court 🎾🏀</strong>.
+            </p>
           </div>
+          <!-- / SECTION TEXT B -->
 
-          <div class="container-full section-spacer">
-            <div class="section-columns-text">
-              <div class="section-column">
-                <h5>🧑🏻‍💻 Tech Enthusiast & Early Adopter</h5>
-              </div>
-              <div class="section-column">
-                <p class="small">I am obsessed with optimization. This drives me to constantly explore new methodologies, from AI-driven workflows to custom automation scripts. I stay ahead of the curve not just to satisfy my curiosity, but to bring the latest tech trends into my design process. In my personal life, I'm equally committed to staying up-to-date with the latest hardware and devices. It's great for my productivity, though my wallet might disagree 🤑.</p>
-              </div>
-            </div>
-          </div>
+          
 
-          <div class="section-spacer">
+          <div class="section-spacer reveal">
             <h4 style="text-align: center; margin: auto; margin-bottom: 40px;">What I love doing</h4>
-            <div class="about-columns">
-              <div class="about-column">
-                <div class="about-chip">Playing padel 🎾</div>
-                <img style="width: 100%; border-radius: 24px;" src="/images/about-4.webp" alt="Playing padel">
+            <div class="scroll-carousel-wrapper">
+              <div class="about-columns about-columns--scroll" id="hobbies-carousel">
+                <div class="scroll-spacer"></div>
+                <div class="about-column">
+                  <div class="about-chip">Playing padel 🎾</div>
+                  <img style="width: 100%; border-radius: 24px;" src="/images/about-4.webp" alt="Playing padel">
+                </div>
+                <div class="about-column">
+                  <div class="about-chip">Diving 🤿</div>
+                  <img style="width: 100%; border-radius: 24px;" src="/images/about-5.webp" alt="Diving">
+                </div>
+                <div class="about-column">
+                  <div class="about-chip">Running 🏃🏻</div>
+                  <img style="width: 100%; border-radius: 24px;" src="/images/about-6.webp" alt="Running">
+                </div>
               </div>
-              <div class="about-column">
-                <div class="about-chip">Hiking 🏔️</div>
-                <img style="width: 100%; border-radius: 24px;" src="/images/about-5.webp" alt="Hiking">
-              </div>
-              <div class="about-column">
-                <div class="about-chip">Running 🏃🏻</div>
-                <img style="width: 100%; border-radius: 24px;" src="/images/about-6.webp" alt="Running">
+              <div class="carousel-controls">
+                <button class="carousel-btn carousel-btn--prev" id="hobbies-prev" aria-label="Previous">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(270deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <button class="carousel-btn carousel-btn--next" id="hobbies-next" aria-label="Next">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(90deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
               </div>
             </div>
           </div>
 
           <div class="section-text section-spacer">
-            <h5 style="margin: auto; text-align: center; margin-bottom: 16px;">Thanks for stopping by 🙂</h5>
-            <p class="p-small pie-foto" style="text-align: center; margin: auto; margin-bottom: 80px;">Feel free to reach out—I'd be happy to connect and hear from you.</p>
+            <h6 style="text-align: center;">Get in touch</h6>
+            <h3 style="margin: auto; text-align: center; margin-bottom: 16px;">💪🏼 Let’s build something users will love.</h3>
+            <p class="p-small pie-foto" style="text-align: center; margin: auto; margin-bottom: 80px;">I’m always open to discussing new opportunities, innovative ideas or projects.</p>
           </div>
 
         </div>
@@ -212,6 +499,12 @@
       </div>
     </div>
   </div>
+  <!-- Scroll to top button — igual en todos los proyectos -->
+  <button id="scrollToTopBtn" class="scroll-to-top-btn" aria-label="Scroll to top">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
 
   <script type="module" src="/src/main.js"></script>
 

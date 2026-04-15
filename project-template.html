@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="canonical" href="https://oscardenamiel.com/project-slug">
+
+  <link rel="icon" href="/images/favicons/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F9F8F6">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#19171C">
+
+  <title>Project Title · Product Design Case Study</title>
+
+  <meta property="og:title" content="Project Title · Oscar Denamiel" />
+  <meta property="og:site_name" content="Oscar Denamiel · Senior Product Designer">
+  <meta property="og:url" content="https://oscardenamiel.com/project-slug" />
+  <meta name="description" content="One sentence describing the project and its main outcome.">
+  <meta property="og:description" content="One sentence describing the project and its main outcome." />
+  <meta property="og:image" content="https://oscardenamiel.com/images/og-project-slug.webp">
+  <meta property="og:type" content="website">
+  <meta name="google-site-verification" content="REPLACE_WITH_YOUR_CODE" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css">
+
+  <!-- Microsoft Clarity -->
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "wazavttkc2");
+  </script>
+
+  <!-- Vercel Analytics -->
+  <script defer src="/_vercel/insights/script.js"></script>
+</head>
+
+<body class="dark-mode">
+
+  <!-- Progress bar — siempre al inicio del body -->
+  <div class="progress-container">
+    <div class="progress-bar" id="myProgressBar"></div>
+  </div>
+
+  <div class="content-container content-container--visible">
+
+    <div id="header-placeholder"></div>
+    <div id="sidebar-placeholder"></div>
+
+    <div class="content-container content-container--visible">
+      <div class="main-container-no-home">
+        <div class="project-container">
+
+
+          <!-- ============================================================
+               PATRÓN 1: PROJECT HERO
+               Uso: siempre al inicio de cada case study, único por página.
+               Estructura fija: h2 + p.p-large + project-tags + imagen hero.
+               Reglas:
+               - El h2 es el título del proyecto (no el nombre de la empresa)
+               - p.p-large es la descripción corta con métricas principales
+               - Siempre lleva animate-fade-up en project-info
+               - Siempre lleva animate-fade-in delay-600 en project-hero-image
+               - NO lleva reveal — ya tiene su propia animación de entrada
+          =============================================================== -->
+          <div class="project-hero">
+
+            <div class="project-info animate-fade-up">
+              <h2>Project Title Goes Here</h2>
+              <p class="p-large project-hero-description">
+                <strong>Short description of the project and its main outcomes. Include key metrics
+                  like +17% CTR, -12% refund ratio, or +7% daily profit.</strong>
+              </p>
+              <div class="project-tags">
+                <span class="project-tag">Company Name</span>
+                <span class="project-tag">Tag Two</span>
+                <span class="project-tag">Tag Three</span>
+                <span class="project-tag">Tag Four</span>
+              </div>
+            </div>
+
+            <div class="project-hero-image animate-fade-in delay-600">
+              <img src="/images/projects/project-slug/hero.webp" alt="Project hero image">
+            </div>
+
+          </div>
+          <!-- / PATRÓN 1: PROJECT HERO -->
+
+
+
+
+          <!-- ============================================================
+               PATRÓN 2: SECTION TEXT
+               Uso: bloques de texto centrado, ancho máximo 640px en desktop.
+               Variantes:
+               A) Solo h3 + párrafo (Executive Summary, Personal Thoughts...)
+               B) Con h6 label + h3 (secciones con contexto/fase)
+               Reglas:
+               - Siempre lleva section-spacer + reveal
+               - Nunca inline styles en textos
+               - Usar p-large para párrafos introductorios
+               - Usar p-small para párrafos de detalle
+          =============================================================== -->
+
+          <!-- SECTION TEXT — Variante A: Solo h3 + párrafo -->
+          <div class="section-text section-spacer reveal">
+            <h3>Executive Summary</h3>
+            <p class="p-large">
+              Opening paragraph of the case study. Use p-large for the main
+              introductory text. Describe the context, challenge, and outcome
+              at a high level. Keep it under 4 sentences.
+            </p>
+          </div>
+          <!-- / SECTION TEXT A -->
+
+
+          <!-- ============================================================
+               PATRÓN 3: SECTION IMAGE (full width)
+               Uso: imagen a ancho completo (máx 960px en desktop).
+               Variantes:
+               - Default: ancho completo
+               - section-image--narrow: max-width 350px, centrada (mobile screenshots)
+               - section-image--medium: max-width 750px (imágenes medianas)
+               - section-image--centered: display flex, justify center
+               Reglas:
+               - Siempre lleva section-spacer + reveal
+               - Cuando lleva caption, el .pie-foto va FUERA del section-image
+               - Los vídeos usan el mismo wrapper que las imágenes
+          =============================================================== -->
+
+          <!-- SECTION IMAGE — default: ancho completo -->
+          <div class="section-image section-spacer reveal">
+            <img src="/images/projects/project-slug/image-01.webp" alt="Descriptive alt text">
+          </div>
+          <!-- / SECTION IMAGE default -->
+
+
+          <!-- SECTION TEXT — Variante B: con h6 label + h3 -->
+          <div class="section-text section-spacer reveal">
+            <h6>CONTEXT</h6>
+            <h3>Section Title Goes Here</h3>
+            <p class="p-small">
+              Use p-small for detail paragraphs. This is the standard body text
+              size for most of the case study content. Describe the company,
+              product, or situation in this section.
+            </p>
+          </div>
+          <!-- / SECTION TEXT B -->
+
+
+          <!-- ============================================================
+               PATRÓN 4: FULL WIDTH SECTION WITH BACKGROUND
+               Uso: secciones destacadas con fondo gris (Problem Statement,
+               UX Research, Competitor Analysis...).
+               Estructura: full-width-section background-section > container-full
+               Reglas:
+               - Siempre lleva section-spacer + reveal en el wrapper exterior
+               - El container-full dentro centra y limita el ancho del contenido
+               - Los section-columns internos llevan reveal escalonado por columna
+               - No lleva section-spacer en los elementos internos directos
+          =============================================================== -->
+          <div class="full-width-section background-section section-spacer reveal">
+            <div class="container-full">
+
+              <h3>Problem Statement</h3>
+              <p class="p-large">
+                Introductory paragraph before the columns grid. Use p-large here.
+              </p>
+
+              <div class="section-columns">
+                <div class="section-column reveal reveal-delay-1">
+                  <img class="image-grid" src="/images/projects/project-slug/problem-01.webp" alt="Problem one">
+                  <h4>Problem Title One</h4>
+                  <p class="p-small">Description of the first problem or finding.</p>
+                </div>
+                <div class="section-column reveal reveal-delay-2">
+                  <img class="image-grid" src="/images/projects/project-slug/problem-02.webp" alt="Problem two">
+                  <h4>Problem Title Two</h4>
+                  <p class="p-small">Description of the second problem or finding.</p>
+                </div>
+              </div>
+
+              <div class="section-columns">
+                <div class="section-column reveal reveal-delay-1">
+                  <img class="image-grid" src="/images/projects/project-slug/problem-03.webp" alt="Problem three">
+                  <h4>Problem Title Three</h4>
+                  <p class="p-small">Description of the third problem or finding.</p>
+                </div>
+                <div class="section-column reveal reveal-delay-2">
+                  <img class="image-grid" src="/images/projects/project-slug/problem-04.webp" alt="Problem four">
+                  <h4>Problem Title Four</h4>
+                  <p class="p-small">Description of the fourth problem or finding.</p>
+                </div>
+              </div>
+
+              <!-- Último section-columns dentro del background: --no-margin -->
+              <div class="section-columns section-columns--no-margin">
+                <div class="section-column reveal reveal-delay-1">
+                  <img class="image-grid" src="/images/projects/project-slug/problem-05.webp" alt="Problem five">
+                  <h4>Problem Title Five</h4>
+                  <p class="p-small">Description of the fifth problem or finding.</p>
+                </div>
+                <div class="section-column reveal reveal-delay-2">
+                  <img class="image-grid" src="/images/projects/project-slug/problem-06.webp" alt="Problem six">
+                  <h4>Problem Title Six</h4>
+                  <p class="p-small">Description of the sixth problem or finding.</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <!-- / PATRÓN 4: FULL WIDTH SECTION WITH BACKGROUND -->
+
+
+
+
+          <!-- ============================================================
+               PATRÓN 5: CONTAINER FULL
+               Uso: secciones de contenido sin fondo gris, con ancho limitado
+               (máx 960px en desktop). Para objetivos, listas, datos, tablas...
+               Reglas:
+               - Siempre lleva section-spacer + reveal en el wrapper
+               - Los h4 de subsección van sin inline styles
+               - Las listas usan li con li-content para el arrow pattern
+          =============================================================== -->
+          <div class="container-full section-spacer reveal">
+
+            <h6>GOALS</h6>
+            <h3>Project Objectives</h3>
+            <p class="p-large">
+              Introductory paragraph describing the objectives.
+            </p>
+
+            <!-- Lista estándar con arrow icons -->
+            <ul>
+              <li>First objective or research question of the project.</li>
+              <li>Second objective or research question of the project.</li>
+              <li>Third objective or research question of the project.</li>
+              <li>Fourth objective or research question of the project.</li>
+            </ul>
+
+            <!-- Lista con p-smallbold + descripción (formato li-content) -->
+            <ul>
+              <li class="p-small">
+                <div class="li-content">
+                  <span class="p-smallbold" style="text-decoration: underline;"><strong>Term or label:</strong></span>
+                  Description of this item. Use this pattern for glossaries,
+                  methodology lists, role descriptions, etc.
+                </div>
+              </li>
+              <li class="p-small">
+                <div class="li-content">
+                  <span class="p-smallbold" style="text-decoration: underline;"><strong>Term or label:</strong></span>
+                  Description of this item.
+                </div>
+              </li>
+              <li class="p-small">
+                <div class="li-content">
+                  <span class="p-smallbold" style="text-decoration: underline;"><strong>Term or label:</strong></span>
+                  Description of this item.
+                </div>
+              </li>
+            </ul>
+
+          </div>
+          <!-- / PATRÓN 5: CONTAINER FULL -->
+
+
+
+
+          <!-- ============================================================
+               PATRÓN 6: QUOTE SECTION
+               Uso: citas destacadas, frases clave, conclusiones impactantes.
+               Reglas:
+               - SIEMPRE lleva section-spacer + reveal (sin excepciones)
+               - El h4 dentro de quote-content lleva style="margin: 0"
+               - El subtexto opcional usa p-large con padding-top inline
+                 (única excepción permitida de inline style en este patrón)
+          =============================================================== -->
+
+          <!-- QUOTE — Sin subtexto -->
+          <div class="quote-section section-spacer reveal">
+            <div class="quote-content">
+              <h4 style="margin: 0;">"Quote text goes here. Keep it impactful and concise.
+              One or two sentences maximum."</h4>
+            </div>
+          </div>
+          <!-- / QUOTE sin subtexto -->
+
+
+          <!-- QUOTE — Con subtexto (autor o contexto) -->
+          <div class="quote-section section-spacer reveal">
+            <div class="quote-content">
+              <h4 style="margin: 0;">"Quote text goes here. This version includes a
+              subtitle below to provide context or attribution."</h4>
+              <p class="p-large" style="padding-top: 40px;">Source or context of the quote.</p>
+            </div>
+          </div>
+          <!-- / QUOTE con subtexto -->
+
+
+
+
+          <!-- ============================================================
+               PATRÓN 7: METRICS GRID (data-cards)
+               Uso: resultados e impacto del proyecto.
+               Reglas:
+               - La PRIMERA fila lleva section-spacer, las siguientes no
+               - Animación escalonada: reveal-delay-1 y reveal-delay-2 por columna
+               - El número grande siempre es h2 con style="margin: 0"
+               - El label debajo SIEMPRE es h5 (nunca h4)
+               - Agrupar de 2 en 2 (máximo 3 filas = 6 métricas)
+          =============================================================== -->
+
+          <!-- Primera fila de métricas: lleva section-spacer, columnas escalonadas -->
+          <div class="section-columns section-columns--metrics section-spacer">
+            <div class="section-column reveal reveal-delay-1" style="text-align: center;">
+              <div class="data-card">
+                <h2 style="margin: 0;">+17%</h2>
+              </div>
+              <h5 style="padding-top: 16px;">Metric label one</h5>
+            </div>
+            <div class="section-column reveal reveal-delay-2" style="text-align: center;">
+              <div class="data-card">
+                <h2 style="margin: 0;">+25%</h2>
+              </div>
+              <h5 style="padding-top: 16px;">Metric label two</h5>
+            </div>
+          </div>
+
+          <!-- Filas siguientes: sin section-spacer, columnas escalonadas -->
+          <div class="section-columns section-columns--metrics">
+            <div class="section-column reveal reveal-delay-3" style="text-align: center;">
+              <div class="data-card">
+                <h2 style="margin: 0;">+43%</h2>
+              </div>
+              <h5 style="padding-top: 16px;">Metric label three</h5>
+            </div>
+            <div class="section-column reveal reveal-delay-4" style="text-align: center;">
+              <div class="data-card">
+                <h2 style="margin: 0;">95%</h2>
+              </div>
+              <h5 style="padding-top: 16px;">Metric label four</h5>
+            </div>
+          </div>
+          <!-- / PATRÓN 7: METRICS GRID -->
+
+
+
+
+          <!-- ============================================================
+               PATRÓN 8: SECTION COLUMNS (con imágenes y texto)
+               Uso: findings de research, learnings, features, comparativas.
+               Variantes:
+               - Default: 2 columnas con image-grid (300px height, cropped)
+               - section-columns--full-width: before/after comparativas
+               Reglas:
+               - La PRIMERA fila lleva section-spacer, las siguientes no
+               - Animación escalonada: reveal en cada section-column
+               - El último section-columns del bloque lleva --no-margin
+               - El h4 es el título de cada columna (nunca h3 ni h5)
+               - El párrafo usa class="small"
+          =============================================================== -->
+
+          <!-- Primera fila: lleva section-spacer, columnas escalonadas -->
+          <div class="section-columns section-spacer">
+            <div class="section-column reveal reveal-delay-1">
+              <img class="image-grid" src="/images/projects/project-slug/finding-01.webp" alt="Finding one">
+              <h4>Finding or Feature Title</h4>
+              <p class="small">Description of this finding, feature, or learning.</p>
+            </div>
+            <div class="section-column reveal reveal-delay-2">
+              <img class="image-grid" src="/images/projects/project-slug/finding-02.webp" alt="Finding two">
+              <h4>Finding or Feature Title</h4>
+              <p class="small">Description of this finding, feature, or learning.</p>
+            </div>
+          </div>
+
+          <!-- Última fila: sin section-spacer, con --no-margin, columnas escalonadas -->
+          <div class="section-columns section-columns--no-margin">
+            <div class="section-column reveal reveal-delay-1">
+              <img class="image-grid" src="/images/projects/project-slug/finding-03.webp" alt="Finding three">
+              <h4>Finding or Feature Title</h4>
+              <p class="small">Description of this finding, feature, or learning.</p>
+            </div>
+            <div class="section-column reveal reveal-delay-2">
+              <img class="image-grid" src="/images/projects/project-slug/finding-04.webp" alt="Finding four">
+              <h4>Finding or Feature Title</h4>
+              <p class="small">Description of this finding, feature, or learning.</p>
+            </div>
+          </div>
+          <!-- / PATRÓN 8: SECTION COLUMNS -->
+
+
+
+
+          <!-- ============================================================
+               PATRÓN 9: BEFORE / AFTER (comparativa Old UI vs New UI)
+               Uso: mostrar la evolución del diseño antes y después.
+               Reglas:
+               - La PRIMERA comparativa lleva section-spacer, las siguientes no
+               - Animación escalonada: reveal en cada section-column
+               - Usa section-columns--full-width para ancho completo
+               - Las imágenes usan image-grid-large (600px height)
+               - El caption usa p.p-small.pie-foto DENTRO de section-column
+               - Siempre "Old UI" a la izquierda, "New UI" a la derecha
+          =============================================================== -->
+
+          <!-- Primera comparativa: lleva section-spacer -->
+          <div class="section-columns section-columns--full-width section-spacer">
+            <div class="section-column reveal reveal-delay-1">
+              <img class="image-grid-large" src="/images/projects/project-slug/old-ui-01.webp" alt="Old UI">
+              <p class="p-small pie-foto">Old UI — brief description of what was wrong.</p>
+            </div>
+            <div class="section-column reveal reveal-delay-2">
+              <img class="image-grid-large" src="/images/projects/project-slug/new-ui-01.webp" alt="New UI">
+              <p class="p-small pie-foto">New UI — brief description of the improvement.</p>
+            </div>
+          </div>
+          <!-- / PATRÓN 9: BEFORE / AFTER -->
+
+
+
+
+          <!-- ============================================================
+               PATRÓN 10: SECTION IMAGE con caption
+               Uso: imagen con texto descriptivo debajo.
+               Reglas:
+               - Siempre lleva section-spacer + reveal
+               - El .pie-foto va FUERA del .section-image (no dentro)
+               - Puede usar --narrow (350px), --medium (750px) o default
+          =============================================================== -->
+
+          <!-- SECTION IMAGE con caption — default -->
+          <div class="section-image section-spacer reveal">
+            <img src="/images/projects/project-slug/image-with-caption.webp" alt="Descriptive alt text">
+          </div>
+          <p class="p-small pie-foto">Caption text describing what the image shows.</p>
+          <!-- / SECTION IMAGE con caption default -->
+
+
+          <!-- SECTION IMAGE con caption — narrow (mobile screenshots) -->
+          <div class="section-image section-image--narrow section-image--centered section-spacer reveal">
+            <img src="/images/projects/project-slug/mobile-screenshot.webp" alt="Mobile screenshot">
+          </div>
+          <p class="p-small pie-foto">Caption for the narrow mobile screenshot above.</p>
+          <!-- / SECTION IMAGE con caption narrow -->
+
+
+          <!-- SECTION IMAGE con caption — medium -->
+          <div class="section-image section-image--medium section-image--centered section-spacer reveal">
+            <img src="/images/projects/project-slug/medium-image.webp" alt="Medium width image">
+          </div>
+          <p class="p-small pie-foto">Caption for the medium width image above.</p>
+          <!-- / SECTION IMAGE con caption medium -->
+
+
+
+
+          <!-- ============================================================
+               PATRÓN 11: SECTION IMAGE con vídeo
+               Uso: demo de interacciones, grabaciones de comportamiento.
+               Reglas:
+               - Siempre lleva section-spacer + reveal
+               - Mismo wrapper .section-image que las imágenes
+               - Siempre autoplay loop muted playsinline webkit-playsinline
+               - El style de border-radius va en el video, no en el wrapper
+               - El src es absoluto (/videos/...)
+          =============================================================== -->
+          <div class="section-image section-spacer reveal">
+            <video
+              autoplay loop muted playsinline webkit-playsinline
+              style="width: 100%; border-radius: 24px;"
+              src="/videos/project-slug-demo.mp4"
+              type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <p class="p-small pie-foto">Caption describing what the video demonstrates.</p>
+          <!-- / PATRÓN 11: VÍDEO -->
+
+
+
+
+          <!-- ============================================================
+               PATRÓN 12: SECTION COLUMNS TEXT (sin imágenes)
+               Uso: objetivos en dos columnas label/descripción,
+               secciones de heuristic evaluation, desk research findings...
+               Reglas:
+               - El wrapper container-full lleva section-spacer + reveal
+               - Los section-columns-text internos NO llevan spacer ni reveal
+               - El h4 va en la columna izquierda
+               - El párrafo va en la columna derecha
+          =============================================================== -->
+
+          <div class="container-full section-spacer reveal">
+
+            <div class="section-columns-text">
+              <div class="section-column">
+                <h4>Label or objective title</h4>
+              </div>
+              <div class="section-column">
+                <p class="small">Description of this objective, finding, or concept.</p>
+              </div>
+            </div>
+
+            <div class="section-columns-text">
+              <div class="section-column">
+                <h4>Second label or title</h4>
+              </div>
+              <div class="section-column">
+                <p class="small">Description of the second item.</p>
+              </div>
+            </div>
+
+            <div class="section-columns-text">
+              <div class="section-column">
+                <h4>Third label or title</h4>
+              </div>
+              <div class="section-column">
+                <p class="small">Description of the third item.</p>
+              </div>
+            </div>
+
+          </div>
+          <!-- / PATRÓN 12: SECTION COLUMNS TEXT -->
+
+
+
+
+          <!-- ============================================================
+               PATRÓN 13: PROJECT HERO IMAGE (cierre visual)
+               Uso: imagen final grande al final del case study, antes del hr.
+               Reglas:
+               - Siempre lleva section-spacer + reveal
+               - Es la imagen hero del proyecto mostrada de nuevo al final
+               - No lleva caption
+          =============================================================== -->
+          <div class="project-hero-image section-spacer reveal">
+            <img src="/images/projects/project-slug/hero.webp" alt="Project final image">
+          </div>
+          <!-- / PATRÓN 13: PROJECT HERO IMAGE cierre -->
+
+
+
+
+          <!-- ============================================================
+               SEPARADOR
+               Uso: separa el contenido del proyecto del bloque More Projects.
+               Reglas: siempre style="margin: auto" para centrarlo.
+          =============================================================== -->
+          <hr style="margin: auto;">
+
+
+          <!-- ============================================================
+               COMPONENTE: MORE PROJECTS
+               Cargado via fetch desde public/components/more-projects-[slug].html
+               El main.js detecta la URL y carga el componente correcto.
+          =============================================================== -->
+          <div id="more-projects-placeholder"></div>
+
+
+          <!-- ============================================================
+               COMPONENTE: FOOTER PROJECT
+               Cargado via fetch desde public/components/footer-project.html
+          =============================================================== -->
+          <div id="footer-project-placeholder"></div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Scroll to top button — igual en todos los proyectos -->
+  <button id="scrollToTopBtn" class="scroll-to-top-btn" aria-label="Scroll to top">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <script type="module" src="/src/main.js"></script>
+
+</body>
+
+</html>

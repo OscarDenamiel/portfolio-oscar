@@ -26,7 +26,7 @@
   <meta property="og:image" content="https://oscardenamiel.com/images/og-mobile-first.webp">
   <meta property="og:type" content="website">
 
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/src/style.css">
   <!-- Microsoft Clarity -->
   <script type="text/javascript">
@@ -42,6 +42,9 @@
 </head>
 
 <body class="dark-mode">
+    <div class="progress-container">
+        <div class="progress-bar" id="myProgressBar"></div>
+      </div>
 
   <div class="content-container content-container--visible">
 
@@ -55,7 +58,7 @@
                 <div class="project-hero">
                     <div class="project-info animate-fade-up">
                         <h2>Mobile First</h2>
-                        <p class="p-large" style="max-width: var(--text-container-max); margin: 0 auto 2em auto;">I led the integral reconceptualization for the mobile experience at Leadtech, resulting in a 12% reduction of the refunds volume and increased daily profit by 7%.
+                        <p class="p-large" style="max-width: var(--text-container-max); margin: 0 auto 2em auto;"><strong>I led the integral reconceptualization for the mobile experience at Leadtech, resulting in a 12% reduction of the refunds volume and increased daily profit by 7%.</strong>
                         </p>
                         <div class="project-tags">
                             <span class="project-tag">Leadtech Innovation</span>
@@ -783,98 +786,10 @@
 
     
             <hr style="margin: auto;">
-    <!-- Projects grid -->
-     <div class="container-full section-spacer">
-        <h3 style="text-align: center;">More projects</h3>
-        <div class="more-projects-grid-no-home" style="padding-top: 20px;">
-            <!-- Project 1 -->
-            <div class="project-card">
-                <!-- Project Image Area - Clickable for audio -->
-                <div class="project-image-container">
-                    <img src="/images/projects/smart-suggester/Smart Suggester Thumbnail.webp" alt="Smart Suggester" class="project-image">
-                    <div class="tooltip-container">
-                        <button class="audio-control" aria-label="Play audio">
-                          <img class="icon play-icon" src="/images/speaker-icon.svg" alt="">
-                          <img class="icon pause-icon hidden" src="/images/pause-icon.svg" alt="">
-                        </button>
-                        <span class="tooltip tooltip-text">Hear preview</span>
-                      </div>
-                </div>
-                
-                <!-- Card Content - Clickable for navigation -->
-                <a href="/smart-suggester" class="card-content-link">
-                    <div class="card-content">
-                        <h3 class="card-title">Smart Suggester</h3>
-                        <p class="card-description">Led redesign of Stayforlong’s search engine. Reduced search time (40%) and increased traffic to next step (9%).
-                        </p>
-                        <div class="card-actions">
-            
-                            <span class="btn-primary"><span class="arrow-icon"></span></span>
-                        </div>
-                    </div>
-                </a>
-                
-                <!-- Hidden audio element -->
-                <audio class="project-audio">
-                    <source src="/audio/smart-suggester.mp3" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
-            </div>
-            
-            <!-- Project 2 -->
-            <div class="project-card">
-                <!-- Project Image Area - Clickable for audio -->
-                <div class="project-image-container">
-                    <img src="/images/projects/self-service/Self-service Thumbnail.webp" alt="Mobile app analytics showing performance graph" class="project-image">
-                    <div class="tooltip-container">
-                        <button class="audio-control" aria-label="Play audio">
-                          <img class="icon play-icon" src="/images/speaker-icon.svg" alt="">
-                          <img class="icon pause-icon hidden" src="/images/pause-icon.svg" alt="">
-                        </button>
-                        <span class="tooltip tooltip-text">Hear preview</span>
-                      </div>
-                </div>
-                
-                <!-- Card Content - Clickable for navigation -->
-                <a href="/self-service-booking" class="card-content-link">
-                    <div class="card-content">
-                        <h3 class="card-title">Self-service bookings</h3>
-                        <p class="card-description">Led redesign of hotel booking management experience. Reduced avg. contact per booking (-17%) and booking cancellations (-7%).</p>
-                        <div class="card-actions">
-            
-                            <span class="btn-primary"><span class="arrow-icon"></span></span>
-                        </div>
-                    </div>
-                </a>
-                
-                <!-- Hidden audio element -->
-                <audio class="project-audio">
-                    <source src="/audio/self-service.mp3" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
-            </div>
-        </div>
-     </div>
-     
+    
+    <div id="more-projects-placeholder"></div>
 
-
-        <div class="social-footer-project">
-          <div class="social-icons" style="justify-content: center;">
-            <a target="_blank" href="mailto:oscardenamiel@gmail.com" class="social-icon" aria-label="Send email">
-              <img class="icon" src="/images/Email.svg" alt="">
-            </a>
-            <a target="_blank" href="https://wa.link/92htwm" class="social-icon" aria-label="Contact on WhatsApp">
-              <img class="icon" src="/images/WhatsApp.svg" alt="">
-            </a>
-            <a target="_blank" href="https://www.instagram.com/oscardenamiel/" class="social-icon" aria-label="Instagram profile">
-              <img class="icon" src="/images/Instagram.svg" alt="">
-            </a>
-            <a target="_blank" href="https://linkedin.com/in/oscardenamiel" class="social-icon" aria-label="LinkedIn profile">
-              <img class="icon" src="/images/LinkedIn 2.svg" alt="">
-            </a>
-          </div>
-          <p class="footer-text-sm">Website design and content © 2026 Oscar Denamiel.</p>
-        </div>
+    <div id="footer-project-placeholder"></div>
     </div>
   </div>
 

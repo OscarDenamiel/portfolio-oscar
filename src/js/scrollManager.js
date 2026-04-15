@@ -3,6 +3,7 @@ export function initScrollManager() {
   const scrollToTopBtn = document.getElementById('scrollToTopBtn');
   const SCROLL_THRESHOLD = 200;
 
+  // --- PROGRESS BAR & SCROLL TO TOP ---
   function updateProgressBar() {
     if (!progressBar) return;
     const scrolled = document.documentElement.scrollTop;
@@ -31,7 +32,26 @@ export function initScrollManager() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  // Initial state
+  // --- SCROLL REVEAL ---
+  const isMobile = window.innerWidth <= 768;
+
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: isMobile ? '0px 0px 0px 0px' : '0px 0px -60px 0px'
+  });
+
+  document.querySelectorAll('.reveal').forEach(el => {
+    revealObserver.observe(el);
+  });
+
+  // --- INITIAL STATE ---
   updateProgressBar();
   toggleScrollToTop();
 }
