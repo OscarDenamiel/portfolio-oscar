@@ -380,6 +380,10 @@ body {
     
 }
 
+.h1--hero {
+    font-size: clamp(32px, 4vw, 64px);
+}
+
 /* Contenedor del menú */
 
 .header-nav {
@@ -1410,6 +1414,42 @@ body.dark-mode .project-hero {
     }
     
     .hero-buttons .btn-primary {
+        width: 100%;
+        justify-content: center;
+        margin-left: 0;
+    }
+}
+
+.hero-buttons-home {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    justify-content: flex-start;
+}
+
+@media (min-width: 1024px) {
+    .hero-buttons-home {
+        justify-content: left;
+    }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+    .hero-buttons-home {
+        justify-content: center;
+    }
+}
+@media (min-width: 500px) and (max-width: 767px) {
+    .hero-buttons-home {
+        justify-content: left;
+    }
+}
+@media (max-width: 500px) {
+    .hero-buttons-home {
+        flex-direction: column;
+    }
+    
+    .hero-buttons-home .btn-primary {
         width: 100%;
         justify-content: center;
         margin-left: 0;
