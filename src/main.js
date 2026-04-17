@@ -2,6 +2,7 @@ import { projects } from './data/projects.js';
 import { initMobileMenu } from './js/mobileMenu.js';
 import { initAudioManager } from './js/audioManager.js';
 import { initScrollManager } from './js/scrollManager.js';
+import { initChatbot } from './js/chatbot.js';  // ← NUEVO
 
 // --- LOAD COMPONENT ---
 async function loadComponent(placeholderId, componentPath) {
@@ -61,8 +62,6 @@ function initCarouselControls() {
     { carousel: 'hobbies-carousel',         prev: 'hobbies-prev',         next: 'hobbies-next' },
     { carousel: 'project-context-carousel', prev: 'project-context-prev', next: 'project-context-next' },
     { carousel: 'project-images-carousel',  prev: 'project-images-prev',  next: 'project-images-next' },
-    // Nuevos carousels de proyectos — añadir aquí:
-    // { carousel: 'map-context-carousel', prev: 'map-context-prev', next: 'map-context-next' },
   ];
 
   carousels.forEach(({ carousel: carouselId, prev: prevId, next: nextId }) => {
@@ -228,6 +227,7 @@ async function init() {
   initAnimations();
   initAudioManager();
   initCarouselControls();
+  initChatbot();  // ← NUEVO: se llama después de que los componentes están en el DOM
 
   document.body.classList.add('ready');
 }

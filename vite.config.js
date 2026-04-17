@@ -10,6 +10,7 @@ export default defineConfig({
         './src/**/*.html',
         './src/**/*.js',
         './public/components/*.html',
+        './src/js/chatbot-kb.js'
       ],
       safelist: [
         // Classes added dynamically by JS — never purge these
@@ -26,6 +27,7 @@ export default defineConfig({
         'typing-complete',
         /^body/,
         /^dark-mode/,
+        /^kb-/
       ],
     }),
   ],

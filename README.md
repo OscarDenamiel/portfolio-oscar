@@ -72,6 +72,54 @@ Implemented via a `.dark-mode` class on `body`, toggled by `darkMode.js` with `l
 
 ---
 
+## Chatbot
+
+The portfolio includes a custom-built AI chat assistant accessible from the sidebar (desktop) and header (mobile/tablet). It is designed around three hard constraints: no external API dependencies, no runtime costs, and full editorial control over every response.
+
+### Architecture
+
+The chatbot is split into two files:
+
+| File | Role |
+|---|---|
+| `src/js/chatbot.js` | UI, DOM, event handling, language detection, intent matching |
+| `src/data/chatbot-kb.js` | All responses — the only file that needs editing to update content |
+
+### How it works
+
+1. The user types a message.
+2. `detectLanguage()` identifies the language (ES / CA / EN) from the input text and recent conversation context, so the language is maintained across a session even when the user switches topics.
+3. `findResponse()` scores every entry in the knowledge base by matching the input against `triggers`. The longest matching trigger wins (more specific = higher confidence). Recently discussed topics receive a slight penalty to encourage variety.
+4. The matched response is returned in the detected language. If no match is found, the fallback provides contact details rather than a dead end.
+
+### Language detection
+
+Detection uses lightweight regex patterns for Catalan and Spanish. If the current message is ambiguous, the function checks the last 6 context entries to maintain the session language. English is the default fallback.
+
+### Session persistence
+
+Conversation history is stored in `sessionStorage` and restored when the user navigates between pages and reopens the chat. History is cleared when the tab is closed.
+
+### Updating responses
+
+To add or edit content, only `src/data/chatbot-kb.js` needs to be modified. Each entry follows this shape:
+
+```js
+{
+  id: 'unique-id',
+  triggers: ['keyword one', 'keyword two', 'longer trigger phrase'],
+  response: {
+    es: `Spanish response text`,
+    ca: `Catalan response text`,
+    en: `English response text`
+  }
+}
+```
+
+Longer triggers are more specific and will score higher than shorter ones if both match. Add synonyms, common phrasings and partial phrases to `triggers` to improve coverage.
+
+---
+
 ## Performance considerations
 
 - 25 unused font files removed (Inter, SpotifyMix, TWKLausanne)
@@ -114,12 +162,15 @@ portfolio-oscar/
 │   └── files/             # CV PDF
 ├── src/
 │   ├── data/
-│   │   └── projects.js    # Project card content
+│   │   ├── projects.js    # Project card content
+│   │   └── chatbot-kb.js  # Chatbot knowledge base — edit this to update responses
 │   ├── js/
+│   │   ├── chatbot.js     # Chatbot logic, UI and session management
 │   │   ├── darkMode.js
 │   │   ├── mobileMenu.js
 │   │   ├── audioManager.js
 │   │   └── scrollManager.js
+│   ├── chatbot.css        # Chatbot styles
 │   ├── main.js
 │   └── style.css
 ├── about.html
