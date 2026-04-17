@@ -1,5 +1,4 @@
 import { projects } from './data/projects.js';
-import { initDarkMode } from './js/darkMode.js';
 import { initMobileMenu } from './js/mobileMenu.js';
 import { initAudioManager } from './js/audioManager.js';
 import { initScrollManager } from './js/scrollManager.js';
@@ -224,7 +223,6 @@ async function init() {
 
   await new Promise(resolve => requestAnimationFrame(resolve));
 
-  initDarkMode();
   initMobileMenu();
   initScrollManager();
   initAnimations();
