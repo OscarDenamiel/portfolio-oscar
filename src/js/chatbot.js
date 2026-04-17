@@ -5,6 +5,7 @@
 ============================================================ */
 
 import { KNOWLEDGE_BASE, FALLBACK } from '../data/chatbot-kb.js';
+import '../chatbot.css';
 
 /* ── Language detection — uses context to maintain language ── */
 function detectLanguage(text, context = []) {
@@ -75,19 +76,9 @@ class OscarChatbot {
   }
 
   init() {
-    this.injectCSS();
     this.buildDOM();
     this.attachEvents();
     this.injectTrigger();
-  }
-
-  injectCSS() {
-    if (document.getElementById('chatbot-styles')) return;
-    const link = document.createElement('link');
-    link.id = 'chatbot-styles';
-    link.rel = 'stylesheet';
-    link.href = '/src/chatbot.css';
-    document.head.appendChild(link);
   }
 
   buildDOM() {
