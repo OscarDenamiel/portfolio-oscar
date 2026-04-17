@@ -227,7 +227,7 @@ p {
     line-height: 1.6;
     margin-bottom: 1em;
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--text-secondary);
 }
 
@@ -241,7 +241,7 @@ li {
     line-height: 1.6;
     margin-bottom: 1em;
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--text-secondary);
 }
 
@@ -1351,7 +1351,7 @@ body.dark-mode .project-hero {
     border-radius: 100px;
     font-size: 14px;
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-weight: 500;
+    font-weight: 600;
     background-color: #2f2f2f;
     color: var(--light);
 }
@@ -1625,7 +1625,7 @@ body.dark-mode .project-hero {
     display: inline-block;
     padding: 6px 12px;
     font-family: 'Plus Jakarta Sans';
-    font-weight: 500;
+    font-weight: 600;
     font-size: 14px;
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.25);
 }
@@ -2316,7 +2316,7 @@ body.dark-mode .code-text{
 .sidebar-logo {
     font-family: 'Plus Jakarta Sans';
     font-size: 18px; /* O el tamaño que prefieras */
-    font-weight: 500;
+    font-weight: 600;
     color: var(--dark);
     text-decoration: none;
     margin-bottom: 30px;
@@ -2340,7 +2340,7 @@ body.dark-mode .code-text{
     border-radius: 16px;
     padding: 4px 0;
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--dark);
     transition: background-color 0.3s ease;
     align-items: center;
@@ -2505,7 +2505,7 @@ body.dark-mode .sidenav-icon{
     font-size: 1.1rem; /* Tamaño de fuente de los enlaces */
     padding: 12px 15px;
     border-radius: 6px;
-    font-weight: 500;
+    font-weight: 600;
     transition: background-color 0.2s ease;
 }
 
