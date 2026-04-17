@@ -55,11 +55,15 @@ function initYearsExperience() {
 // --- CAROUSEL CONTROLS ---
 function initCarouselControls() {
   const carousels = [
-    { carousel: 'travel-carousel', prev: 'travel-prev', next: 'travel-next' },
-    { carousel: 'about-carousel', prev: 'about-prev', next: 'about-next' },
-    { carousel: 'adventure-carousel', prev: 'adventure-prev', next: 'adventure-next' },
-    { carousel: 'world-carousel',     prev: 'world-prev',     next: 'world-next' },
-    { carousel: 'hobbies-carousel',   prev: 'hobbies-prev',   next: 'hobbies-next' },
+    { carousel: 'travel-carousel',          prev: 'travel-prev',          next: 'travel-next' },
+    { carousel: 'about-carousel',           prev: 'about-prev',           next: 'about-next' },
+    { carousel: 'adventure-carousel',       prev: 'adventure-prev',       next: 'adventure-next' },
+    { carousel: 'world-carousel',           prev: 'world-prev',           next: 'world-next' },
+    { carousel: 'hobbies-carousel',         prev: 'hobbies-prev',         next: 'hobbies-next' },
+    { carousel: 'project-context-carousel', prev: 'project-context-prev', next: 'project-context-next' },
+    { carousel: 'project-images-carousel',  prev: 'project-images-prev',  next: 'project-images-next' },
+    // Nuevos carousels de proyectos — añadir aquí:
+    // { carousel: 'map-context-carousel', prev: 'map-context-prev', next: 'map-context-next' },
   ];
 
   carousels.forEach(({ carousel: carouselId, prev: prevId, next: nextId }) => {
@@ -68,10 +72,44 @@ function initCarouselControls() {
     const nextBtn = document.getElementById(nextId);
     if (!carousel || !prevBtn || !nextBtn) return;
 
+    const controls = prevBtn.closest('.carousel-controls');
+
     function getItemWidth() {
-      const firstItem = carousel.querySelector('.about-column');
+      const firstItem = carousel.querySelector('.carousel-item, .about-column');
       if (!firstItem) return 0;
       return firstItem.offsetWidth + 16;
+    }
+
+    function updateCarouselState() {
+      const items = carousel.querySelectorAll('.carousel-item, .about-column');
+      const gap = 16;
+      const paddingLeft = parseFloat(getComputedStyle(carousel).paddingLeft) || 0;
+      const paddingRight = parseFloat(getComputedStyle(carousel).paddingRight) || 0;
+      const totalItemsWidth = Array.from(items).reduce((acc, item) => acc + item.offsetWidth + gap, 0) - gap;
+      const availableWidth = carousel.clientWidth - paddingLeft - paddingRight;
+      const hasOverflow = totalItemsWidth > availableWidth + 2;
+
+      if (hasOverflow) {
+        if (controls) controls.style.display = 'flex';
+        carousel.style.overflowX = 'auto';
+        carousel.style.scrollSnapType = 'x mandatory';
+      } else {
+        if (controls) controls.style.display = 'none';
+        carousel.style.overflowX = 'hidden';
+        carousel.style.scrollSnapType = 'none';
+      }
+    }
+
+    function updateGradients() {
+      if (window.innerWidth < 1750) return;
+      const wrapper = carousel.closest('.carousel-wrapper');
+      if (!wrapper) return;
+
+      const atStart = carousel.scrollLeft <= 2;
+      const atEnd = carousel.scrollLeft >= carousel.scrollWidth - carousel.clientWidth - 2;
+
+      wrapper.classList.toggle('at-start', atStart);
+      wrapper.classList.toggle('at-end', atEnd);
     }
 
     prevBtn.addEventListener('click', () => {
@@ -91,6 +129,18 @@ function initCarouselControls() {
         carousel.scrollBy({ left: getItemWidth(), behavior: 'smooth' });
       }
     });
+
+    carousel.addEventListener('scroll', updateGradients, { passive: true });
+    window.addEventListener('resize', updateGradients, { passive: true });
+
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        updateCarouselState();
+        updateGradients();
+      }, 100);
+    });
+
+    window.addEventListener('resize', updateCarouselState, { passive: true });
   });
 }
 

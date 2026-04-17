@@ -550,6 +550,158 @@
           </div>
           <!-- / PATRÓN 13: PROJECT HERO IMAGE cierre -->
 
+          <!-- ============================================================
+          PATRÓN 14: CAROUSEL
+          Uso: scroll horizontal configurable. Admite imágenes y cards
+          de texto. En desktop con data-cols-desktop="fit" se convierte
+          en grid sin scroll ni controles.
+     
+          Atributos de configuración en .carousel-track:
+          - data-cols-mobile:  1 | 1.5 | 2 | 2.5  (default: 1.5)
+          - data-cols-tablet:  1 | 1.5 | 2 | 2.5 | 3
+          - data-cols-desktop: 2 | 3 | 4 | fit
+     
+          "fit" en grid normal sin botones ni scroll si el carousel no necesita scroll
+     
+          Reglas:
+          - Siempre lleva section-spacer en el wrapper exterior
+          - El id del carousel y los botones deben ser únicos por página
+          - Añadir el id al array carousels en main.js
+          - .scroll-spacer siempre como primer hijo del track
+          - Para imágenes usar .carousel-item directamente
+          - Para texto usar .carousel-item > .carousel-card
+          ============================================================ -->
+
+          <!-- CAROUSEL — Variante con cards de texto (problema/rol/resultado) -->
+          <div class="section-spacer reveal">
+            <div class="carousel-wrapper">
+              <div class="carousel-track"
+                  id="project-context-carousel"
+                  data-cols-mobile="1.5"
+                  data-cols-tablet="2"
+                  data-cols-desktop="3">
+                <div class="scroll-spacer"></div>
+
+                <div class="carousel-item">
+                  <div class="carousel-card">
+                    <span class="carousel-card-label">Problem</span>
+                    <h5>Problem title</h5>
+                    <p class="p-small">Brief description of the problem this project solved.</p>
+                  </div>
+                </div>
+
+                <div class="carousel-item">
+                  <div class="carousel-card">
+                    <span class="carousel-card-label">My Role</span>
+                    <h5>Lead Product Designer</h5>
+                    <p class="p-small">Research, strategy, high-fidelity design, stakeholder alignment.</p>
+                  </div>
+                </div>
+
+                <div class="carousel-item">
+                  <div class="carousel-card">
+                    <span class="carousel-card-label">Outcome</span>
+                    <h5>+17% CTR</h5>
+                    <p class="p-small">Increase in map click-through rate within 3 months of launch.</p>
+                  </div>
+                </div>
+
+              </div>
+              <div class="carousel-controls">
+                <button class="carousel-btn carousel-btn--prev" id="project-context-prev" aria-label="Previous">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(270deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <button class="carousel-btn carousel-btn--next" id="project-context-next" aria-label="Next">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(90deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- / PATRÓN 14: CAROUSEL cards de texto -->
+
+
+          <!-- CAROUSEL — Variante con imágenes -->
+          <div class="section-spacer reveal">
+            <div class="carousel-wrapper">
+              <div class="carousel-track"
+                  id="project-images-carousel"
+                  data-cols-mobile="1.5"
+                  data-cols-tablet="2"
+                  data-cols-desktop="fit">
+                <div class="scroll-spacer"></div>
+
+                <div class="carousel-item">
+                  <img style="width: 100%; border-radius: 24px;" src="/images/projects/project-slug/image-01.webp" alt="Descriptive alt text">
+                </div>
+
+                <div class="carousel-item">
+                  <img style="width: 100%; border-radius: 24px;" src="/images/projects/project-slug/image-02.webp" alt="Descriptive alt text">
+                </div>
+
+                <div class="carousel-item">
+                  <img style="width: 100%; border-radius: 24px;" src="/images/projects/project-slug/image-03.webp" alt="Descriptive alt text">
+                </div>
+
+              </div>
+              <div class="carousel-controls">
+                <button class="carousel-btn carousel-btn--prev" id="project-images-prev" aria-label="Previous">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(270deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <button class="carousel-btn carousel-btn--next" id="project-images-next" aria-label="Next">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(90deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- / PATRÓN 14: CAROUSEL imágenes -->
+
+          <!-- CAROUSEL — Variante imágenes + texto -->
+          <div class="section-spacer reveal">
+            <div class="carousel-wrapper">
+              <div class="carousel-track"
+                   id="media-carousel"
+                   data-cols-mobile="1.5"
+                   data-cols-tablet="2"
+                   data-cols-desktop="3">
+                <div class="scroll-spacer"></div>
+          
+                <div class="carousel-item">
+                  <img style="width: 100%; border-radius: 24px; margin-bottom: 16px;" src="/images/imagen-1.webp" alt="Liquid Glass">
+                  <p class="p-small"><strong>Liquid Glass.</strong> The new iOS design reflects and refracts what's beneath it in real time, dynamically adapting to your content across apps and devices.</p>
+                </div>
+          
+                <div class="carousel-item">
+                  <img style="width: 100%; border-radius: 24px; margin-bottom: 16px;" src="/images/imagen-2.webp" alt="Lock Screen">
+                  <p class="p-small"><strong>A more vibrant Lock Screen.</strong> Time dynamically adapts to your photo wallpaper and notifications.</p>
+                </div>
+          
+              </div>
+              <div class="carousel-controls">
+                <button class="carousel-btn carousel-btn--prev" id="media-prev" aria-label="Previous">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(270deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <button class="carousel-btn carousel-btn--next" id="media-next" aria-label="Next">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(90deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- / PATRÓN 14: Variante imágenes + texto -->
+
+
+
 
 
 

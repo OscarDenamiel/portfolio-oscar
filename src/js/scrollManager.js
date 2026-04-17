@@ -33,23 +33,33 @@ export function initScrollManager() {
   });
 
   // --- SCROLL REVEAL ---
-  const isMobile = window.innerWidth <= 768;
+const isMobile = window.innerWidth <= 768;
 
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  }, {
-    threshold: 0.1,
-    rootMargin: isMobile ? '0px 0px 0px 0px' : '0px 0px -60px 0px'
+const revealObserver = new IntersectionObserver((entries) => {
+  // Filtrar solo los que están intersectando
+  const visible = entries.filter(e => e.isIntersecting);
+  
+  // Ordenar por posición vertical en la página
+  visible.sort((a, b) => 
+    a.target.getBoundingClientRect().top - b.target.getBoundingClientRect().top
+  );
+
+  // Animar en orden con delay escalonado
+  visible.forEach((entry, index) => {
+    setTimeout(() => {
+      entry.target.classList.add('visible');
+    }, index * 80);
+    revealObserver.unobserve(entry.target);
   });
 
-  document.querySelectorAll('.reveal').forEach(el => {
-    revealObserver.observe(el);
-  });
+}, {
+  threshold: 0.1,
+  rootMargin: isMobile ? '0px 0px 0px 0px' : '0px 0px -60px 0px'
+});
+
+document.querySelectorAll('.reveal').forEach(el => {
+  revealObserver.observe(el);
+});
 
   // --- INITIAL STATE ---
   updateProgressBar();

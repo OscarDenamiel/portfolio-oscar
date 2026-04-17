@@ -79,17 +79,22 @@
                 </a>
               </div>
             </div>
+            
           
-            <div class="scroll-carousel-wrapper animate-fade-in delay-600">
-              <div class="about-columns about-columns--scroll" id="about-carousel">
+            <div class="carousel-wrapper animate-fade-in delay-600">
+              <div class="carousel-track"
+                   id="about-carousel"
+                   data-cols-mobile="1.5"
+                   data-cols-tablet="2"
+                   data-cols-desktop="3">
                 <div class="scroll-spacer"></div>
-                <div class="about-column">
+                <div class="carousel-item">
                   <img style="width: 100%; border-radius: 24px;" src="/images/about-2.webp" alt="">
                 </div>
-                <div class="about-column">
+                <div class="carousel-item">
                   <img style="width: 100%; border-radius: 24px;" src="/images/about-1.webp" alt="">
                 </div>
-                <div class="about-column">
+                <div class="carousel-item">
                   <img style="width: 100%; border-radius: 24px;" src="/images/about-3.webp" alt="">
                 </div>
               </div>
@@ -126,7 +131,7 @@
           <!-- SECTION TEXT — Variante B: con h6 label + h3 -->
           <div class="section-text section-spacer reveal">
             <h6>ABOUT ME</h6>
-            <h3>Balance user needs and business growth.</h3>
+            <h3>Research that drives revenue growth.</h3>
             <p class="p-small">
               Senior Product Designer with over <strong><span class="years-experience"></span> years of experience</strong> building high-performing products in Travel Tech, E-commerce, and Retail. I specialize in Conversion Rate Optimization (CRO) and End-to-end User Research, bridging the gap between deep qualitative insights and measurable ROI. <br><br> I have a proven track record of scaling products from <strong>Series A startups to global corporations</strong>, implementing data-driven design processes that prioritize high-impact experiments in multicultural environments. My focus is on creating seamless user journeys that perform technically and commercially at scale.
             </p>
@@ -177,21 +182,89 @@
           </div>
           <!-- / PATRÓN 7: METRICS GRID -->
 
+          <!-- CAROUSEL — Variante con cards de texto (problema/rol/resultado) -->
+          <div class="section-spacer reveal">
+            <div class="section-text">
+              <h6>MY PROCESS</h6>
+              <h3>How I turn ambiguity into measurable outcomes.</h3>
+            </div>
+            <div class="carousel-wrapper">
+              <div class="carousel-track"
+                  id="project-context-carousel"
+                  data-cols-mobile="1.5"
+                  data-cols-tablet="2"
+                  data-cols-desktop="3">
+                <div class="scroll-spacer"></div>
+
+                <div class="carousel-item">
+                  <div class="carousel-card">
+                    <span class="carousel-card-label">01 Diagnose</span>
+                    <h5>Analyse before designing.</h5>
+                    <p class="p-small">I audit the existing data first. If data gaps exist, I <strong>create them</strong> running targeted qual/quant research to generate the signal we need.</p>
+                  </div>
+                </div>
+
+                <div class="carousel-item">
+                  <div class="carousel-card">
+                    <span class="carousel-card-label">02 Scope</span>
+                    <h5>Frame the right problem.</h5>
+                    <p class="p-small">Data tells me what's happening. Research tells me <strong>why</strong>. This is where I spend the most time, solving wrong problems at scale is expensive.</p>
+                  </div>
+                </div>
+
+                <div class="carousel-item">
+                  <div class="carousel-card">
+                    <span class="carousel-card-label">03 Solution</span>
+                    <h5>Design to the hypothesis</h5>
+                    <p class="p-small">Mapping directly to a measurable hypothesis. No gut feelings, no assumptions. Just testable bets grounded in <strong>user evidence.</strong>
+                    </p>
+                  </div>
+                </div>
+
+                <div class="carousel-item">
+                  <div class="carousel-card">
+                    <span class="carousel-card-label">04 Validate</span>
+                    <h5>Experiment, measure, scale</h5>
+                    <p class="p-small">I design for the <strong>experiment first</strong>. Small, fast, instrumented. Once a hypothesis is validated, I work with engineering to scale the final product.</p>
+                  </div>
+                </div>
+
+              </div>
+              <div class="carousel-controls">
+                <button class="carousel-btn carousel-btn--prev" id="project-context-prev" aria-label="Previous">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(270deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <button class="carousel-btn carousel-btn--next" id="project-context-next" aria-label="Next">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(90deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- / PATRÓN 14: CAROUSEL cards de texto -->
+
           
 
           <div class="section-spacer reveal">
-            <div class="scroll-carousel-wrapper">
-              <div class="about-columns about-columns--scroll" id="adventure-carousel">
+            <div class="carousel-wrapper">
+              <div class="carousel-track"
+                   id="adventure-carousel"
+                   data-cols-mobile="1.5"
+                   data-cols-tablet="2"
+                   data-cols-desktop="3">
                 <div class="scroll-spacer"></div>
-                <div class="about-column">
+                <div class="carousel-item">
                   <div class="about-chip">Monad Shoal, PH🇵🇭</div>
                   <video autoplay loop muted playsinline webkit-playsinline style="width: 100%; border-radius: 24px;" src="/videos/shark.mp4" type="video/mp4">Your browser does not support the video tag.</video>
                 </div>
-                <div class="about-column">
+                <div class="carousel-item">
                   <div class="about-chip">Lofoten, NO🇳🇴</div>
                   <img style="width: 100%; border-radius: 24px;" src="/images/about-8.webp" alt="Lofoten Norway">
                 </div>
-                <div class="about-column">
+                <div class="carousel-item">
                   <div class="about-chip">Chiang Mai, TH🇹🇭</div>
                   <img style="width: 100%; border-radius: 24px;" src="/images/about-10.webp" alt="Chiang Mai Thailand">
                 </div>
@@ -226,8 +299,8 @@
  
           <!-- Wrapper container-full lleva section-spacer, los section-columns-text no -->
           <div class="container-full section-spacer reveal">
-            <h6>PROCESS</h6>
-            <h3>This is how I work.</h3>
+            <h6>MY APPROACH</h6>
+            <h3>How I create impact.</h3>
             <div class="section-columns-text reveal reveal-delay-1">
               <div class="section-column">
                 <h4>🚀 Growth & Experimentation</h4>
@@ -260,18 +333,22 @@
 
 
           <div class="section-spacer reveal">
-            <div class="scroll-carousel-wrapper">
-              <div class="about-columns about-columns--scroll" id="travel-carousel">
+            <div class="carousel-wrapper">
+              <div class="carousel-track"
+                   id="travel-carousel"
+                   data-cols-mobile="1.5"
+                   data-cols-tablet="2"
+                   data-cols-desktop="3">
                 <div class="scroll-spacer"></div>
-                <div class="about-column">
+                <div class="carousel-item">
                   <div class="about-chip">New York, US🇺🇸</div>
                   <img style="width: 100%; border-radius: 24px;" src="/images/about-7.webp" alt="New York">
                 </div>
-                <div class="about-column">
+                <div class="carousel-item">
                   <div class="about-chip">Malapascua, PH🇵🇭</div>
                   <img style="width: 100%; border-radius: 24px;" src="/images/about-9.webp" alt="Malapascua Philippines">
                 </div>
-                <div class="about-column">
+                <div class="carousel-item">
                   <div class="about-chip">Chiang Mai, TH🇹🇭</div>
                   <video autoplay loop muted playsinline webkit-playsinline style="width: 100%; border-radius: 24px;" src="/videos/thailand.mp4" type="video/mp4">Your browser does not support the video tag.</video>
                 </div>
@@ -282,8 +359,6 @@
                     <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </button>
-                
-                <!-- Botón derecha — arrow-up rotada 90deg -->
                 <button class="carousel-btn carousel-btn--next" id="travel-next" aria-label="Next">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(90deg)">
                     <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -378,18 +453,22 @@
 
 
           <div class="section-spacer reveal">
-            <div class="scroll-carousel-wrapper">
-              <div class="about-columns about-columns--scroll" id="world-carousel">
+            <div class="carousel-wrapper">
+              <div class="carousel-track"
+                   id="world-carousel"
+                   data-cols-mobile="1.5"
+                   data-cols-tablet="2"
+                   data-cols-desktop="3">
                 <div class="scroll-spacer"></div>
-                <div class="about-column">
+                <div class="carousel-item">
                   <div class="about-chip">Bergen, NO🇳🇴</div>
                   <video autoplay loop muted playsinline webkit-playsinline style="width: 100%; border-radius: 24px;" src="/videos/norway.mp4" type="video/mp4">Your browser does not support the video tag.</video>
                 </div>
-                <div class="about-column">
+                <div class="carousel-item">
                   <div class="about-chip">Moscow, RU🇷🇺</div>
                   <img style="width: 100%; border-radius: 24px;" src="/images/about-11.webp" alt="Moscow Russia">
                 </div>
-                <div class="about-column">
+                <div class="carousel-item">
                   <div class="about-chip">Linapacan, PH🇵🇭</div>
                   <video autoplay loop muted playsinline webkit-playsinline style="width: 100%; border-radius: 24px;" src="/videos/turtle.mp4" type="video/mp4">Your browser does not support the video tag.</video>
                 </div>
@@ -425,10 +504,10 @@
 
           <!-- SECTION TEXT — Variante B: con h6 label + h3 -->
           <div class="section-text section-spacer reveal">
-            <h6>CULTURE</h6>
-            <h3>Beyond the screen.</h3>
+            <h6>BEYOND THE SCREEN</h6>
+            <h3>Life outside the product.</h3>
             <p class="p-small">
-              I’m a <strong>natural listener who thrives in collaborative environments.</strong> I believe the best products are born from radical empathy and cross-functional synergies, not from the loudest voice in the room. I'm always exploring the latest hardware trends or automating my own life - my productivity loves it, even if my wallet doesn't. You can also find me <strong>travelling 🛫</strong>, exploring the <strong>ocean 🤿</strong>, out for a <strong>run 🏃🏻</strong> or in the <strong>court 🎾🏀</strong>.
+              When I'm not designing, I'm usually planning the next <strong>🤿 dive</strong> trip, training for a <strong>🏃🏻 run</strong>, walking my <strong>🐶 dog</strong>, or breaking down a <strong>🎾 padel</strong> match. I'm also obsessed with automation. I build personal scripts, workflows and home automations to remove friction from my own life. At home I genuinely don't remember how a physical light switch works.
             </p>
           </div>
           <!-- / SECTION TEXT B -->
@@ -437,18 +516,22 @@
 
           <div class="section-spacer reveal">
             <h4 style="text-align: center; margin: auto; margin-bottom: 40px;">What I love doing</h4>
-            <div class="scroll-carousel-wrapper">
-              <div class="about-columns about-columns--scroll" id="hobbies-carousel">
+            <div class="carousel-wrapper">
+              <div class="carousel-track"
+                   id="hobbies-carousel"
+                   data-cols-mobile="1.5"
+                   data-cols-tablet="2"
+                   data-cols-desktop="3">
                 <div class="scroll-spacer"></div>
-                <div class="about-column">
+                <div class="carousel-item">
                   <div class="about-chip">Playing padel 🎾</div>
                   <img style="width: 100%; border-radius: 24px;" src="/images/about-4.webp" alt="Playing padel">
                 </div>
-                <div class="about-column">
+                <div class="carousel-item">
                   <div class="about-chip">Diving 🤿</div>
                   <img style="width: 100%; border-radius: 24px;" src="/images/about-5.webp" alt="Diving">
                 </div>
-                <div class="about-column">
+                <div class="carousel-item">
                   <div class="about-chip">Running 🏃🏻</div>
                   <img style="width: 100%; border-radius: 24px;" src="/images/about-6.webp" alt="Running">
                 </div>

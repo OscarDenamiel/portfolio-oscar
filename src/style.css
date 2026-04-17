@@ -160,6 +160,10 @@ h6,
 }
 /* Text styles */
 
+h1, h2, h3, h4, h5 {
+    text-wrap: balance;
+}
+
 h1 {
     font-size: var(--h1);
     line-height: 1.1;
@@ -3003,4 +3007,286 @@ body:not(.dark-mode) .project-hero::before {
   .reveal-delay-5 { transition-delay: 2s; }
   .reveal-delay-6 { transition-delay: 2.4s; }
 
+
+/* ============================================================
+   CAROUSEL COMPONENT
+   Uso: scroll horizontal con controles, configurable por
+   data-cols-mobile, data-cols-tablet, data-cols-desktop
+   Valores recomendados: 1.5 | 2 | 2.5 | 3 | 4 | fit
+============================================================ */
+
+.carousel-wrapper {
+    position: relative;
+    /* Margin negativo para romper el padding del contenedor en todos los viewports */
+    margin-left: -16px;
+    margin-right: -16px;
+}
+
+@media (min-width: 375px) {
+    .carousel-wrapper {
+        margin-left: -24px;
+        margin-right: -24px;
+    }
+}
+
+@media (min-width: 601px) {
+    .carousel-wrapper {
+        margin-left: -32px;
+        margin-right: -32px;
+    }
+}
+
+@media (min-width: 769px) {
+    .carousel-wrapper {
+        margin-left: -32px;
+        margin-right: -32px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .carousel-wrapper {
+        margin-left: -64px;
+        margin-right: -64px;
+    }
+}
+
+@media (min-width: 1750px) {
+    .carousel-wrapper {
+        position: relative;
+    }
+
+    .carousel-wrapper::before,
+    .carousel-wrapper::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        width: 80px;
+        height: calc(100% - 48px - 16px); /* descontando controles y padding */
+        pointer-events: none;
+        z-index: 1;
+        transition: opacity 0.3s ease;
+    }
+
+    .carousel-wrapper::before {
+        left: 0;
+        background: linear-gradient(to left, transparent, var(--light));
+        opacity: 0;
+    }
+
+    .carousel-wrapper::after {
+        right: 0;
+        background: linear-gradient(to right, transparent, var(--light));
+        opacity: 1;
+    }
+
+    body.dark-mode .carousel-wrapper::before {
+        background: linear-gradient(to left, transparent, #000000);
+    }
+
+    body.dark-mode .carousel-wrapper::after {
+        background: linear-gradient(to right, transparent, #000000);
+    }
+
+    .carousel-wrapper.at-start::before { opacity: 0; }
+    .carousel-wrapper.at-end::after    { opacity: 0; }
+    .carousel-wrapper:not(.at-start)::before { opacity: 1; }
+    .carousel-wrapper:not(.at-end)::after    { opacity: 1; }
+}
+
+.carousel-track {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 16px;
+    /* Padding interno que compensa el margin negativo */
+    padding-left: 16px;
+    padding-right: 16px;
+    scroll-padding-left: 16px;
+}
+
+@media (min-width: 375px) {
+    .carousel-track {
+        padding-left: 24px;
+        padding-right: 24px;
+        scroll-padding-left: 24px;
+    }
+}
+
+@media (min-width: 601px) {
+    .carousel-track {
+        padding-left: 32px;
+        padding-right: 32px;
+        scroll-padding-left: 32px;
+    }
+}
+
+@media (min-width: 769px) {
+    .carousel-track {
+        padding-left: 32px;
+        padding-right: 32px;
+        scroll-padding-left: 32px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .carousel-track {
+        padding-left: 64px;
+        padding-right: 64px;
+        scroll-padding-left: 64px;
+    }
+}
+
+.carousel-track::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel-track .scroll-spacer {
+    display: block;
+    min-width: 0;
+    flex-shrink: 0;
+}
+
+/* Item base — default mobile 1.5 columnas visibles */
+.carousel-item {
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    width: calc((100% - 16px) / 1.5);
+    position: relative; /* Para que about-chip se posicione correctamente */
+}
+
+/* Variantes mobile */
+.carousel-track[data-cols-mobile="1"] .carousel-item   { width: 100%; }
+.carousel-track[data-cols-mobile="1.5"] .carousel-item { width: calc((100% - 16px) / 1.5); }
+.carousel-track[data-cols-mobile="2"] .carousel-item   { width: calc((100% - 16px) / 2); }
+.carousel-track[data-cols-mobile="2.5"] .carousel-item { width: calc((100% - 16px * 1.5) / 2.5); }
+@media (max-width: 500px) {
+    .carousel-track[data-cols-mobile="1.5"] .carousel-item { width: calc(100% - 48px); }
+}
+
+@media (max-width: 374px) {
+    .carousel-track[data-cols-mobile="1.5"] .carousel-item { width: calc(100% - 32px); }
+}
+/* Variantes tablet */
+@media (min-width: 600px) and (max-width: 1023px) {
+    .carousel-track[data-cols-tablet="1"] .carousel-item   { width: 100%; }
+    .carousel-track[data-cols-tablet="1.5"] .carousel-item { width: calc((100% - 16px) / 1.5); }
+    .carousel-track[data-cols-tablet="2"] .carousel-item   { width: calc((100% - 32px) / 2); }
+    .carousel-track[data-cols-tablet="2.5"] .carousel-item { width: calc((100% - 16px * 1.5) / 2.5); }
+    .carousel-track[data-cols-tablet="3"] .carousel-item   { width: calc((100% - 16px * 2) / 3); }
+}
+
+/* Variantes desktop */
+@media (min-width: 1024px) {
+    .carousel-track[data-cols-desktop="2"] .carousel-item { width: calc((100% - 16px) / 2); }
+    .carousel-track[data-cols-desktop="3"] .carousel-item { width: calc((100% - 16px * 2) / 3); }
+    .carousel-track[data-cols-desktop="4"] .carousel-item { width: calc((100% - 16px * 3) / 4); }
+    /* fit = no carousel, items se distribuyen en grid */
+    .carousel-track[data-cols-desktop="fit"] {
+        overflow-x: unset;
+        flex-wrap: wrap;
+        scroll-snap-type: unset;
+    }
+    .carousel-track[data-cols-desktop="fit"] .carousel-item {
+        width: calc((100% - 16px * 2) / 3);
+    }
+}
+
+/* Controles — siempre visibles */
+.carousel-controls {
+    display: flex;
+    gap: 16px;
+    justify-content: flex-end;
+    margin-top: 16px;
+    /* Compensar el margin negativo del wrapper para alinear con el contenido */
+    padding-right: 16px;
+}
+
+@media (min-width: 375px) {
+    .carousel-controls {
+        padding-right: 24px;
+    }
+}
+
+@media (min-width: 601px) {
+    .carousel-controls {
+        padding-right: 32px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .carousel-controls {
+        padding-right: 64px;
+    }
+    /* Ocultar controles solo cuando desktop es "fit" */
+    .carousel-track[data-cols-desktop="fit"] ~ .carousel-controls {
+        display: none;
+    }
+}
+
+.carousel-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 600px;
+    border: none;
+    background-color: var(--dark);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 0.3s ease, background-color 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(6px);
+}
+
+.carousel-btn:hover {
+    background-color: #3d3d3d;
+}
+
+body.dark-mode .carousel-btn {
+    background-color: #5c5c6180;
+    backdrop-filter: blur(12px);
+}
+
+body.dark-mode .carousel-btn:hover {
+    background-color: #686666;
+}
+
+/* Card de texto dentro del carousel */
+.carousel-card {
+    background-color: var(--grey);
+    border-radius: 24px;
+    padding: 24px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+body.dark-mode .carousel-card {
+    background-color: #212121;
+}
+
+.carousel-card-label {
+    font-size: var(--h6);
+    font-weight: 800;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+body.dark-mode .carousel-card-label {
+    color: var(--primary);
+}
+
+.carousel-card h4 {
+    margin-bottom: 0;
+}
+
+.carousel-card p {
+    margin-bottom: 0;
+}
 
