@@ -7,36 +7,61 @@
 import { KNOWLEDGE_BASE, FALLBACK } from '../data/chatbot-kb.js';
 import '../chatbot.css';
 
-/* ── Language detection — uses context to maintain language ── */
+/* ── Language detection — saves preference to localStorage ── */
 function detectLanguage(text, context = []) {
-  const t = text.toLowerCase();
-  const ca = /(es|però|molt|també|aquí|com|gràcies|vaig|tinc|vull|pots|estic|puc|soc|quin|quina|projectes|feina|treballes|disseny|experiència|hola|bon)/;
-  const es = /(está|también|qué|cómo|trabajado|proyectos|tienes|gracias|cuéntame|cuál|puedes|estoy|tengo|quién|diseño|experiencia|habilidades|disponible|hola|buenas)/;
-  if (ca.test(t)) return 'ca';
-  if (es.test(t)) return 'es';
-
-  // If no clear signal, check recent context to maintain language
-  for (let i = context.length - 1; i >= 0; i--) {
-    const c = context[i].content.toLowerCase();
-    if (ca.test(c)) return 'ca';
-    if (es.test(c)) return 'es';
+  const t = text.toLowerCase().trim();
+ 
+  // Strong Catalan markers — words that only exist in Catalan
+  const caStrong = /(però|també|molt|gràcies|vaig|tinc|vull|pots|estic|puc|soc|quin|quina|projectes|feina|treballes|disseny|experiència|bon dia|bona tarda|bona nit|doncs|perquè|aquí|això|això|com va|molt bé|d'acord|t'interessa|m'expliques|fas|treballes|estàs)/;
+  // Strong Spanish markers — words that only exist in Spanish
+  const esStrong = /(también|qué tal|gracias|estás|también|cuéntame|cuál|puedes|estoy|tengo|quién|diseño|experiencia|habilidades|disponible|buenos días|buenas tardes|buenas noches|entonces|porque|aquí|cómo estás|muy bien|de acuerdo|te interesa|me explicas|haces|trabajas)/;
+  // Catalan-leaning words (also exist in Spanish but different form)
+  const caHint = /(hola|bon|tinc|soc|puc|però|molt|també|aquí|com)/;
+  // Spanish-leaning words
+  const esHint = /(hola|buenas|tengo|soy|puedo|pero|muy|también|aquí|cómo|que|es)/;
+ 
+  let score = { ca: 0, es: 0 };
+  if (caStrong.test(t)) score.ca += 3;
+  if (esStrong.test(t)) score.es += 3;
+  if (caHint.test(t)) score.ca += 1;
+  if (esHint.test(t)) score.es += 1;
+ 
+  // Only detect if clear winner (score diff >= 2 avoids false positives on shared words)
+  let detected = null;
+  if (score.ca - score.es >= 2) detected = 'ca';
+  else if (score.es - score.ca >= 2) detected = 'es';
+  else if (score.ca > 0 && score.es === 0) detected = 'ca';
+  else if (score.es > 0 && score.ca === 0) detected = 'es';
+ 
+  if (detected) {
+    try { localStorage.setItem('chatbot-lang', detected); } catch(e) {}
+    return detected;
   }
-  return 'en';
+ 
+  // Check recent context (last 4 entries)
+  for (let i = context.length - 1; i >= Math.max(0, context.length - 4); i--) {
+    const c = (context[i].content || '').toLowerCase();
+    if (caStrong.test(c)) return 'ca';
+    if (esStrong.test(c)) return 'es';
+  }
+ 
+  // Fall back to stored preference, then English
+  try { return localStorage.getItem('chatbot-lang') || 'en'; } catch(e) { return 'en'; }
 }
-
+ 
 /* ── Intent matching — uses context to avoid repeating same topic ── */
 function findResponse(input, context = []) {
   const text = input.toLowerCase().trim();
   let bestMatch = null;
   let bestScore = 0;
-
+ 
   // Topics already discussed in this session
   const recentTopics = new Set(
     context
       .filter(c => c.role === 'assistant' && c.id)
       .map(c => c.id)
   );
-
+ 
   for (const entry of KNOWLEDGE_BASE) {
     let score = 0;
     for (const trigger of entry.triggers) {
@@ -46,16 +71,31 @@ function findResponse(input, context = []) {
     }
     // Slight penalty for recently discussed topics (encourages variety)
     if (score > 0 && recentTopics.has(entry.id)) score *= 0.8;
-
+ 
     if (score > bestScore) {
       bestScore = score;
       bestMatch = entry;
     }
   }
-
+ 
   return bestMatch;
 }
-
+ 
+/* ── Case study URLs — auto-linked wherever mentioned ── */
+const CASE_STUDY_LINKS = {
+  'oscardenamiel.com/map':                   { url: 'https://oscardenamiel.com/map',                   name: 'Map Redesign' },
+  'oscardenamiel.com/mobile-first':          { url: 'https://oscardenamiel.com/mobile-first',          name: 'Mobile First' },
+  'oscardenamiel.com/self-service-booking':  { url: 'https://oscardenamiel.com/self-service-booking',  name: 'Self-Service Bookings' },
+  'oscardenamiel.com/smart-suggester':       { url: 'https://oscardenamiel.com/smart-suggester',       name: 'Smart Suggester' },
+};
+ 
+const CASE_STUDY_PATTERNS = [
+  { pattern: /oscardenamiel\.com\/map/g,                  key: 'oscardenamiel.com/map' },
+  { pattern: /oscardenamiel\.com\/mobile-first/g,         key: 'oscardenamiel.com/mobile-first' },
+  { pattern: /oscardenamiel\.com\/self-service-booking/g, key: 'oscardenamiel.com/self-service-booking' },
+  { pattern: /oscardenamiel\.com\/smart-suggester/g,      key: 'oscardenamiel.com/smart-suggester' },
+];
+ 
 const CHATBOT_SUGGESTIONS = [
   "\u00bfEn qu\u00e9 proyectos has trabajado?",
   "Tell me about the Map Redesign",
@@ -63,8 +103,21 @@ const CHATBOT_SUGGESTIONS = [
   "\u00bfEst\u00e1s buscando trabajo?",
   "How is this portfolio built?",
 ];
-
-
+ 
+ 
+/* ── Inject case study links into response text ── */
+function injectCaseStudyLinks(text) {
+  // Replace plain URLs with "View project Name →" links
+  let result = text;
+  for (const { pattern, key } of CASE_STUDY_PATTERNS) {
+    const { url, name } = CASE_STUDY_LINKS[key];
+    result = result.replace(pattern, () =>
+      `<a href="${url}" class="text-link chatbot-project-link" target="_blank">View project: ${name} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-left:2px"><path d="M7 17L17 7M7 7h10v10"/></svg></a>`
+    );
+  }
+  return result;
+}
+ 
 class OscarChatbot {
   constructor() {
     this.isOpen = false;
@@ -74,19 +127,29 @@ class OscarChatbot {
     this.conversationContext = []; // últimas N entradas para contexto
     this.init();
   }
-
+ 
   init() {
+    this.injectCSS();
     this.buildDOM();
     this.attachEvents();
     this.injectTrigger();
   }
-
+ 
+  injectCSS() {
+    if (document.getElementById('chatbot-styles')) return;
+    const link = document.createElement('link');
+    link.id = 'chatbot-styles';
+    link.rel = 'stylesheet';
+    link.href = '/src/chatbot.css';
+    document.head.appendChild(link);
+  }
+ 
   buildDOM() {
     // Overlay
     this.overlay = document.createElement('div');
     this.overlay.className = 'chatbot-overlay';
     this.overlay.addEventListener('click', () => this.close());
-
+ 
     // Panel
     this.panel = document.createElement('div');
     this.panel.className = 'chatbot-panel';
@@ -127,39 +190,39 @@ class OscarChatbot {
         </div>
       </div>
     `;
-
+ 
     document.body.appendChild(this.overlay);
     document.body.appendChild(this.panel);
-
+ 
     this.messagesEl = this.panel.querySelector('#chatbot-messages');
     this.inputEl = this.panel.querySelector('#chatbot-input');
     this.sendBtn = this.panel.querySelector('#chatbot-send');
     this.closeBtn = this.panel.querySelector('.chatbot-close');
   }
-
+ 
   attachEvents() {
     this.closeBtn.addEventListener('click', () => this.close());
-
+ 
     this.inputEl.addEventListener('input', () => {
       this.sendBtn.disabled = !this.inputEl.value.trim() || this.isLoading;
       this.inputEl.style.height = 'auto';
       this.inputEl.style.height = Math.min(this.inputEl.scrollHeight, 120) + 'px';
     });
-
+ 
     this.inputEl.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
         this.send();
       }
     });
-
+ 
     this.sendBtn.addEventListener('click', () => this.send());
-
+ 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && this.isOpen) this.close();
     });
   }
-
+ 
   injectTrigger() {
     // Usa los botones existentes del header y sidebar por aria-label
     this.triggerBtns = document.querySelectorAll('[aria-label="Open chatbot"]');
@@ -169,12 +232,12 @@ class OscarChatbot {
       wrapper.className = 'tooltip-container chatbot-tooltip-wrapper';
       btn.parentNode.insertBefore(wrapper, btn);
       wrapper.appendChild(btn);
-
+ 
       const tooltip = document.createElement('span');
       tooltip.className = 'tooltip tooltip-text chatbot-tooltip';
       tooltip.textContent = 'Chat with Oscar';
       wrapper.appendChild(tooltip);
-
+ 
       btn.addEventListener('click', () => {
         if (this.isOpen) {
           this.close();
@@ -184,35 +247,35 @@ class OscarChatbot {
       });
     });
   }
-
+ 
   setTriggerActive(active) {
     if (!this.triggerBtns) return;
     this.triggerBtns.forEach(btn => {
       btn.classList.toggle('chatbot-trigger--active', active);
     });
   }
-
+ 
   open() {
     this.isOpen = true;
     this.panel.classList.add('open');
-
+ 
     // Overlay + scroll lock en mobile y tablet (no en desktop)
     const isDesktop = window.innerWidth >= 769;
     if (!isDesktop) {
       this.overlay.classList.add('open');
       document.body.style.overflow = 'hidden';
     }
-
+ 
     // Mensaje de bienvenida solo la primera vez
     if (!this.welcomeShown) {
       this.welcomeShown = true;
       this.showWelcome();
     }
-
+ 
     this.setTriggerActive(true);
     setTimeout(() => this.inputEl.focus(), 300);
   }
-
+ 
   close() {
     this.isOpen = false;
     this.overlay.classList.remove('open');
@@ -220,7 +283,7 @@ class OscarChatbot {
     document.body.style.overflow = '';
     this.setTriggerActive(false);
   }
-
+ 
   showWelcome() {
     // Restore history from sessionStorage if exists
     const saved = sessionStorage.getItem('chatbot-history');
@@ -237,13 +300,19 @@ class OscarChatbot {
         }
       } catch(e) { sessionStorage.removeItem('chatbot-history'); }
     }
-
-    const welcomeMsg = `Hey! 👋 Soy Oscar — Senior Product Designer en Barcelona. Puedo contarte sobre mis proyectos, proceso de diseño, experiencia... lo que necesites. ¿Qué te trae por aquí?`;
-    this.appendMessage('assistant', welcomeMsg);
+ 
+    // Use stored language preference, default to English
+    const storedLang = localStorage.getItem('chatbot-lang') || 'en';
+    const welcomeMessages = {
+      es: `Hola! Soy Oscar, Senior Product Designer en Barcelona. Pregúntame sobre mis proyectos, experiencia, proceso de diseño o lo que necesites.`,
+      ca: `Hola! Soc l'Oscar, Senior Product Designer a Barcelona. Pregunta'm sobre els meus projectes, experiència, procés de disseny o el que necessitis.`,
+      en: `Hey! 👋 I'm Oscar — Senior Product Designer based in Barcelona. Ask me about my projects, experience, design process or anything else you're curious about.`
+    };
+    this.appendMessage('assistant', welcomeMessages[storedLang]);
     this.saveHistory();
     this.showSuggestions();
   }
-
+ 
   saveHistory() {
     const msgs = this.messagesEl.querySelectorAll('.chatbot-msg');
     const history = [];
@@ -262,16 +331,16 @@ class OscarChatbot {
     });
     sessionStorage.setItem('chatbot-history', JSON.stringify(history));
   }
-
+ 
   showSuggestions() {
     if (this.hasShownSuggestions) return;
     this.hasShownSuggestions = true;
-
+ 
     // Chips inside messages area, below welcome message
     const wrapper = document.createElement('div');
     wrapper.className = 'chatbot-suggestions';
     wrapper.id = 'chatbot-suggestions';
-
+ 
     CHATBOT_SUGGESTIONS.forEach(text => {
       const chip = document.createElement('button');
       chip.className = 'chatbot-chip';
@@ -283,26 +352,37 @@ class OscarChatbot {
       });
       wrapper.appendChild(chip);
     });
-
+ 
     this.messagesEl.appendChild(wrapper);
     this.scrollToBottom();
   }
-
+ 
   appendMessage(role, content, raw = false) {
     const msg = document.createElement('div');
     msg.className = `chatbot-msg ${role}`;
-
+ 
     const bubble = document.createElement('div');
     bubble.className = 'chatbot-bubble';
-    // raw=true skips escaping — use for trusted HTML like mailto links
-    bubble.innerHTML = raw ? content : this.formatText(content);
-
+    // raw=true: trusted HTML — still apply markdown formatting
+    bubble.innerHTML = raw ? this.formatRaw(content) : this.formatText(content);
+ 
     msg.appendChild(bubble);
     this.messagesEl.appendChild(msg);
     this.scrollToBottom();
     return bubble;
   }
-
+ 
+  formatRaw(text) {
+    // Apply markdown on top of existing HTML (links stay intact)
+    return text
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/(?<![*])\*(?![*])(.*?)(?<![*])\*(?![*])/g, '<em>$1</em>')
+      .replace(/\n\n/g, '</p><p style="margin:8px 0 0">')
+      .replace(/\n/g, '<br>')
+      .replace(/^(?!<)/, '<p style="margin:0">')
+      .replace(/([^>])$/, '$1</p>');
+  }
+ 
   formatText(text) {
     // Basic markdown-ish formatting
     return text
@@ -317,7 +397,7 @@ class OscarChatbot {
       .replace(/^/, '<p style="margin:0">')
       .replace(/$/, '</p>');
   }
-
+ 
   showTyping() {
     const typing = document.createElement('div');
     typing.className = 'chatbot-typing';
@@ -327,59 +407,63 @@ class OscarChatbot {
     this.scrollToBottom();
     return typing;
   }
-
+ 
   scrollToBottom() {
     requestAnimationFrame(() => {
       this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
     });
   }
-
+ 
   send() {
     const text = this.inputEl.value.trim();
     if (!text || this.isLoading) return;
-
+ 
     // Reset input
     this.inputEl.value = '';
     this.inputEl.style.height = 'auto';
     this.sendBtn.disabled = true;
     this.isLoading = true;
-
+ 
     // Add user message
     this.appendMessage('user', text);
-
+ 
     // Update context
     this.conversationContext.push({ role: 'user', content: text });
     if (this.conversationContext.length > 6) this.conversationContext.shift();
-
+ 
     // Show typing
     const typingEl = this.showTyping();
-
+ 
     setTimeout(() => {
       typingEl.remove();
-
+ 
       const lang = detectLanguage(text, this.conversationContext);
       const match = findResponse(text, this.conversationContext);
-      const response = match
-        ? match.response[lang]
-        : FALLBACK[lang];
-
-      // CV and contact responses contain HTML links — render raw
-      const hasHTML = response.includes('<a ');
-      this.appendMessage('assistant', response, hasHTML);
-
-      // Update context with response
+      let response = match ? match.response[lang] : FALLBACK[lang];
+ 
+      // Inject case study links — always, regardless of response source
+      response = injectCaseStudyLinks(response);
+ 
+      // Append followup question if defined in KB entry
+      const followup = match && match.followup && match.followup[lang];
+      if (followup) response += `
+ 
+${followup}`;
+ 
+      // Render as raw HTML (links present after injection)
+      this.appendMessage('assistant', response, true);
+ 
+      // Update context
       this.conversationContext.push({ role: 'assistant', content: response });
       if (this.conversationContext.length > 6) this.conversationContext.shift();
-
-      // Persist history
+ 
       this.saveHistory();
-
       this.isLoading = false;
       this.sendBtn.disabled = !this.inputEl.value.trim();
     }, 600);
   }
 }
-
+ 
 // ── Init ──
 export function initChatbot() {
   if (window._oscarChatbot) return;
