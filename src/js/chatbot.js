@@ -178,6 +178,30 @@ function injectCaseStudyLinks(text) {
   return result;
 }
 
+/* ── Visitor profile — persists across sessions ── */
+function getVisitorProfile() {
+  try {
+    const saved = localStorage.getItem('chatbot-visitor');
+    return saved ? JSON.parse(saved) : null;
+  } catch(e) { return null; }
+}
+
+function updateVisitorProfile(updates) {
+  try {
+    const current = getVisitorProfile() || {
+      lang: 'en',
+      visitCount: 0,
+      lastVisit: null,
+      seenProjects: [],
+      isRecruiter: false,
+      lastIntent: null
+    };
+    const updated = { ...current, ...updates };
+    localStorage.setItem('chatbot-visitor', JSON.stringify(updated));
+    return updated;
+  } catch(e) { return null; }
+}
+
 class OscarChatbot {
   constructor() {
     this.isOpen = false;
@@ -352,6 +376,16 @@ class OscarChatbot {
     }
   
     const storedLang = (() => { try { return localStorage.getItem('chatbot-lang') || 'en'; } catch(e) { return 'en'; } })();
+
+    // ── Actualizar perfil del visitante ──
+    const profile = getVisitorProfile();
+    const isReturn = profile && profile.visitCount > 0;
+    const today = new Date().toISOString().split('T')[0];
+    updateVisitorProfile({
+      lang: storedLang,
+      visitCount: (profile?.visitCount || 0) + 1,
+      lastVisit: today
+    });
   
     // ── Detectar página actual ──
     const PAGE_CONTEXT = {
@@ -377,16 +411,52 @@ class OscarChatbot {
         contextSuggestions = pageEntry.suggestions[storedLang] || pageEntry.suggestions.en;
       }
     } else {
-      // Homepage o página desconocida — mensaje genérico
       const welcomeMessages = {
         es: `Hola! Soy Oscar, Senior Product Designer en Barcelona. Puedo responderte en español, catalán o inglés — el que prefieras.\n\nPregúntame sobre mis proyectos, experiencia, proceso de diseño o lo que necesites. Este chat está en mejora constante y aprenderá para darte mejores respuestas con el tiempo.`,
         ca: `Hola! Soc l'Oscar, Senior Product Designer a Barcelona. Puc respondre't en català, castellà o anglès — el que prefereixis.\n\nPregunta'm sobre els meus projectes, experiència, procés de disseny o el que necessitis. Aquest xat està en millora constant i aprendrà per donar-te millors respostes amb el temps.`,
         en: `Hey! 👋 I'm Oscar — Senior Product Designer based in Barcelona. I can reply in English, Spanish or Catalan — just write in whichever you prefer.\n\nAsk me about my projects, experience, design process or anything else. This chat is constantly improving and will keep getting better over time.`
       };
-      welcomeText = welcomeMessages[storedLang];
+    
+      // Return visitor — mensaje personalizado
+      if (isReturn && profile.lastIntent === 'recruiter-summary') {
+        welcomeText = {
+          es: `Bienvenido de nuevo 👋\n\nLa última vez estabas explorando el perfil de recruiter. ¿Sigues evaluando la oportunidad o tienes alguna pregunta concreta?`,
+          ca: `Benvingut de nou 👋\n\nL'última vegada estaves explorant el perfil de recruiter. Continues avaluant l'oportunitat o tens alguna pregunta concreta?`,
+          en: `Welcome back 👋\n\nLast time you were checking out the recruiter summary. Still exploring the opportunity, or do you have a specific question?`
+        }[storedLang];
+      } else if (isReturn && profile.seenProjects?.length > 0) {
+        const lastProject = profile.seenProjects[profile.seenProjects.length - 1];
+        const projectNames = {
+          'project-map': 'Map Redesign',
+          'project-mobile-first': 'Mobile First',
+          'project-self-service': 'Self-Service Bookings',
+          'project-smart-suggester': 'Smart Suggester'
+        };
+        const name = projectNames[lastProject] || 'one of the projects';
+        welcomeText = {
+          es: `Bienvenido de nuevo 👋\n\nLa última vez estabas viendo el ${name}. ¿Quieres continuar por ahí o explorar algo diferente?`,
+          ca: `Benvingut de nou 👋\n\nL'última vegada estaves veient el ${name}. Vols continuar per allà o explorar alguna cosa diferent?`,
+          en: `Welcome back 👋\n\nLast time you were looking at the ${name}. Want to continue from there, or explore something different?`
+        }[storedLang];
+      } else {
+        welcomeText = welcomeMessages[storedLang];
+      }
     }
   
     this.appendMessage('assistant', welcomeText);
+    // Actualizar perfil con el intent actual
+if (match?.id) {
+  const projectIds = ['project-map', 'project-mobile-first', 'project-self-service', 'project-smart-suggester'];
+  const profile = getVisitorProfile() || {};
+  if (projectIds.includes(match.id)) {
+    const seen = [...new Set([...(profile.seenProjects || []), match.id])];
+    updateVisitorProfile({ seenProjects: seen, lastIntent: match.id });
+  } else if (match.id === 'recruiter-summary') {
+    updateVisitorProfile({ isRecruiter: true, lastIntent: 'recruiter-summary' });
+  } else {
+    updateVisitorProfile({ lastIntent: match.id });
+  }
+}
     this.saveHistory();
   
     // Mostrar suggestions específicas de página o las genéricas
