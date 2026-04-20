@@ -16,9 +16,21 @@ export const KNOWLEDGE_BASE = [
       en: `Hey! I'm Oscar, Senior Product Designer based in Barcelona. What brings you here?`
     },
     suggestions: {
-      es: ['¿En qué proyectos has trabajado?', '¿Cómo es tu proceso de diseño?', '¿Estás buscando trabajo?'],
-      ca: ['En quins projectes has treballat?', 'Com és el teu procés de disseny?', 'Estàs buscant feina?'],
-      en: ['What projects have you worked on?', 'What\'s your design process?', 'Are you open to new roles?']
+      es: [
+        { label: '¿En qué proyectos has trabajado?', id: 'projects-overview' },
+        { label: '¿Cómo es tu proceso de diseño?', id: 'design-process' },
+        { label: '¿Estás buscando trabajo?', id: 'availability' }
+      ],
+      ca: [
+        { label: 'En quins projectes has treballat?', id: 'projects-overview' },
+        { label: 'Com és el teu procés de disseny?', id: 'design-process' },
+        { label: 'Estàs buscant feina?', id: 'availability' }
+      ],
+      en: [
+        { label: 'What projects have you worked on?', id: 'projects-overview' },
+        { label: "What's your design process?", id: 'design-process' },
+        { label: 'Are you open to new roles?', id: 'availability' }
+      ]
     },
   },
 
@@ -37,9 +49,21 @@ export const KNOWLEDGE_BASE = [
       en: `  Want me to go deeper on any specific one?`
     },
     suggestions: {
-      es: ['Cuéntame sobre el Map Redesign', 'Cuéntame sobre Mobile First', 'Ver todos los proyectos'],
-      ca: ['Explica\'m el Map Redesign', 'Explica\'m el Mobile First', 'Veure tots els projectes'],
-      en: ['Tell me about the Map Redesign', 'Tell me about Mobile First', 'What\'s your design process?']
+      es: [
+        { label: 'Cuéntame sobre el Map Redesign', id: 'project-map' },
+        { label: 'Cuéntame sobre Mobile First', id: 'project-mobile-first' },
+        { label: '¿Cuál es tu proceso de diseño?', id: 'design-process' }
+      ],
+      ca: [
+        { label: "Explica'm el Map Redesign", id: 'project-map' },
+        { label: "Explica'm el Mobile First", id: 'project-mobile-first' },
+        { label: 'Com és el teu procés de disseny?', id: 'design-process' }
+      ],
+      en: [
+        { label: 'Tell me about the Map Redesign', id: 'project-map' },
+        { label: 'Tell me about Mobile First', id: 'project-mobile-first' },
+        { label: 'Tell me about Self-Service Bookings', id: 'project-self-service' }
+      ]
     },
   },
 
@@ -51,7 +75,24 @@ export const KNOWLEDGE_BASE = [
       es: `El Map Redesign es probablemente el proyecto del que más orgulloso estoy\n\nEl mapa de Stayforlong tenía problemas serios: visual saturado, carga bloqueante, usuarios abandonando para ir a Google Maps a buscar contexto que no encontraban en nuestro producto.\n\nLideré 4 meses de discovery: 14 competidores analizados, 10 entrevistas en 7 países, encuesta a 148 usuarios y análisis de comportamiento con Hotjar. El resultado fue clustering de hoteles, carga no bloqueante, search bar en mobile y un sistema geográfico que pasó de 300 a 1.000 resultados.\n\n**Resultados:** +17% CTR, +25% CVR, +43% duración de sesión, 95% usuarios prefieren la nueva UI.\n\noscardenamiel.com/map`,
       ca: `El Map Redesign és probablement el projecte del qual estic més orgullós\n\nEl mapa de Stayforlong tenia problemes seriosos: visual saturat, càrrega bloquejant, usuaris abandonant per anar a Google Maps.\n\nVaig liderar 4 mesos de discovery: 14 competidors, 10 entrevistes a 7 països, enquesta a 148 usuaris i anàlisi de comportament amb Hotjar. El resultat va ser clustering d'hotels, càrrega no bloquejant, barra de cerca al mòbil i un sistema geogràfic de 300 a 1.000 resultats.\n\n**Resultats:** +17% CTR, +25% CVR, +43% durada de sessió, 95% usuaris prefereixen la nova UI.\n\noscardenamiel.com/map`,
       en: `The Map Redesign is probably the project I'm most proud of\n\nStayforlong's map had serious issues: cluttered UI, blocking loads, users leaving for Google Maps to find context they couldn't find on ours.\n\nI led 4 months of discovery: 14 competitors analysed, 10 interviews across 7 countries, 148-user survey, behavioural analysis with Hotjar. Result: hotel clustering, non-blocking load, mobile search bar and a geo system going from 300 to 1,000 results.\n\n**Results:** +17% CTR, +25% CVR, +43% session duration, 95% of users prefer the new UI.\n\noscardenamiel.com/map`
-    }
+    },
+    suggestions: {
+      es: [
+        { label: 'Cuéntame sobre Mobile First', id: 'project-mobile-first' },
+        { label: 'Ver todos los proyectos', id: 'projects-overview' },
+        { label: '¿Cómo fue el proceso de research?', id: 'design-process' }
+      ],
+      ca: [
+        { label: "Explica'm el Mobile First", id: 'project-mobile-first' },
+        { label: 'Veure tots els projectes', id: 'projects-overview' },
+        { label: 'Com va ser el procés de research?', id: 'design-process' }
+      ],
+      en: [
+        { label: 'Tell me about Mobile First', id: 'project-mobile-first' },
+        { label: 'See all projects', id: 'projects-overview' },
+        { label: "What's your design process?", id: 'design-process' }
+      ]
+    },
   },
 
   // ── MOBILE FIRST ───────────────────────────────────────────
@@ -62,7 +103,24 @@ export const KNOWLEDGE_BASE = [
       es: `Mobile First fue uno de esos proyectos que te cambian cómo ves el diseño\n\nEn Leadtech, el móvil tenía un 55% más de tráfico que desktop pero generaba un 40% menos de conversión. La causa: la experiencia móvil era literalmente el desktop mal adaptado.\n\nApliqué Lean UX, hice 9 iteraciones del prototipo y 11 rondas de testing. También construí el Design System completo para que todo fuera escalable desde el principio.\n\n**Resultados:** +8% CVR, -12% reembolsos, +7% beneficio diario, -20% drop-off.\n\noscardenamiel.com/mobile-first`,
       ca: `Mobile First va ser un d'aquells projectes que et canvien com veus el disseny\n\nA Leadtech, el mòbil tenia un 55% més de trànsit que desktop però generava un 40% menys de conversió.\n\nVaig aplicar Lean UX, fer 9 iteracions del prototip i 11 rondes de testing. També vaig construir el Design System complet.\n\n**Resultats:** +8% CVR, -12% reemborsaments, +7% benefici diari, -20% drop-off.\n\noscardenamiel.com/mobile-first`,
       en: `Mobile First was one of those projects that changes how you see design\n\nAt Leadtech, mobile had 55% more traffic than desktop but 40% lower conversion. The cause: the mobile experience was literally desktop badly adapted.\n\nI used Lean UX, ran 9 prototype iterations and 11 testing rounds. Also built the full Design System for scalability from day one.\n\n**Results:** +8% CVR, -12% refund ratio, +7% daily profit, -20% drop-off.\n\noscardenamiel.com/mobile-first`
-    }
+    },
+    suggestions: {
+      es: [
+        { label: '¿Hay NDA?', id: 'nda' },
+        { label: 'Ver el Map Redesign', id: 'project-map' },
+        { label: 'Ver todos los proyectos', id: 'projects-overview' }
+      ],
+      ca: [
+        { label: 'Hi ha NDA?', id: 'nda' },
+        { label: 'Veure el Map Redesign', id: 'project-map' },
+        { label: 'Veure tots els projectes', id: 'projects-overview' }
+      ],
+      en: [
+        { label: "What's the Leadtech NDA?", id: 'nda' },
+        { label: 'See the Map Redesign', id: 'project-map' },
+        { label: 'See all projects', id: 'projects-overview' }
+      ]
+    },
   },
 
   // ── SELF-SERVICE BOOKINGS ──────────────────────────────────
@@ -100,7 +158,24 @@ export const KNOWLEDGE_BASE = [
       es: `  Quieres que profundice en alguna empresa en concreto, o prefieres ver los proyectos?`,
       ca: `  Vols que aprofundeixi en alguna empresa en concret, o prefereixes veure els projectes?`,
       en: `  Want me to go deeper on any specific company, or would you rather see the projects?`
-    }
+    },
+    suggestions: {
+      es: [
+        { label: 'Cuéntame sobre Stayforlong', id: 'stayforlong' },
+        { label: 'Cuéntame sobre Leadtech', id: 'leadtech' },
+        { label: 'Ver los proyectos', id: 'projects-overview' }
+      ],
+      ca: [
+        { label: "Explica'm Stayforlong", id: 'stayforlong' },
+        { label: "Explica'm Leadtech", id: 'leadtech' },
+        { label: 'Veure els projectes', id: 'projects-overview' }
+      ],
+      en: [
+        { label: 'Tell me about Stayforlong', id: 'stayforlong' },
+        { label: 'Tell me about Leadtech', id: 'leadtech' },
+        { label: 'See the projects', id: 'projects-overview' }
+      ]
+    },
   },
 
   // ── STAYFORLONG ────────────────────────────────────────────
@@ -111,7 +186,24 @@ export const KNOWLEDGE_BASE = [
       es: `Llevo en Stayforlong desde 2024. Es una OTA especializada en estancias largas (3+ noches), con presencia en 25 países, 720.000+ hoteles y 300M€+ de facturación anual.\n\nComo Senior Product Designer colaboro con los equipos de Producto e Ingeniería para definir la visión UX end-to-end. He liderado el Map Redesign, el Smart Suggester y Self-Service Bookings.`,
       ca: `Soc a Stayforlong des del 2024. És una OTA especialitzada en estades llargues (3+ nits), amb presència a 25 països, 720.000+ hotels i 300M€+ de facturació anual.\n\nCom a Senior Product Designer col·laboro amb els equips de Producte i Enginyeria. He liderat el Map Redesign, el Smart Suggester i Self-Service Bookings.`,
       en: `I've been at Stayforlong since 2024. It's an OTA specialising in long stays (3+ nights), operating in 25 countries with 720,000+ hotels and 300M€+ annual gross revenue.\n\nAs Senior Product Designer I collaborate with Product and Engineering to define the end-to-end UX vision. I've led the Map Redesign, Smart Suggester and Self-Service Bookings.`
-    }
+    },
+    suggestions: {
+      es: [
+        { label: 'Ver el Map Redesign', id: 'project-map' },
+        { label: 'Ver el Smart Suggester', id: 'project-smart-suggester' },
+        { label: 'Ver Self-Service Bookings', id: 'project-self-service' }
+      ],
+      ca: [
+        { label: 'Veure el Map Redesign', id: 'project-map' },
+        { label: 'Veure el Smart Suggester', id: 'project-smart-suggester' },
+        { label: 'Veure Self-Service Bookings', id: 'project-self-service' }
+      ],
+      en: [
+        { label: 'See the Map Redesign', id: 'project-map' },
+        { label: 'See the Smart Suggester', id: 'project-smart-suggester' },
+        { label: 'See Self-Service Bookings', id: 'project-self-service' }
+      ]
+    },
   },
 
   // ── LEADTECH ───────────────────────────────────────────────
@@ -122,7 +214,24 @@ export const KNOWLEDGE_BASE = [
       es: `En Leadtech estuve de 2022 a 2024. Es una empresa barcelonesa especializada en transformar ideas en productos digitales rentables, principalmente en el sector de documentos de viaje y trámites online.\n\nFui Product Designer responsable de la optimización de la experiencia móvil — el proyecto Mobile First — y también del experimentation program y CRO en varios productos.`,
       ca: `A Leadtech vaig estar del 2022 al 2024. És una empresa barcelonina especialitzada a transformar idees en productes digitals rendibles, principalment en el sector de documents de viatge.\n\nVaig ser Product Designer responsable de l'optimització de l'experiència mòbil — el projecte Mobile First — i també del programa d'experimentació i CRO.`,
       en: `I was at Leadtech from 2022 to 2024. It's a Barcelona-based company specialising in turning ideas into profitable digital products, mainly in the travel documents and online processing space.\n\nI was the Product Designer responsible for mobile experience optimisation — the Mobile First project — and also managed the experimentation program and CRO across several products.`
-    }
+    },
+    suggestions: {
+      es: [
+        { label: 'Ver Mobile First', id: 'project-mobile-first' },
+        { label: '¿Hay NDA?', id: 'nda' },
+        { label: 'Ver otros proyectos', id: 'projects-overview' }
+      ],
+      ca: [
+        { label: 'Veure Mobile First', id: 'project-mobile-first' },
+        { label: 'Hi ha NDA?', id: 'nda' },
+        { label: 'Veure altres projectes', id: 'projects-overview' }
+      ],
+      en: [
+        { label: 'See Mobile First', id: 'project-mobile-first' },
+        { label: 'Is there an NDA?', id: 'nda' },
+        { label: 'See other projects', id: 'projects-overview' }
+      ]
+    },
   },
 
   // ── PROCESO DE DISEÑO ──────────────────────────────────────
@@ -138,7 +247,24 @@ export const KNOWLEDGE_BASE = [
       es: `  Si quieres verlo aplicado, el Map Redesign en oscardenamiel.com/map es el ejemplo mas completo.`,
       ca: `  Si vols veure'l aplicat, el Map Redesign a oscardenamiel.com/map es l'exemple mes complet.`,
       en: `  If you want to see it applied, the Map Redesign at oscardenamiel.com/map is the most complete example.`
-    }
+    },
+    suggestions: {
+      es: [
+        { label: 'Ver el Map Redesign', id: 'project-map' },
+        { label: '¿Cómo trabajas con ingeniería?', id: 'engineering-relationship' },
+        { label: '¿Cuáles son tus habilidades?', id: 'skills' }
+      ],
+      ca: [
+        { label: 'Veure el Map Redesign', id: 'project-map' },
+        { label: 'Com treballes amb enginyeria?', id: 'engineering-relationship' },
+        { label: 'Quines són les teves habilitats?', id: 'skills' }
+      ],
+      en: [
+        { label: 'See the Map Redesign', id: 'project-map' },
+        { label: 'How do you work with engineering?', id: 'engineering-relationship' },
+        { label: 'What are your skills?', id: 'skills' }
+      ]
+    },
   },
 
   // ── HABILIDADES ────────────────────────────────────────────
@@ -176,7 +302,24 @@ export const KNOWLEDGE_BASE = [
       es: `  Si quieres ver el trabajo antes de escribirme, los case studies estan en el portfolio.`,
       ca: `  Si vols veure el treball abans d'escriure'm, els case studies son al portfolio.`,
       en: `  If you want to see the work first, all case studies are on the portfolio.`
-    }
+    },
+    suggestions: {
+      es: [
+        { label: 'Ver mis proyectos', id: 'projects-overview' },
+        { label: 'Descargar CV', id: 'cv-download' },
+        { label: 'Contactar directamente', id: 'contact' }
+      ],
+      ca: [
+        { label: 'Veure els meus projectes', id: 'projects-overview' },
+        { label: 'Descarregar CV', id: 'cv-download' },
+        { label: 'Contactar directament', id: 'contact' }
+      ],
+      en: [
+        { label: 'See my projects', id: 'projects-overview' },
+        { label: 'Download CV', id: 'cv-download' },
+        { label: 'Contact directly', id: 'contact' }
+      ]
+    },
   },
 
   // ── REMOTO / PRESENCIAL ────────────────────────────────────
@@ -236,7 +379,24 @@ export const KNOWLEDGE_BASE = [
       es: `  Hay algo en concreto sobre lo que quieras saber mas?`,
       ca: `  Hi ha alguna cosa en concret sobre la qual vulguis saber mes?`,
       en: `  Anything specific you'd like to know more about?`
-    }
+    },
+    suggestions: {
+      es: [
+        { label: '¿Tienes side projects?', id: 'side-projects' },
+        { label: '¿Qué proyectos tienes?', id: 'projects-overview' },
+        { label: '¿Estás buscando trabajo?', id: 'availability' }
+      ],
+      ca: [
+        { label: 'Tens side projects?', id: 'side-projects' },
+        { label: 'Quins projectes tens?', id: 'projects-overview' },
+        { label: 'Estàs buscant feina?', id: 'availability' }
+      ],
+      en: [
+        { label: 'Do you have side projects?', id: 'side-projects' },
+        { label: 'What projects do you have?', id: 'projects-overview' },
+        { label: 'Are you open to new roles?', id: 'availability' }
+      ]
+    },
   },
 
   // ── IMPACTO / MÉTRICAS ─────────────────────────────────────
@@ -665,7 +825,18 @@ export const KNOWLEDGE_BASE = [
       es: `Sí, siempre tengo algo en marcha fuera del trabajo.\n\nAhora mismo el proyecto más importante en el que estoy trabajando se llama **Nalu** — básicamente el Strava para actividades oceánicas. La idea nació de mi pasión por el buceo y la vida marina.\n\nNalu permite registrar actividades como buceo, snorkel o natación en aguas abiertas, tiene una especie de Pokédex para identificar fauna marina, y conecta a personas que comparten la pasión por el océano — tanto usuarios como centros de buceo y profesionales.\n\nEs un proyecto que me permite explorar todo el proceso de producto desde cero: research, definición, diseño, prototipado. El portfolio que estás viendo ahora también es un side project — está construido con Vite, Vanilla JS y CSS puro, sin frameworks, y el chatbot con el que estás hablando lo construí yo también sin APIs externas.`,
       ca: `Sí, sempre tinc alguna cosa en marxa fora de la feina.\n\nAra mateix el projecte més important en el qual estic treballant s'anomena **Nalu** — bàsicament el Strava per a activitats oceàniques. La idea va néixer de la meva passió pel busseig i la vida marina.\n\nNalu permet registrar activitats com busseig, snorkel o natació en aigües obertes, té una mena de Pokédex per identificar fauna marina, i connecta persones que comparteixen la passió per l'oceà.\n\nÉs un projecte que em permet explorar tot el procés de producte des de zero. El portfolio que estàs veient ara també és un side project.`,
       en: `Yes, I always have something going on outside work.\n\nRight now the most important project I'm working on is called **Nalu** — basically Strava for ocean activities. The idea came from my passion for diving and marine life.\n\nNalu lets you log activities like diving, snorkelling or open-water swimming, has a kind of Pokédex for identifying marine life, and connects people who share a passion for the ocean — users, dive centres and professionals alike.\n\nIt's a project that lets me explore the full product process from scratch: research, definition, design, prototyping. The portfolio you're looking at right now is also a side project — built with Vite, Vanilla JS and pure CSS, no frameworks, and the chatbot you're talking to right now I also built with zero external APIs.`
-    }
+    },
+    suggestions: {
+      es: [
+        { label: '¿Qué proyectos tienes en el portfolio?', id: 'projects-overview' }
+      ],
+      ca: [
+        { label: 'Quins projectes tens al portfolio?', id: 'projects-overview' }
+      ],
+      en: [
+        { label: 'What projects are in your portfolio?', id: 'projects-overview' }
+      ]
+    },
   },
 
   // ── EQUIPO IDEAL / CULTURA ────────────────────────────────
@@ -711,10 +882,19 @@ export const KNOWLEDGE_BASE = [
       en: `Yes, I have a dog and he's basically my co-worker 🐕\n\nHe works from home just like me — always on top of me, sleeping, while I work. Doesn't contribute much to the product but the company is good.`
     },
     suggestions: {
-      es: ['¿Qué proyectos tienes?', '¿Cómo es tu proceso de diseño?'],
-      ca: ['Quins projectes tens?', 'Com és el teu procés de disseny?'],
-      en: ['What projects do you have?', "What's your design process?"]
-    }
+      es: [
+        { label: '¿Qué proyectos tienes?', id: 'projects-overview' },
+        { label: '¿Cómo es tu proceso de diseño?', id: 'design-process' }
+      ],
+      ca: [
+        { label: 'Quins projectes tens?', id: 'projects-overview' },
+        { label: 'Com és el teu procés de disseny?', id: 'design-process' }
+      ],
+      en: [
+        { label: 'What projects do you have?', id: 'projects-overview' },
+        { label: "What's your design process?", id: 'design-process' }
+      ]
+    },
   },
 
   // ── EASTER EGG: AUTOMATIZACIÓN ────────────────────────────
@@ -727,10 +907,19 @@ export const KNOWLEDGE_BASE = [
       en: `Quite a lot. I no longer know how light switches work 😄\n\nI only turn lights on by voice or with routines. If any automation fails, I'm literally left in the dark because I don't remember where the physical switches are or how they work. I've lost all the remotes and have no idea where they are.`
     },
     suggestions: {
-      es: ['¿Qué proyectos tienes?', '¿Cómo es tu proceso de diseño?'],
-      ca: ['Quins projectes tens?', 'Com és el teu procés de disseny?'],
-      en: ['What projects do you have?', "What's your design process?"]
-    }
+      es: [
+        { label: '¿Qué proyectos tienes?', id: 'projects-overview' },
+        { label: '¿Cómo es tu proceso de diseño?', id: 'design-process' }
+      ],
+      ca: [
+        { label: 'Quins projectes tens?', id: 'projects-overview' },
+        { label: 'Com és el teu procés de disseny?', id: 'design-process' }
+      ],
+      en: [
+        { label: 'What projects do you have?', id: 'projects-overview' },
+        { label: "What's your design process?", id: 'design-process' }
+      ]
+    },
   },
 
   // ── EASTER EGG: NALU ──────────────────────────────────────
@@ -743,10 +932,19 @@ export const KNOWLEDGE_BASE = [
       en: `Nalu is my most ambitious side project and the one I'm most proud of 🌊\n\nIt's basically Strava for ocean activities. The idea came from my passion for diving and marine life — and the fact that no app combined activity logging with marine life discovery and connecting with people who share that passion.\n\nNalu lets you log dives, snorkelling and open-water swims, has a kind of Pokédex for identifying marine life, and connects users with dive centres and other professionals.\n\nStill in development. I'll let you know when it launches 😄`
     },
     suggestions: {
-      es: ['Cuéntame más sobre tus side projects', '¿Qué proyectos tienes en el portfolio?'],
-      ca: ["Explica'm més sobre els teus side projects", 'Quins projectes tens al portfolio?'],
-      en: ['Tell me more about your side projects', 'What projects are in your portfolio?']
-    }
+      es: [
+        { label: '¿Tienes más side projects?', id: 'side-projects' },
+        { label: '¿Qué proyectos tienes en el portfolio?', id: 'projects-overview' }
+      ],
+      ca: [
+        { label: 'Tens més side projects?', id: 'side-projects' },
+        { label: 'Quins projectes tens al portfolio?', id: 'projects-overview' }
+      ],
+      en: [
+        { label: 'Tell me more about side projects', id: 'side-projects' },
+        { label: 'What projects are in your portfolio?', id: 'projects-overview' }
+      ]
+    },
   },
 
   // ── RECOMMENDATION ENGINE ─────────────────────────────────
@@ -759,10 +957,22 @@ export const KNOWLEDGE_BASE = [
       en: `Depends on what you're looking for. Tell me, are you...?`
     },
     suggestions: {
-      es: ['Soy recruiter o hiring manager', 'Busco colaborar o hacer networking', 'Solo tengo curiosidad'],
-      ca: ['Soc recruiter o hiring manager', 'Busco col·laborar o fer networking', 'Només tinc curiositat'],
-      en: ['I\'m a recruiter or hiring manager', 'Looking to collaborate or network', 'Just curious']
-    }
+      es: [
+        { label: 'Soy recruiter o hiring manager', id: 'recommendation-recruiter' },
+        { label: 'Busco colaborar o hacer networking', id: 'recommendation-collaborate' },
+        { label: 'Solo tengo curiosidad', id: 'recommendation-curious' }
+      ],
+      ca: [
+        { label: 'Soc recruiter o hiring manager', id: 'recommendation-recruiter' },
+        { label: 'Busco col·laborar o fer networking', id: 'recommendation-collaborate' },
+        { label: 'Només tinc curiositat', id: 'recommendation-curious' }
+      ],
+      en: [
+        { label: "I'm a recruiter or hiring manager", id: 'recommendation-recruiter' },
+        { label: 'Looking to collaborate or network', id: 'recommendation-collaborate' },
+        { label: 'Just curious', id: 'recommendation-curious' }
+      ]
+    },
   },
 
   {
@@ -774,10 +984,22 @@ export const KNOWLEDGE_BASE = [
       en: `Perfect, here's your route in 3 steps\n\n**1. Executive summary** — type "recruiter" to see my full profile with results and direct contact.\n\n**2. Highest impact projects** — the Map Redesign at oscardenamiel.com/map is the most complete. Mobile First at oscardenamiel.com/mobile-first has the best conversion numbers.\n\n**3. CV and contact** — oscardenamiel@gmail.com or linkedin.com/in/oscardenamiel. I usually reply the same day.`
     },
     suggestions: {
-      es: ['Ver resumen de recruiter', 'Ver el Map Redesign', 'Descargar CV'],
-      ca: ['Veure resum de recruiter', 'Veure el Map Redesign', 'Descarregar CV'],
-      en: ['See recruiter summary', 'See the Map Redesign', 'Download CV']
-    }
+      es: [
+        { label: 'Ver resumen completo', id: 'recruiter-summary' },
+        { label: 'Ver el Map Redesign', id: 'project-map' },
+        { label: 'Descargar CV', id: 'cv-download' }
+      ],
+      ca: [
+        { label: 'Veure resum complet', id: 'recruiter-summary' },
+        { label: 'Veure el Map Redesign', id: 'project-map' },
+        { label: 'Descarregar CV', id: 'cv-download' }
+      ],
+      en: [
+        { label: 'See full recruiter summary', id: 'recruiter-summary' },
+        { label: 'See the Map Redesign', id: 'project-map' },
+        { label: 'Download CV', id: 'cv-download' }
+      ]
+    },
   },
 
   {
@@ -789,10 +1011,22 @@ export const KNOWLEDGE_BASE = [
       en: `Great, I'm interested in the context.\n\nBest thing you can do is see how I work — the Map Redesign at oscardenamiel.com/map shows my end-to-end process well.\n\nIf you have a specific project in mind, write to me directly at oscardenamiel@gmail.com with the context and let's talk. I reply fast.`
     },
     suggestions: {
-      es: ['Ver el Map Redesign', 'Ver todos los proyectos', 'Contactar directamente'],
-      ca: ['Veure el Map Redesign', 'Veure tots els projectes', 'Contactar directament'],
-      en: ['See the Map Redesign', 'See all projects', 'Contact directly']
-    }
+      es: [
+        { label: 'Ver el Map Redesign', id: 'project-map' },
+        { label: 'Ver todos los proyectos', id: 'projects-overview' },
+        { label: 'Contactar directamente', id: 'contact' }
+      ],
+      ca: [
+        { label: 'Veure el Map Redesign', id: 'project-map' },
+        { label: 'Veure tots els projectes', id: 'projects-overview' },
+        { label: 'Contactar directament', id: 'contact' }
+      ],
+      en: [
+        { label: 'See the Map Redesign', id: 'project-map' },
+        { label: 'See all projects', id: 'projects-overview' },
+        { label: 'Contact directly', id: 'contact' }
+      ]
+    },
   },
 
   {
@@ -804,10 +1038,22 @@ export const KNOWLEDGE_BASE = [
       en: `Welcome then. Here's the quick tour.\n\nI'd start with the homepage to see the projects with real results. If anything catches your eye, each case study has the full process documented.\n\nIf you want to understand how I think, the Map Redesign at oscardenamiel.com/map is the best example — 4 months of discovery, 14 competitors, 10 countries.\n\nAnd if you have any questions, just ask.`
     },
     suggestions: {
-      es: ['Ver el Map Redesign', 'Ver todos los proyectos', '¿Cómo es tu proceso de diseño?'],
-      ca: ['Veure el Map Redesign', 'Veure tots els projectes', 'Com és el teu procés de disseny?'],
-      en: ['See the Map Redesign', 'See all projects', "What's your design process?"]
-    }
+      es: [
+        { label: 'Ver el Map Redesign', id: 'project-map' },
+        { label: 'Ver todos los proyectos', id: 'projects-overview' },
+        { label: '¿Cómo es tu proceso de diseño?', id: 'design-process' }
+      ],
+      ca: [
+        { label: 'Veure el Map Redesign', id: 'project-map' },
+        { label: 'Veure tots els projectes', id: 'projects-overview' },
+        { label: 'Com és el teu procés de disseny?', id: 'design-process' }
+      ],
+      en: [
+        { label: 'See the Map Redesign', id: 'project-map' },
+        { label: 'See all projects', id: 'projects-overview' },
+        { label: "What's your design process?", id: 'design-process' }
+      ]
+    },
   },
 
 ];

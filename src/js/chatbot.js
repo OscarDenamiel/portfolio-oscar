@@ -158,12 +158,12 @@ const CASE_STUDY_PATTERNS = [
 ];
 
 const CHATBOT_SUGGESTIONS = [
-  "What projects have you worked on?",
-  "Give me the recruiter summary",
-  "What's your design process?",
-  "How is this portfolio built?",
-  "Tell me something personal",
-  "Where do you see yourself in 3 years?",
+  { label: "What projects have you worked on?", id: 'projects-overview' },
+  { label: "Give me the recruiter summary",     id: 'recruiter-summary' },
+  { label: "What's your design process?",       id: 'design-process' },
+  { label: "How is this portfolio built?",      id: 'portfolio-stack' },
+  { label: "Tell me something personal",        id: 'about' },
+  { label: "Where do you see yourself in 3 years?", id: 'three-years' },
 ];
 
 /* ── Inject case study links into response text ── */
@@ -350,16 +350,52 @@ class OscarChatbot {
         }
       } catch(e) { sessionStorage.removeItem('chatbot-history'); }
     }
-
+  
     const storedLang = (() => { try { return localStorage.getItem('chatbot-lang') || 'en'; } catch(e) { return 'en'; } })();
-    const welcomeMessages = {
-      es: `Hola! Soy Oscar, Senior Product Designer en Barcelona. Puedo responderte en español, catalán o inglés — el que prefieras.\n\nPregúntame sobre mis proyectos, experiencia, proceso de diseño o lo que necesites. Este chat está en mejora constante y aprenderá para darte mejores respuestas con el tiempo.`,
-      ca: `Hola! Soc l'Oscar, Senior Product Designer a Barcelona. Puc respondre't en català, castellà o anglès — el que prefereixis.\n\nPregunta'm sobre els meus projectes, experiència, procés de disseny o el que necessitis. Aquest xat està en millora constant i aprendrà per donar-te millors respostes amb el temps.`,
-      en: `Hey! 👋 I'm Oscar — Senior Product Designer based in Barcelona. I can reply in English, Spanish or Catalan — just write in whichever you prefer.\n\nAsk me about my projects, experience, design process or anything else. This chat is constantly improving and will keep getting better over time.`
+  
+    // ── Detectar página actual ──
+    const PAGE_CONTEXT = {
+      '/map':                  { id: 'project-map',           en: `I see you're checking out the Map Redesign 👀\n\nHappy to go deeper on any part of it — the research process, the results, or the decisions behind it. What are you curious about?`, es: `Veo que estás viendo el Map Redesign 👀\n\nPuedo contarte más sobre el proceso de research, los resultados o las decisiones detrás del proyecto. ¿Qué te interesa?`, ca: `Veig que estàs veient el Map Redesign 👀\n\nPuc explicar-te més sobre el procés de research, els resultats o les decisions darrere del projecte. Què t'interessa?` },
+      '/mobile-first':         { id: 'project-mobile-first',  en: `You're looking at Mobile First 👀\n\nThis one's close to my heart — it completely changed how I think about mobile design. Ask me anything about it.`, es: `Estás viendo el Mobile First 👀\n\nEste proyecto cambió mucho cómo pienso sobre el diseño mobile. Pregúntame lo que quieras.`, ca: `Estàs veient el Mobile First 👀\n\nAquest projecte va canviar molt com penso sobre el disseny mòbil. Pregunta'm el que vulguis.` },
+      '/self-service-booking': { id: 'project-self-service',  en: `You're on the Self-Service Bookings case study 👀\n\nThis one started from a very real operational problem. Want me to walk you through the thinking behind it?`, es: `Estás en el case study de Self-Service Bookings 👀\n\nEste empezó de un problema operacional muy real. ¿Quieres que te cuente el razonamiento detrás?`, ca: `Estàs al case study de Self-Service Bookings 👀\n\nAquest va començar d'un problema operacional molt real. Vols que t'expliqui el raonament?` },
+      '/smart-suggester':      { id: 'project-smart-suggester', en: `You're exploring the Smart Suggester 👀\n\nThis one's more technical than it looks. Happy to explain the UX decisions and the back-end collaboration behind it.`, es: `Estás explorando el Smart Suggester 👀\n\nEste es más técnico de lo que parece. Puedo explicarte las decisiones de UX y la colaboración con back-end.`, ca: `Estàs explorant el Smart Suggester 👀\n\nAquest és més tècnic del que sembla. Puc explicar-te les decisions de UX i la col·laboració amb back-end.` },
+      '/about':                { id: 'about',                 en: `You're on the About page 👋\n\nAsk me anything — about my background, what I'm working on, or what I'm looking for next.`, es: `Estás en la página About 👋\n\nPregúntame lo que quieras — sobre mi background, en qué estoy trabajando o qué busco.`, ca: `Estàs a la pàgina About 👋\n\nPregunta'm el que vulguis — sobre el meu background, en què estic treballant o què busco.` },
     };
-    this.appendMessage('assistant', welcomeMessages[storedLang]);
+  
+    const path = window.location.pathname;
+    const pageCtx = Object.entries(PAGE_CONTEXT).find(([key]) => path.includes(key));
+  
+    let welcomeText;
+    let contextSuggestions = null;
+  
+    if (pageCtx) {
+      const [, ctx] = pageCtx;
+      welcomeText = ctx[storedLang] || ctx.en;
+      // Sugerencias específicas de la página
+      const pageEntry = KNOWLEDGE_BASE.find(e => e.id === ctx.id);
+      if (pageEntry && pageEntry.suggestions) {
+        contextSuggestions = pageEntry.suggestions[storedLang] || pageEntry.suggestions.en;
+      }
+    } else {
+      // Homepage o página desconocida — mensaje genérico
+      const welcomeMessages = {
+        es: `Hola! Soy Oscar, Senior Product Designer en Barcelona. Puedo responderte en español, catalán o inglés — el que prefieras.\n\nPregúntame sobre mis proyectos, experiencia, proceso de diseño o lo que necesites. Este chat está en mejora constante y aprenderá para darte mejores respuestas con el tiempo.`,
+        ca: `Hola! Soc l'Oscar, Senior Product Designer a Barcelona. Puc respondre't en català, castellà o anglès — el que prefereixis.\n\nPregunta'm sobre els meus projectes, experiència, procés de disseny o el que necessitis. Aquest xat està en millora constant i aprendrà per donar-te millors respostes amb el temps.`,
+        en: `Hey! 👋 I'm Oscar — Senior Product Designer based in Barcelona. I can reply in English, Spanish or Catalan — just write in whichever you prefer.\n\nAsk me about my projects, experience, design process or anything else. This chat is constantly improving and will keep getting better over time.`
+      };
+      welcomeText = welcomeMessages[storedLang];
+    }
+  
+    this.appendMessage('assistant', welcomeText);
     this.saveHistory();
-    this.showSuggestions();
+  
+    // Mostrar suggestions específicas de página o las genéricas
+    if (contextSuggestions) {
+      this.hasShownSuggestions = true;
+      this.showQuickReplies(contextSuggestions);
+    } else {
+      this.showSuggestions();
+    }
   }
 
   saveHistory() {
@@ -383,23 +419,23 @@ class OscarChatbot {
   showSuggestions() {
     if (this.hasShownSuggestions) return;
     this.hasShownSuggestions = true;
-
+  
     const wrapper = document.createElement('div');
     wrapper.className = 'chatbot-suggestions';
     wrapper.id = 'chatbot-suggestions';
-
-    CHATBOT_SUGGESTIONS.forEach(text => {
+  
+    CHATBOT_SUGGESTIONS.forEach(({ label, id }) => {
       const chip = document.createElement('button');
       chip.className = 'chatbot-chip';
-      chip.textContent = text;
+      chip.textContent = label;
       chip.addEventListener('click', () => {
         wrapper.remove();
-        this.inputEl.value = text;
-        this.send();
+        // Disparar directamente por ID, sin pasar por matching
+        this.sendById(label, id);
       });
       wrapper.appendChild(chip);
     });
-
+  
     this.messagesEl.appendChild(wrapper);
     this.scrollToBottom();
   }
@@ -408,14 +444,21 @@ class OscarChatbot {
     const wrapper = document.createElement('div');
     wrapper.className = 'chatbot-suggestions';
   
-    suggestions.forEach(text => {
+    suggestions.forEach(item => {
+      const label = typeof item === 'string' ? item : item.label;
+      const id = typeof item === 'object' ? item.id : null;
+  
       const chip = document.createElement('button');
       chip.className = 'chatbot-chip';
-      chip.textContent = text;
+      chip.textContent = label;
       chip.addEventListener('click', () => {
         wrapper.remove();
-        this.inputEl.value = text;
-        this.send();
+        if (id) {
+          this.sendById(label, id);
+        } else {
+          this.inputEl.value = label;
+          this.send();
+        }
       });
       wrapper.appendChild(chip);
     });
@@ -584,6 +627,45 @@ class OscarChatbot {
       top: this.messagesEl.scrollHeight,
       behavior: 'smooth'
     });
+  }
+
+  sendById(label, entryId) {
+    if (this.isLoading) return;
+    this.isLoading = true;
+  
+    this.appendMessage('user', label);
+    this.conversationContext.push({ role: 'user', content: label });
+    if (this.conversationContext.length > 6) this.conversationContext.shift();
+  
+    const typingEl = this.showTyping();
+  
+    setTimeout(() => {
+      typingEl.remove();
+  
+      const lang = (() => { try { return localStorage.getItem('chatbot-lang') || 'en'; } catch(e) { return 'en'; } })();
+      const match = KNOWLEDGE_BASE.find(e => e.id === entryId);
+      let response = match ? match.response[lang] : FALLBACK[lang];
+  
+      response = injectCaseStudyLinks(response);
+  
+      const followup = match && match.followup && match.followup[lang];
+      if (followup) response += `\n\n${followup}`;
+  
+      this.appendMessage('assistant', response, true);
+  
+      const suggestions = match && match.suggestions && match.suggestions[lang];
+      if (suggestions && suggestions.length > 0) this.showQuickReplies(suggestions);
+  
+      const HIGH_INTENT = ['availability', 'contact', 'cv-download', 'recruiter-summary', 'salary', 'why-hire-me'];
+      if (match && HIGH_INTENT.includes(match.id)) this.showCTAs(lang);
+  
+      this.conversationContext.push({ role: 'assistant', content: response, id: match?.id || null });
+      if (this.conversationContext.length > 6) this.conversationContext.shift();
+  
+      this.saveHistory();
+      this.isLoading = false;
+      this.sendBtn.disabled = !this.inputEl.value.trim();
+    }, 600);
   }
 
   send() {
