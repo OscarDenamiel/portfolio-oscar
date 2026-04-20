@@ -449,3 +449,29 @@
   left: auto !important;
   right: 0 !important;
 }
+
+/* ── CTA buttons — estilo botón primario ── */
+.chatbot-cta-btn {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: none !important;
+  border-radius: 500px !important;
+  padding: 10px 18px !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  cursor: pointer !important;
+  transition: opacity 0.15s ease !important;
+}
+
+.chatbot-cta-btn:hover {
+  opacity: 0.85 !important;
+}
+
+.chatbot-cta-btn::after {
+  content: '→';
+  font-size: 14px;
+}

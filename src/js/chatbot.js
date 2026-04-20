@@ -133,6 +133,7 @@ class OscarChatbot {
     this.buildDOM();
     this.attachEvents();
     this.injectTrigger();
+    this.startPlaceholderRotation();
   }
 
   buildDOM() {
@@ -364,6 +365,42 @@ class OscarChatbot {
     this.scrollToBottom();
   }
 
+  showCTAs(lang) {
+    const ctas = {
+      es: [
+        { label: 'Escribir email', href: 'mailto:oscardenamiel@gmail.com' },
+        { label: 'LinkedIn', href: 'https://linkedin.com/in/oscardenamiel' },
+        { label: 'Descargar CV', href: 'https://drive.google.com/uc?export=download&id=1nvxUNm1693SgYEKQGExxxnDI-gNvVTKF' },
+      ],
+      ca: [
+        { label: 'Escriure email', href: 'mailto:oscardenamiel@gmail.com' },
+        { label: 'LinkedIn', href: 'https://linkedin.com/in/oscardenamiel' },
+        { label: 'Descarregar CV', href: 'https://drive.google.com/uc?export=download&id=1nvxUNm1693SgYEKQGExxxnDI-gNvVTKF' },
+      ],
+      en: [
+        { label: 'Send email', href: 'mailto:oscardenamiel@gmail.com' },
+        { label: 'LinkedIn', href: 'https://linkedin.com/in/oscardenamiel' },
+        { label: 'Download CV', href: 'https://drive.google.com/uc?export=download&id=1nvxUNm1693SgYEKQGExxxnDI-gNvVTKF' },
+      ]
+    };
+  
+    const wrapper = document.createElement('div');
+    wrapper.className = 'chatbot-suggestions chatbot-ctas';
+  
+    (ctas[lang] || ctas.en).forEach(({ label, href }) => {
+      const btn = document.createElement('a');
+      btn.className = 'chatbot-chip chatbot-cta-btn';
+      btn.textContent = label;
+      btn.href = href;
+      btn.target = '_blank';
+      btn.rel = 'noopener noreferrer';
+      wrapper.appendChild(btn);
+    });
+  
+    this.messagesEl.appendChild(wrapper);
+    this.scrollToBottom();
+  }
+
   appendMessage(role, content, raw = false) {
     const msg = document.createElement('div');
     msg.className = `chatbot-msg ${role}`;
@@ -413,8 +450,9 @@ class OscarChatbot {
   }
 
   scrollToBottom() {
-    requestAnimationFrame(() => {
-      this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
+    this.messagesEl.scrollTo({
+      top: this.messagesEl.scrollHeight,
+      behavior: 'smooth'
     });
   }
 
@@ -462,6 +500,12 @@ if (suggestions && suggestions.length > 0) {
   this.showQuickReplies(suggestions);
 }
 
+      // CTAs de alto intent
+      const HIGH_INTENT = ['availability', 'contact', 'cv-download', 'recruiter-summary', 'salary', 'why-hire-me'];
+      if (match && HIGH_INTENT.includes(match.id)) {
+      this.showCTAs(lang);
+      }
+
       // ── Fix: guardar ID del entry en el context ──
       this.conversationContext.push({ role: 'assistant', content: response, id: match?.id || null });
       if (this.conversationContext.length > 6) this.conversationContext.shift();
@@ -471,6 +515,48 @@ if (suggestions && suggestions.length > 0) {
       this.sendBtn.disabled = !this.inputEl.value.trim();
     }, 600);
   }
+
+
+startPlaceholderRotation() {
+  const placeholders = {
+    es: [
+      '¿En qué proyectos has trabajado?',
+      '¿Cuál es tu proceso de diseño?',
+      '¿Estás buscando trabajo?',
+      '¿Cómo trabajas con ingeniería?',
+      '¿Qué te diferencia de otros diseñadores?',
+    ],
+    ca: [
+      'En quins projectes has treballat?',
+      'Quin és el teu procés de disseny?',
+      'Estàs buscant feina?',
+      'Com treballes amb enginyeria?',
+      "Què et diferencia d'altres dissenyadors?",
+    ],
+    en: [
+      'What projects have you worked on?',
+      "What's your design process?",
+      'Are you open to new roles?',
+      'How do you work with engineering?',
+      'What sets you apart from other designers?',
+    ]
+  };
+
+  let index = 0;
+  setInterval(() => {
+    const lang = (() => { try { return localStorage.getItem('chatbot-lang') || 'en'; } catch(e) { return 'en'; } })();
+    const list = placeholders[lang] || placeholders.en;
+    index = (index + 1) % list.length;
+    if (this.inputEl && document.activeElement !== this.inputEl) {
+      this.inputEl.style.transition = 'opacity 0.4s ease';
+      this.inputEl.style.opacity = '0';
+      setTimeout(() => {
+        this.inputEl.placeholder = list[index];
+        this.inputEl.style.opacity = '1';
+      }, 400);
+    }
+  }, 6000);
+}
 }
 
 // ── Init ──
