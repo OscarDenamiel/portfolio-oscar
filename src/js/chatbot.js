@@ -206,6 +206,35 @@ function wasAlreadyDiscussed(entryId, context) {
   return context.some(c => c.role === 'assistant' && c.id === entryId);
 }
 
+/* ── Detect user intent from unmatched input ── */
+function detectFallbackIntent(text) {
+  const t = normalizeText(text);
+  const recruiterSignals = ['hire', 'hiring', 'recruit', 'job', 'role', 'position', 'cv', 'resume', 'salary', 'available', 'opportunity', 'contrat', 'trabajo', 'puesto', 'feina', 'contractar'];
+  const techSignals = ['built', 'code', 'stack', 'vite', 'javascript', 'css', 'github', 'deploy', 'framework', 'component', 'construido', 'codigo', 'construït', 'codi'];
+  const words = t.split(' ');
+
+  let recruiterScore = words.filter(w => recruiterSignals.some(s => levenshtein(w, s) <= 1)).length;
+  let techScore = words.filter(w => techSignals.some(s => levenshtein(w, s) <= 1)).length;
+
+  if (recruiterScore > techScore && recruiterScore > 0) return 'recruiter';
+  if (techScore > recruiterScore && techScore > 0) return 'tech';
+  return 'curious';
+}
+
+/* ── Detect frustration signals ── */
+function detectFrustration(text, context) {
+  const t = normalizeText(text);
+  const frustrationWords = ['no entiendo', 'not working', 'no funciona', 'what', 'que', 'help', 'ayuda', 'ajuda', 'confused', 'confuso'];
+  const hasQmarks = (text.match(/\?/g) || []).length >= 2;
+  const hasFrustrationWord = frustrationWords.some(w => t.includes(w));
+
+  // Count consecutive fallbacks in context
+  const recentAssistant = context.filter(c => c.role === 'assistant').slice(-2);
+  const consecutiveFallbacks = recentAssistant.filter(c => c.id === null).length;
+
+  return hasQmarks || hasFrustrationWord || consecutiveFallbacks >= 2;
+}
+
 class OscarChatbot {
   constructor() {
     this.isOpen = false;
@@ -721,7 +750,7 @@ if (match?.id) {
       let response;
       const alreadyMsg = {
         es: `Ya te conté sobre esto antes 😊 ¿Quieres que profundice en algún aspecto concreto?`,
-        ca: `Ja t'ho vaig explicar abans 😊 Vols que aprofundeixi en algun aspecte concret?`,
+        ca: `Ja t'ho he explicat abans 😊 Vols que aprofundeixi en algun aspecte concret?`,
         en: `I already covered this one 😊 Want me to go deeper on any specific aspect?`
       };
 
@@ -748,7 +777,7 @@ if (match && wasAlreadyDiscussed(match.id, this.conversationContext)) {
       this.saveHistory();
       this.isLoading = false;
       this.sendBtn.disabled = !this.inputEl.value.trim();
-    }, 600);
+    }, Math.min(400 + Math.floor(label.length * 1.5), 1200));
   }
 
   send() {
@@ -769,10 +798,10 @@ if (match && wasAlreadyDiscussed(match.id, this.conversationContext)) {
 
     setTimeout(() => {
       typingEl.remove();
-
+    
       const lang = detectLanguage(text, this.conversationContext);
       const match = findResponse(text, this.conversationContext);
-      // Google Analytics — tracking de inputs del chatbot
+    
       if (typeof gtag !== 'undefined') {
         gtag('event', 'chatbot_message', {
           search_term: text,
@@ -780,46 +809,103 @@ if (match && wasAlreadyDiscussed(match.id, this.conversationContext)) {
           language: lang
         });
       }
+    
       let response;
-const alreadyMsg = {
-  es: `Ya te conté sobre esto antes 😊 ¿Quieres que profundice en algún aspecto concreto?`,
-  ca: `Ja t'ho vaig explicar abans 😊 Vols que aprofundeixi en algun aspecte concret?`,
-  en: `I already covered this one 😊 Want me to go deeper on any specific aspect?`
-};
-
-if (match && wasAlreadyDiscussed(match.id, this.conversationContext)) {
-  response = alreadyMsg[lang];
-} else {
-  response = match ? match.response[lang] : FALLBACK[lang];
-  response = injectCaseStudyLinks(response);
-  const followup = match && match.followup && match.followup[lang];
-  if (followup) response += `\n\n${followup}`;
-}
-
-      this.appendMessage('assistant', response, true);
-
-      // Quick replies dinámicos del KB entry
-const suggestions = match && match.suggestions && match.suggestions[lang];
-if (suggestions && suggestions.length > 0) {
-  this.showQuickReplies(suggestions);
-}
-
-      // CTAs de alto intent
-      const HIGH_INTENT = ['availability', 'contact', 'cv-download', 'recruiter-summary', 'salary', 'why-hire-me'];
-      if (match && HIGH_INTENT.includes(match.id)) {
-      this.showCTAs(lang);
+      const alreadyMsg = {
+        es: `Ya te conté sobre esto antes 😊 ¿Quieres que profundice en algún aspecto concreto?`,
+        ca: `Ja t'ho vaig explicar abans 😊 Vols que aprofundeixi en algun aspecte concret?`,
+        en: `I already covered this one 😊 Want me to go deeper on any specific aspect?`
+      };
+    
+      let smartSuggestions = null;
+    
+      if (!match) {
+        // ── Frustration detection ──
+        if (detectFrustration(text, this.conversationContext)) {
+          response = {
+            es: `Parece que no te estoy siendo muy útil 😅\n\nDéjame intentarlo de otra forma — cuéntame qué buscas exactamente:`,
+            ca: `Sembla que no t'estic sent molt útil 😅\n\nDeixa'm intentar-ho d'una altra manera — explica'm què busques exactament:`,
+            en: `Seems like I'm not being very helpful 😅\n\nLet me try a different approach — tell me what you're looking for:`
+          }[lang];
+          smartSuggestions = [
+            { label: lang === 'es' ? 'Soy recruiter o hiring manager' : lang === 'ca' ? 'Soc recruiter o hiring manager' : "I'm a recruiter or hiring manager", id: 'recommendation-recruiter' },
+            { label: lang === 'es' ? 'Busco colaborar o hacer networking' : lang === 'ca' ? 'Busco col·laborar o fer networking' : 'Looking to collaborate or network', id: 'recommendation-collaborate' },
+            { label: lang === 'es' ? 'Solo tengo curiosidad' : lang === 'ca' ? 'Només tinc curiositat' : 'Just curious', id: 'recommendation-curious' }
+          ];
+        } else {
+          // ── Smart fallback by intent ──
+          const intent = detectFallbackIntent(text);
+          if (intent === 'recruiter') {
+            response = {
+              es: `No tengo una respuesta preparada para eso exactamente, pero si estás evaluando mi perfil, esto te puede ayudar:`,
+              ca: `No tinc una resposta preparada per a això exactament, però si estàs avaluant el meu perfil, això et pot ajudar:`,
+              en: `I don't have a prepared answer for that exactly, but if you're evaluating my profile, this might help:`
+            }[lang];
+            smartSuggestions = [
+              { label: lang === 'es' ? 'Ver resumen de recruiter' : lang === 'ca' ? 'Veure resum de recruiter' : 'See recruiter summary', id: 'recruiter-summary' },
+              { label: lang === 'es' ? 'Ver proyectos con resultados' : lang === 'ca' ? 'Veure projectes amb resultats' : 'See projects with results', id: 'projects-overview' },
+              { label: lang === 'es' ? 'Descargar CV' : lang === 'ca' ? 'Descarregar CV' : 'Download CV', id: 'cv-download' }
+            ];
+          } else if (intent === 'tech') {
+            response = {
+              es: `No tengo respuesta específica para eso, pero si te interesa el stack técnico del portfolio:`,
+              ca: `No tinc resposta específica per a això, però si t'interessa l'stack tècnic del portfolio:`,
+              en: `I don't have a specific answer for that, but if you're curious about the technical side:`
+            }[lang];
+            smartSuggestions = [
+              { label: lang === 'es' ? 'Cómo está construido el portfolio' : lang === 'ca' ? 'Com està construït el portfolio' : 'How this portfolio is built', id: 'portfolio-stack' },
+              { label: lang === 'es' ? 'Arquitectura de componentes' : lang === 'ca' ? 'Arquitectura de components' : 'Component architecture', id: 'component-architecture' },
+              { label: lang === 'es' ? 'Cómo funciona el chatbot' : lang === 'ca' ? 'Com funciona el chatbot' : 'How the chatbot works', id: 'chatbot' }
+            ];
+          } else {
+            response = FALLBACK[lang];
+          }
+        }
+      } else if (wasAlreadyDiscussed(match.id, this.conversationContext)) {
+        response = alreadyMsg[lang];
+      } else {
+        response = match.response[lang];
+        response = injectCaseStudyLinks(response);
+        const followup = match.followup && match.followup[lang];
+        if (followup) response += `\n\n${followup}`;
       }
-
-      // ── Fix: guardar ID del entry en el context ──
+    
+      // ── Typing delay proporcional a longitud ──
+      const baseDelay = 400;
+      const extraDelay = Math.min(response.length * 0.8, 800);
+      const totalDelay = baseDelay + extraDelay;
+    
+      this.appendMessage('assistant', response, true);
+    
+      if (smartSuggestions) {
+        this.showQuickReplies(smartSuggestions);
+      } else if (match && !wasAlreadyDiscussed(match.id, this.conversationContext.slice(0, -1))) {
+        const suggestions = match.suggestions && match.suggestions[lang];
+        if (suggestions && suggestions.length > 0) this.showQuickReplies(suggestions);
+        const HIGH_INTENT = ['availability', 'contact', 'cv-download', 'recruiter-summary', 'salary', 'why-hire-me'];
+        if (HIGH_INTENT.includes(match.id)) this.showCTAs(lang);
+      }
+    
       this.conversationContext.push({ role: 'assistant', content: response, id: match?.id || null });
       if (this.conversationContext.length > 6) this.conversationContext.shift();
-
+    
+      if (match?.id) {
+        const projectIds = ['project-map', 'project-mobile-first', 'project-self-service', 'project-smart-suggester'];
+        const p = getVisitorProfile() || {};
+        if (projectIds.includes(match.id)) {
+          updateVisitorProfile({ seenProjects: [...new Set([...(p.seenProjects || []), match.id])], lastIntent: match.id });
+        } else if (match.id === 'recruiter-summary') {
+          updateVisitorProfile({ isRecruiter: true, lastIntent: 'recruiter-summary' });
+        } else {
+          updateVisitorProfile({ lastIntent: match.id });
+        }
+      }
+    
       this.saveHistory();
       this.isLoading = false;
       this.sendBtn.disabled = !this.inputEl.value.trim();
-    }, 600);
+    }, Math.min(400 + Math.floor(text.length * 1.5), 1200));
   }
-
 
 startPlaceholderRotation() {
   const placeholders = {
