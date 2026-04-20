@@ -201,6 +201,10 @@ function updateVisitorProfile(updates) {
     return updated;
   } catch(e) { return null; }
 }
+/* ── Check if entry was already discussed this session ── */
+function wasAlreadyDiscussed(entryId, context) {
+  return context.some(c => c.role === 'assistant' && c.id === entryId);
+}
 
 class OscarChatbot {
   constructor() {
@@ -714,12 +718,21 @@ if (match?.id) {
   
       const lang = (() => { try { return localStorage.getItem('chatbot-lang') || 'en'; } catch(e) { return 'en'; } })();
       const match = KNOWLEDGE_BASE.find(e => e.id === entryId);
-      let response = match ? match.response[lang] : FALLBACK[lang];
-  
-      response = injectCaseStudyLinks(response);
-  
-      const followup = match && match.followup && match.followup[lang];
-      if (followup) response += `\n\n${followup}`;
+      let response;
+      const alreadyMsg = {
+        es: `Ya te conté sobre esto antes 😊 ¿Quieres que profundice en algún aspecto concreto?`,
+        ca: `Ja t'ho vaig explicar abans 😊 Vols que aprofundeixi en algun aspecte concret?`,
+        en: `I already covered this one 😊 Want me to go deeper on any specific aspect?`
+      };
+
+if (match && wasAlreadyDiscussed(match.id, this.conversationContext)) {
+  response = alreadyMsg[lang];
+} else {
+  response = match ? match.response[lang] : FALLBACK[lang];
+  response = injectCaseStudyLinks(response);
+  const followup = match && match.followup && match.followup[lang];
+  if (followup) response += `\n\n${followup}`;
+}
   
       this.appendMessage('assistant', response, true);
   
@@ -767,12 +780,21 @@ if (match?.id) {
           language: lang
         });
       }
-      let response = match ? match.response[lang] : FALLBACK[lang];
+      let response;
+const alreadyMsg = {
+  es: `Ya te conté sobre esto antes 😊 ¿Quieres que profundice en algún aspecto concreto?`,
+  ca: `Ja t'ho vaig explicar abans 😊 Vols que aprofundeixi en algun aspecte concret?`,
+  en: `I already covered this one 😊 Want me to go deeper on any specific aspect?`
+};
 
-      response = injectCaseStudyLinks(response);
-
-      const followup = match && match.followup && match.followup[lang];
-      if (followup) response += `\n\n${followup}`;
+if (match && wasAlreadyDiscussed(match.id, this.conversationContext)) {
+  response = alreadyMsg[lang];
+} else {
+  response = match ? match.response[lang] : FALLBACK[lang];
+  response = injectCaseStudyLinks(response);
+  const followup = match && match.followup && match.followup[lang];
+  if (followup) response += `\n\n${followup}`;
+}
 
       this.appendMessage('assistant', response, true);
 
