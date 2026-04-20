@@ -158,11 +158,12 @@ const CASE_STUDY_PATTERNS = [
 ];
 
 const CHATBOT_SUGGESTIONS = [
-  "\u00bfEn qu\u00e9 proyectos has trabajado?",
-  "Tell me about the Map Redesign",
+  "What projects have you worked on?",
+  "Give me the recruiter summary",
   "What's your design process?",
-  "\u00bfEst\u00e1s buscando trabajo?",
   "How is this portfolio built?",
+  "Tell me something personal",
+  "Where do you see yourself in 3 years?",
 ];
 
 /* ── Inject case study links into response text ── */
