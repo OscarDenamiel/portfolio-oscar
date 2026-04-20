@@ -14,7 +14,12 @@ export const KNOWLEDGE_BASE = [
       es: `Hola! Soy Oscar, Senior Product Designer en Barcelona. Cuéntame, qué te trae por aquí?`,
       ca: `Hola! Soc l'Oscar, Senior Product Designer a Barcelona. En què et puc ajudar?`,
       en: `Hey! I'm Oscar, Senior Product Designer based in Barcelona. What brings you here?`
-    }
+    },
+    suggestions: {
+      es: ['¿En qué proyectos has trabajado?', '¿Cómo es tu proceso de diseño?', '¿Estás buscando trabajo?'],
+      ca: ['En quins projectes has treballat?', 'Com és el teu procés de disseny?', 'Estàs buscant feina?'],
+      en: ['What projects have you worked on?', 'What\'s your design process?', 'Are you open to new roles?']
+    },
   },
 
   // ── PROYECTOS OVERVIEW ─────────────────────────────────────
@@ -30,7 +35,12 @@ export const KNOWLEDGE_BASE = [
       es: `  Se quieres saber mas de algun proyecto en concreto, dime cual.`,
       ca: `  Si vols saber mes d'algun projecte en concret, digues-me quin.`,
       en: `  Want me to go deeper on any specific one?`
-    }
+    },
+    suggestions: {
+      es: ['Cuéntame sobre el Map Redesign', 'Cuéntame sobre Mobile First', 'Ver todos los proyectos'],
+      ca: ['Explica\'m el Map Redesign', 'Explica\'m el Mobile First', 'Veure tots els projectes'],
+      en: ['Tell me about the Map Redesign', 'Tell me about Mobile First', 'What\'s your design process?']
+    },
   },
 
   // ── MAP REDESIGN ───────────────────────────────────────────
