@@ -701,6 +701,54 @@ export const KNOWLEDGE_BASE = [
     },
   },
 
+  // ── EASTER EGG: EL PERRO ──────────────────────────────────
+  {
+    id: 'easter-dog',
+    triggers: ['perro', 'dog', 'gos', 'mascota', 'pet', 'animal', 'tiene perro', 'do you have a dog', 'tens gos', 'tienes mascota', 'do you have a pet'],
+    response: {
+      es: `Sí, tengo un perro y es básicamente mi co-worker 🐕\n\nTrabaja desde casa igual que yo — siempre está encima mío, dormido, mientras yo trabajo. No aporta mucho al producto pero la compañía es buena.`,
+      ca: `Sí, tinc un gos i és bàsicament el meu co-worker 🐕\n\nTreballa des de casa igual que jo — sempre està a sobre meu, dormint, mentre jo treballo. No aporta gaire al producte però la companyia és bona.`,
+      en: `Yes, I have a dog and he's basically my co-worker 🐕\n\nHe works from home just like me — always on top of me, sleeping, while I work. Doesn't contribute much to the product but the company is good.`
+    },
+    suggestions: {
+      es: ['¿Qué proyectos tienes?', '¿Cómo es tu proceso de diseño?'],
+      ca: ['Quins projectes tens?', 'Com és el teu procés de disseny?'],
+      en: ['What projects do you have?', "What's your design process?"]
+    }
+  },
+
+  // ── EASTER EGG: AUTOMATIZACIÓN ────────────────────────────
+  {
+    id: 'easter-automation',
+    triggers: ['automatizacion', 'automation', 'automatitzacio', 'smart home', 'casa inteligente', 'casa intel·ligent', 'domotica', 'home assistant', 'alexa', 'google home', 'iot', 'interruptor', 'light switch', 'luces', 'llums'],
+    response: {
+      es: `Bastante. Ya no sé cómo funcionan los interruptores de la luz 😄\n\nSolo enciendo las luces por voz o con rutinas. Si alguna automatización falla, me quedo literalmente a oscuras porque no recuerdo dónde están los switches físicos ni cómo funcionan. He perdido todos los mandos y no tengo ni idea de dónde están.`,
+      ca: `Bastant. Ja no sé com funcionen els interruptors de la llum 😄\n\nNomés encenc les llums per veu o amb rutines. Si alguna automatització falla, em quedo literalment a les fosques perquè no recordo on són els switches físics ni com funcionen. He perdut tots els comandaments i no tinc ni idea d'on són.`,
+      en: `Quite a lot. I no longer know how light switches work 😄\n\nI only turn lights on by voice or with routines. If any automation fails, I'm literally left in the dark because I don't remember where the physical switches are or how they work. I've lost all the remotes and have no idea where they are.`
+    },
+    suggestions: {
+      es: ['¿Qué proyectos tienes?', '¿Cómo es tu proceso de diseño?'],
+      ca: ['Quins projectes tens?', 'Com és el teu procés de disseny?'],
+      en: ['What projects do you have?', "What's your design process?"]
+    }
+  },
+
+  // ── EASTER EGG: NALU ──────────────────────────────────────
+  {
+    id: 'easter-nalu',
+    triggers: ['nalu', 'app oceano', 'ocean app', 'app ocean', 'strava buceo', 'strava diving', 'strava ocean', 'buceo app', 'diving app', 'fauna marina', 'marine life', 'vida marina', 'snorkel app', 'open water', 'aguas abiertas', 'aigu obertes'],
+    response: {
+      es: `Nalu es mi side project más ambicioso y del que más orgulloso estoy 🌊\n\nEs básicamente el Strava para actividades oceánicas. La idea nació de mi pasión por el buceo y la vida marina — y de que no existía ninguna app que combinara bien el registro de actividades con el descubrimiento de fauna marina y la conexión con otras personas que comparten esa pasión.\n\nNalu permite registrar buceos, snorkel y natación en aguas abiertas, tiene una especie de Pokédex para identificar fauna marina, y conecta a usuarios con centros de buceo y otros profesionales.\n\nAún está en desarrollo. Cuando salga te aviso 😄`,
+      ca: `Nalu és el meu side project més ambiciós i del qual estic més orgullós 🌊\n\nÉs bàsicament el Strava per a activitats oceàniques. La idea va néixer de la meva passió pel busseig i la vida marina — i que no existia cap app que combinés bé el registre d'activitats amb el descobriment de fauna marina.\n\nNalu permet registrar busseigs, snorkel i natació en aigües obertes, té una mena de Pokédex per identificar fauna marina, i connecta usuaris amb centres de busseig i altres professionals.\n\nEncara està en desenvolupament. Quan surti t'aviso 😄`,
+      en: `Nalu is my most ambitious side project and the one I'm most proud of 🌊\n\nIt's basically Strava for ocean activities. The idea came from my passion for diving and marine life — and the fact that no app combined activity logging with marine life discovery and connecting with people who share that passion.\n\nNalu lets you log dives, snorkelling and open-water swims, has a kind of Pokédex for identifying marine life, and connects users with dive centres and other professionals.\n\nStill in development. I'll let you know when it launches 😄`
+    },
+    suggestions: {
+      es: ['Cuéntame más sobre tus side projects', '¿Qué proyectos tienes en el portfolio?'],
+      ca: ["Explica'm més sobre els teus side projects", 'Quins projectes tens al portfolio?'],
+      en: ['Tell me more about your side projects', 'What projects are in your portfolio?']
+    }
+  },
+
 ];
 
 /* ── FALLBACK — siempre ofrece contacto, nunca un callejón sin salida ── */
