@@ -580,6 +580,22 @@ export const KNOWLEDGE_BASE = [
     }
   },
 
+  // ── MODO RECRUITER ─────────────────────────────────────────
+  {
+    id: 'recruiter-summary',
+    triggers: ['recruiter', 'reclutador', 'reclutadora', 'hiring', 'contratando', 'contratacion', 'vacante', 'posicion', 'puesto', 'oportunidad laboral', 'job opportunity', 'tenemos una oferta', 'we have a role', 'looking to hire', 'buscamos disenador', 'buscamos designer', 'looking for a designer', 'te estamos buscando', 'encajas en', 'you would be a great fit'],
+    response: {
+      es: `Perfecto, aquí va el resumen rápido 👋\n\n**Oscar Denamiel — Senior Product Designer**\n8+ años · Barcelona · Disponible\n\n**Especialidad:** Growth, CRO, UX Research, Design Systems AI-Ready\n**Sectores:** Travel Tech, E-commerce, Fintech\n\n**Top resultados:**\n→ +25% CVR y +43% sesión (Map Redesign, Stayforlong)\n→ +8% CVR y +7% beneficio diario (Mobile First, Leadtech)\n→ -17% contactos soporte (Self-Service Bookings)\n→ 3M+ usuarios impactados · 100+ experimentos validados\n\n**Stack:** Figma, A/B testing, Hotjar, Amplitude, Python/SQL\n**Modalidad:** Remoto, híbrido o presencial · Abierto a reubicación\n\n📧 <a href="mailto:oscardenamiel@gmail.com" class="text-link" target="_blank">oscardenamiel@gmail.com</a>\n💼 <a href="https://linkedin.com/in/oscardenamiel" class="text-link" target="_blank">linkedin.com/in/oscardenamiel</a>`,
+      ca: `Perfecte, aquí va el resum ràpid 👋\n\n**Oscar Denamiel — Senior Product Designer**\n8+ anys · Barcelona · Disponible\n\n**Especialitat:** Growth, CRO, UX Research, Design Systems AI-Ready\n**Sectors:** Travel Tech, E-commerce, Fintech\n\n**Top resultats:**\n→ +25% CVR i +43% sessió (Map Redesign, Stayforlong)\n→ +8% CVR i +7% benefici diari (Mobile First, Leadtech)\n→ -17% contactes suport (Self-Service Bookings)\n→ 3M+ usuaris impactats · 100+ experiments validats\n\n**Stack:** Figma, A/B testing, Hotjar, Amplitude, Python/SQL\n**Modalitat:** Remot, híbrid o presencial · Obert a reubicació\n\n📧 <a href="mailto:oscardenamiel@gmail.com" class="text-link" target="_blank">oscardenamiel@gmail.com</a>\n💼 <a href="https://linkedin.com/in/oscardenamiel" class="text-link" target="_blank">linkedin.com/in/oscardenamiel</a>`,
+      en: `Perfect, here's the quick summary 👋\n\n**Oscar Denamiel — Senior Product Designer**\n8+ years · Barcelona · Available\n\n**Specialty:** Growth, CRO, UX Research, AI-Ready Design Systems\n**Sectors:** Travel Tech, E-commerce, Fintech\n\n**Top results:**\n→ +25% CVR and +43% session duration (Map Redesign, Stayforlong)\n→ +8% CVR and +7% daily profit (Mobile First, Leadtech)\n→ -17% support contacts (Self-Service Bookings)\n→ 3M+ users impacted · 100+ experiments validated\n\n**Stack:** Figma, A/B testing, Hotjar, Amplitude, Python/SQL\n**Format:** Remote, hybrid or on-site · Open to relocation\n\n📧 <a href="mailto:oscardenamiel@gmail.com" class="text-link" target="_blank">oscardenamiel@gmail.com</a>\n💼 <a href="https://linkedin.com/in/oscardenamiel" class="text-link" target="_blank">linkedin.com/in/oscardenamiel</a>`
+    },
+    suggestions: {
+      es: ['Ver case studies completos', 'Descargar CV', 'Escribir directamente'],
+      ca: ['Veure case studies complets', 'Descarregar CV', 'Escriure directament'],
+      en: ['See full case studies', 'Download CV', 'Get in touch directly']
+    }
+  },
+
 ];
 
 /* ── FALLBACK — siempre ofrece contacto, nunca un callejón sin salida ── */

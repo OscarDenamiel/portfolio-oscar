@@ -245,18 +245,19 @@ class OscarChatbot {
   open() {
     this.isOpen = true;
     this.panel.classList.add('open');
-
-    const isDesktop = window.innerWidth >= 769;
-    if (!isDesktop) {
+  
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile) {
       this.overlay.classList.add('open');
       document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
     }
-
+  
     if (!this.welcomeShown) {
       this.welcomeShown = true;
       this.showWelcome();
     }
-
+  
     this.setTriggerActive(true);
     setTimeout(() => this.inputEl.focus(), 300);
   }
@@ -266,6 +267,7 @@ class OscarChatbot {
     this.overlay.classList.remove('open');
     this.panel.classList.remove('open');
     document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
     this.setTriggerActive(false);
   }
 
@@ -437,6 +439,14 @@ class OscarChatbot {
 
       const lang = detectLanguage(text, this.conversationContext);
       const match = findResponse(text, this.conversationContext);
+      // Google Analytics — tracking de inputs del chatbot
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'chatbot_message', {
+          search_term: text,
+          matched_intent: match?.id || 'no_match',
+          language: lang
+        });
+      }
       let response = match ? match.response[lang] : FALLBACK[lang];
 
       response = injectCaseStudyLinks(response);

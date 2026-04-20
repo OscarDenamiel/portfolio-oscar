@@ -117,7 +117,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
+  padding: 16px 16px;
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
@@ -174,8 +174,8 @@
   background: var(--surface);
   border: none;
   cursor: pointer;
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   border-radius: 500px;
   color: var(--text-primary);
   display: flex;
@@ -328,7 +328,7 @@
 
 /* ── Input area ── */
 .chatbot-input-area {
-  padding: 12px 20px 20px;
+  padding: 8px 16px 16px;
   border-top: 1px solid var(--border);
   flex-shrink: 0;
 }
@@ -340,7 +340,7 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 500px;
-  padding: 10px 10px 10px 16px;
+  padding: 6px 6px 6px 16px;
   transition: border-color 0.15s;
 }
 
@@ -375,8 +375,8 @@
 }
 
 .chatbot-send {
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   border-radius: 500px;
   background: var(--primary);
   border: none;
