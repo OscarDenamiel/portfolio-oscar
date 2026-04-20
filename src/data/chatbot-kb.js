@@ -749,6 +749,67 @@ export const KNOWLEDGE_BASE = [
     }
   },
 
+  // ── RECOMMENDATION ENGINE ─────────────────────────────────
+  {
+    id: 'recommendation-start',
+    triggers: ['que deberia ver', 'what should i see', 'que hauria de veure', 'por donde empiezo', 'where do i start', 'per on comence', 'ayudame a elegir', 'help me choose', 'ajuda m a triar', 'que me recomiendas', 'what do you recommend', 'que em recomanaries', 'guiame', 'guide me', 'guia m'],
+    response: {
+      es: `Depende de lo que busques. Cuéntame, ¿eres...?`,
+      ca: `Depèn del que busquis. Explica'm, ets...?`,
+      en: `Depends on what you're looking for. Tell me, are you...?`
+    },
+    suggestions: {
+      es: ['Soy recruiter o hiring manager', 'Busco colaborar o hacer networking', 'Solo tengo curiosidad'],
+      ca: ['Soc recruiter o hiring manager', 'Busco col·laborar o fer networking', 'Només tinc curiositat'],
+      en: ['I\'m a recruiter or hiring manager', 'Looking to collaborate or network', 'Just curious']
+    }
+  },
+
+  {
+    id: 'recommendation-recruiter',
+    triggers: ['soy recruiter', 'soc recruiter', 'i\'m a recruiter', 'hiring manager', 'soy hiring', 'soc hiring'],
+    response: {
+      es: `Perfecto, aquí va tu ruta en 3 pasos\n\n**1. Resumen ejecutivo** — escribe "recruiter" para ver mi perfil completo con resultados y contacto directo.\n\n**2. Proyectos con más impacto** — el Map Redesign en oscardenamiel.com/map es el más completo. Mobile First en oscardenamiel.com/mobile-first tiene los mejores números de conversión.\n\n**3. CV y contacto** — oscardenamiel@gmail.com o linkedin.com/in/oscardenamiel. Suelo responder en el día.`,
+      ca: `Perfecte, aquí va la teva ruta en 3 passos\n\n**1. Resum executiu** — escriu "recruiter" per veure el meu perfil complet amb resultats i contacte directe.\n\n**2. Projectes amb més impacte** — el Map Redesign a oscardenamiel.com/map és el més complet. Mobile First a oscardenamiel.com/mobile-first té els millors números de conversió.\n\n**3. CV i contacte** — oscardenamiel@gmail.com o linkedin.com/in/oscardenamiel. Acostumo a respondre el mateix dia.`,
+      en: `Perfect, here's your route in 3 steps\n\n**1. Executive summary** — type "recruiter" to see my full profile with results and direct contact.\n\n**2. Highest impact projects** — the Map Redesign at oscardenamiel.com/map is the most complete. Mobile First at oscardenamiel.com/mobile-first has the best conversion numbers.\n\n**3. CV and contact** — oscardenamiel@gmail.com or linkedin.com/in/oscardenamiel. I usually reply the same day.`
+    },
+    suggestions: {
+      es: ['Ver resumen de recruiter', 'Ver el Map Redesign', 'Descargar CV'],
+      ca: ['Veure resum de recruiter', 'Veure el Map Redesign', 'Descarregar CV'],
+      en: ['See recruiter summary', 'See the Map Redesign', 'Download CV']
+    }
+  },
+
+  {
+    id: 'recommendation-collaborate',
+    triggers: ['busco colaborar', 'looking to collaborate', 'busco col·laborar', 'networking', 'colaboracion', 'collaboration', 'col·laboracio', 'trabajar juntos', 'work together', 'treballar junts'],
+    response: {
+      es: `Genial, me interesa el contexto.\n\nLo mejor que puedes hacer es echar un vistazo a cómo trabajo — el Map Redesign en oscardenamiel.com/map muestra bien mi proceso end-to-end.\n\nSi tienes un proyecto concreto en mente, escríbeme directamente a oscardenamiel@gmail.com con el contexto y lo vemos. Respondo rápido.`,
+      ca: `Genial, m'interessa el context.\n\nEl millor que pots fer és veure com treballo — el Map Redesign a oscardenamiel.com/map mostra bé el meu procés end-to-end.\n\nSi tens un projecte concret en ment, escriu-me directament a oscardenamiel@gmail.com amb el context i ho veiem. Responc ràpid.`,
+      en: `Great, I'm interested in the context.\n\nBest thing you can do is see how I work — the Map Redesign at oscardenamiel.com/map shows my end-to-end process well.\n\nIf you have a specific project in mind, write to me directly at oscardenamiel@gmail.com with the context and let's talk. I reply fast.`
+    },
+    suggestions: {
+      es: ['Ver el Map Redesign', 'Ver todos los proyectos', 'Contactar directamente'],
+      ca: ['Veure el Map Redesign', 'Veure tots els projectes', 'Contactar directament'],
+      en: ['See the Map Redesign', 'See all projects', 'Contact directly']
+    }
+  },
+
+  {
+    id: 'recommendation-curious',
+    triggers: ['solo tengo curiosidad', 'just curious', 'nomes tinc curiositat', 'solo curiosidad', 'just looking', 'nomes mirant', 'explorando', 'exploring', 'explorant'],
+    response: {
+      es: `Bienvenido entonces. Te doy el recorrido rápido.\n\nEmpezaría por la página de inicio para ver los proyectos con resultados reales. Si algo te llama la atención, cada case study tiene el proceso completo documentado.\n\nSi quieres entender cómo pienso, el Map Redesign en oscardenamiel.com/map es el mejor ejemplo — 4 meses de discovery, 14 competidores, 10 países.\n\nY si tienes alguna pregunta, aquí estoy.`,
+      ca: `Benvingut llavors. Et dono el recorregut ràpid.\n\nComençaria per la pàgina d'inici per veure els projectes amb resultats reals. Si alguna cosa et crida l'atenció, cada case study té el procés complet documentat.\n\nSi vols entendre com penso, el Map Redesign a oscardenamiel.com/map és el millor exemple.\n\nI si tens alguna pregunta, aquí estic.`,
+      en: `Welcome then. Here's the quick tour.\n\nI'd start with the homepage to see the projects with real results. If anything catches your eye, each case study has the full process documented.\n\nIf you want to understand how I think, the Map Redesign at oscardenamiel.com/map is the best example — 4 months of discovery, 14 competitors, 10 countries.\n\nAnd if you have any questions, just ask.`
+    },
+    suggestions: {
+      es: ['Ver el Map Redesign', 'Ver todos los proyectos', '¿Cómo es tu proceso de diseño?'],
+      ca: ['Veure el Map Redesign', 'Veure tots els projectes', 'Com és el teu procés de disseny?'],
+      en: ['See the Map Redesign', 'See all projects', "What's your design process?"]
+    }
+  },
+
 ];
 
 /* ── FALLBACK — siempre ofrece contacto, nunca un callejón sin salida ── */

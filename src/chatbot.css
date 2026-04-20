@@ -475,3 +475,102 @@
   content: '→';
   font-size: 14px;
 }
+
+/* ── Feedback buttons ── */
+.chatbot-feedback {
+  display: flex;
+  gap: 4px;
+  margin-top: 6px;
+  padding-left: 2px;
+}
+
+.chatbot-feedback-btn {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  opacity: 1;
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+/* Mostrar al hover del mensaje */
+.chatbot-msg:hover .chatbot-feedback-btn {
+  opacity: 1;
+}
+
+.chatbot-feedback-btn:hover:not(:disabled) {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+.chatbot-feedback-btn--active {
+  opacity: 1 !important;
+  color: var(--primary) !important;
+  background-color: var(--surface);
+  animation: feedback-bg 0.4s ease;
+}
+@keyframes feedback-bg {
+  0%   { background: transparent; }
+  50%  { background: rgba(255, 121, 27, 0.15); }
+  100% { background: transparent; }
+}
+
+.chatbot-feedback-btn:disabled {
+  cursor: default;
+}
+
+/* Tooltip */
+.chatbot-feedback-btn::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--text-primary);
+  color: var(--bg);
+  font-size: 11px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.chatbot-feedback-btn:hover::after {
+  opacity: 1;
+}
+
+.chatbot-feedback-btn svg {
+  stroke: var(--text-secondary);
+  filter: none !important;
+  transform-origin: center;
+  transition: transform 0.2s ease;
+}
+
+.chatbot-feedback-btn:hover:not(:disabled) svg {
+  stroke: var(--text-primary);
+  filter: none !important;
+}
+
+.chatbot-feedback-btn--active svg {
+  stroke: var(--primary) !important;
+  filter: none !important;
+  animation: thumb-pop 0.35s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+@keyframes thumb-pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.35) rotate(-8deg); }
+  70%  { transform: scale(0.95) rotate(4deg); }
+  100% { transform: scale(1) rotate(0); }
+}

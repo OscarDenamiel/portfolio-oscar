@@ -7,7 +7,7 @@
 import { KNOWLEDGE_BASE, FALLBACK } from '../data/chatbot-kb.js';
 import '../chatbot.css';
 
-/* ── Text normalization for fuzzy matching ── */
+/* ── Text normalization ── */
 function normalizeText(text) {
   return text
     .toLowerCase()
@@ -18,26 +18,61 @@ function normalizeText(text) {
     .replace(/\s+/g, ' ');
 }
 
-/* ── Language detection — saves preference to localStorage ── */
+/* ── Levenshtein distance ── */
+function levenshtein(a, b) {
+  if (a === b) return 0;
+  if (a.length === 0) return b.length;
+  if (b.length === 0) return a.length;
+  const matrix = [];
+  for (let i = 0; i <= b.length; i++) matrix[i] = [i];
+  for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      matrix[i][j] = b[i-1] === a[j-1]
+        ? matrix[i-1][j-1]
+        : Math.min(matrix[i-1][j-1] + 1, matrix[i][j-1] + 1, matrix[i-1][j] + 1);
+    }
+  }
+  return matrix[b.length][a.length];
+}
+
+/* ── Fuzzy word match — tolerates typos ── */
+function fuzzyWordMatch(inputWords, triggerWords) {
+  let matched = 0;
+  for (const tw of triggerWords) {
+    if (tw.length <= 3) {
+      if (inputWords.includes(tw)) matched++;
+    } else {
+      const maxDist = tw.length <= 5 ? 1 : 2;
+      const found = inputWords.some(iw => levenshtein(iw, tw) <= maxDist);
+      if (found) matched++;
+    }
+  }
+  return matched;
+}
+
+/* ── Language detection ── */
 function detectLanguage(text, context = []) {
-  const t = text.toLowerCase().trim();
+  const t = normalizeText(text);
+  const words = t.split(' ');
 
-  const caStrong = /(però|també|molt|gràcies|vaig|tinc|vull|pots|estic|puc|soc|quin|quina|projectes|feina|treballes|disseny|experiència|bon dia|bona tarda|bona nit|doncs|perquè|aquí|això|com va|molt bé|d'acord|t'interessa|m'expliques|fas|estàs)/;
-  const esStrong = /(también|qué tal|gracias|estás|cuéntame|cuál|puedes|estoy|tengo|quién|diseño|experiencia|habilidades|disponible|buenos días|buenas tardes|buenas noches|entonces|porque|cómo estás|muy bien|de acuerdo|te interesa|me explicas|haces|trabajas)/;
-  const caHint = /(hola|bon|tinc|soc|puc|però|molt|també|com)/;
-  const esHint = /(hola|buenas|tengo|soy|puedo|pero|muy|también|cómo|que|es)/;
+  const caUnique = ['pero', 'tambe', 'molt', 'gracies', 'vaig', 'tinc', 'vull', 'pots', 'estic', 'puc', 'soc', 'quin', 'quina', 'projectes', 'feina', 'treballes', 'disseny', 'bon', 'bona', 'doncs', 'perque', 'aixo', 'nomes', 'molta', 'estava', 'podeu', 'teniu', 'voleu'];
+  const esUnique = ['tambien', 'gracias', 'estas', 'cuentame', 'cual', 'puedes', 'estoy', 'tengo', 'quien', 'diseno', 'habilidades', 'disponible', 'buenos', 'buenas', 'entonces', 'porque', 'muy', 'seria', 'podria', 'tienes', 'trabajas', 'haces'];
 
-  let score = { ca: 0, es: 0 };
-  if (caStrong.test(t)) score.ca += 3;
-  if (esStrong.test(t)) score.es += 3;
-  if (caHint.test(t)) score.ca += 1;
-  if (esHint.test(t)) score.es += 1;
+  let caScore = 0;
+  let esScore = 0;
+
+  for (const w of words) {
+    if (caUnique.some(m => levenshtein(w, m) <= 1)) caScore += 2;
+    if (esUnique.some(m => levenshtein(w, m) <= 1)) esScore += 2;
+  }
+
+  if (/\b(projectes|treballes|disseny|gracies|tambe|nomes|estic|tinc)\b/.test(t)) caScore += 3;
+  if (/\b(tambien|gracias|diseno|puedes|estoy|tengo|haces)\b/.test(t)) esScore += 3;
 
   let detected = null;
-  if (score.ca - score.es >= 2) detected = 'ca';
-  else if (score.es - score.ca >= 2) detected = 'es';
-  else if (score.ca > 0 && score.es === 0) detected = 'ca';
-  else if (score.es > 0 && score.ca === 0) detected = 'es';
+  if (caScore > esScore && caScore >= 2) detected = 'ca';
+  else if (esScore > caScore && esScore >= 2) detected = 'es';
 
   if (detected) {
     try { localStorage.setItem('chatbot-lang', detected); } catch(e) {}
@@ -45,17 +80,24 @@ function detectLanguage(text, context = []) {
   }
 
   for (let i = context.length - 1; i >= Math.max(0, context.length - 4); i--) {
-    const c = (context[i].content || '').toLowerCase();
-    if (caStrong.test(c)) return 'ca';
-    if (esStrong.test(c)) return 'es';
+    const c = normalizeText(context[i].content || '');
+    const cWords = c.split(' ');
+    let cCa = 0, cEs = 0;
+    for (const w of cWords) {
+      if (caUnique.some(m => levenshtein(w, m) <= 1)) cCa++;
+      if (esUnique.some(m => levenshtein(w, m) <= 1)) cEs++;
+    }
+    if (cCa > cEs) return 'ca';
+    if (cEs > cCa) return 'es';
   }
 
   try { return localStorage.getItem('chatbot-lang') || 'en'; } catch(e) { return 'en'; }
 }
 
-/* ── Intent matching — fuzzy + context ── */
+/* ── Intent matching — fuzzy + word overlap + levenshtein ── */
 function findResponse(input, context = []) {
   const normalizedInput = normalizeText(input);
+  const inputWords = normalizedInput.split(' ').filter(w => w.length > 0);
 
   let bestMatch = null;
   let bestScore = 0;
@@ -67,16 +109,32 @@ function findResponse(input, context = []) {
   );
 
   for (const entry of KNOWLEDGE_BASE) {
-    let score = 0;
+    let entryScore = 0;
+
     for (const trigger of entry.triggers) {
       const normalizedTrigger = normalizeText(trigger);
+      const triggerWords = normalizedTrigger.split(' ').filter(w => w.length > 0);
+
+      let score = 0;
+
       if (normalizedInput.includes(normalizedTrigger)) {
-        score = Math.max(score, trigger.length);
+        score = trigger.length * 2;
+      } else {
+        const matched = fuzzyWordMatch(inputWords, triggerWords);
+        if (matched > 0) {
+          const overlap = matched / triggerWords.length;
+          if (overlap >= 0.6) {
+            score = overlap * trigger.length;
+          }
+        }
       }
+
+      if (score > entryScore) entryScore = score;
     }
-    if (score > 0 && recentTopics.has(entry.id)) score *= 0.8;
-    if (score > bestScore) {
-      bestScore = score;
+
+    if (entryScore > 0 && recentTopics.has(entry.id)) entryScore *= 0.8;
+    if (entryScore > bestScore) {
+      bestScore = entryScore;
       bestMatch = entry;
     }
   }
@@ -404,12 +462,83 @@ class OscarChatbot {
   appendMessage(role, content, raw = false) {
     const msg = document.createElement('div');
     msg.className = `chatbot-msg ${role}`;
-
+  
     const bubble = document.createElement('div');
     bubble.className = 'chatbot-bubble';
     bubble.innerHTML = raw ? this.formatRaw(content) : this.formatText(content);
-
+  
     msg.appendChild(bubble);
+  
+      // Feedback buttons — solo en mensajes del asistente
+  if (role === 'assistant') {
+    const feedback = document.createElement('div');
+    feedback.className = 'chatbot-feedback';
+
+    // Copy button
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'chatbot-feedback-btn';
+    copyBtn.setAttribute('aria-label', 'Copy response');
+    copyBtn.setAttribute('data-tooltip', 'Copy');
+    copyBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
+    copyBtn.addEventListener('click', () => {
+      const text = bubble.innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        copyBtn.setAttribute('data-tooltip', 'Copied!');
+        copyBtn.classList.add('chatbot-feedback-btn--active');
+        setTimeout(() => {
+          copyBtn.setAttribute('data-tooltip', 'Copy');
+          copyBtn.classList.remove('chatbot-feedback-btn--active');
+        }, 2000);
+      });
+    });
+    feedback.appendChild(copyBtn);
+
+    // Thumbs up / down
+    [
+      { emoji: '👍', svg: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>`, tooltip: 'Helpful', type: 'helpful' },
+      { emoji: '👎', svg: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"/><path d="M17 2h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg>`, tooltip: 'Not helpful', type: 'not_helpful' },
+    ].forEach(({ svg, tooltip, type }) => {
+      const btn = document.createElement('button');
+      btn.className = 'chatbot-feedback-btn';
+      btn.setAttribute('aria-label', tooltip);
+      btn.setAttribute('data-tooltip', tooltip);
+      btn.innerHTML = svg;
+      btn.addEventListener('click', () => {
+        // 📳 HAPTIC FEEDBACK
+        if (navigator.vibrate) {
+        navigator.vibrate(10); // súper sutil (recomendado)
+        }
+
+        const buttons = feedback.querySelectorAll('.chatbot-feedback-btn');
+      
+        // Reset estado de todos
+        buttons.forEach(b => {
+          if (b !== copyBtn) {
+            b.classList.remove('chatbot-feedback-btn--active');
+          }
+        });
+      
+        // Toggle del botón actual
+        const isActive = btn.classList.contains('chatbot-feedback-btn--active');
+      
+        if (!isActive) {
+          btn.classList.add('chatbot-feedback-btn--active');
+      
+          if (typeof gtag !== 'undefined') {
+            gtag('event', 'chatbot_feedback', {
+              feedback_type: type, // helpful / not_helpful
+              response_preview: bubble.innerText.slice(0, 80),
+              matched_intent: match?.id || 'unknown'
+            });
+          }
+        }
+      });
+      feedback.appendChild(btn);
+    });
+
+    msg.appendChild(feedback);
+  }
+  
     this.messagesEl.appendChild(msg);
     this.scrollToBottom();
     return bubble;
