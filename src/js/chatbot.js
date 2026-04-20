@@ -52,12 +52,35 @@ function fuzzyWordMatch(inputWords, triggerWords) {
 }
 
 /* ── Language detection ── */
-function detectLanguage(text, context = []) {
+function detectLanguageFromText(text) {
   const t = normalizeText(text);
   const words = t.split(' ');
 
-  const caUnique = ['pero', 'tambe', 'molt', 'gracies', 'vaig', 'tinc', 'vull', 'pots', 'estic', 'puc', 'soc', 'quin', 'quina', 'projectes', 'feina', 'treballes', 'disseny', 'bon', 'bona', 'doncs', 'perque', 'aixo', 'nomes', 'molta', 'estava', 'podeu', 'teniu', 'voleu'];
-  const esUnique = ['tambien', 'gracias', 'estas', 'cuentame', 'cual', 'puedes', 'estoy', 'tengo', 'quien', 'diseno', 'habilidades', 'disponible', 'buenos', 'buenas', 'entonces', 'porque', 'muy', 'seria', 'podria', 'tienes', 'trabajas', 'haces'];
+  const caUnique = [
+    // Verbos comunes
+    'vaig', 'tinc', 'vull', 'pots', 'estic', 'puc', 'soc', 'està', 'estàs', 'estamos', 'veus', 'veia', 'veies', 'veiem',
+    // Preguntas
+    'quin', 'quina', 'quins', 'quines', 'com', 'què',
+    // Palabras catalanas únicas
+    'projectes', 'feina', 'treballes', 'disseny', 'bon', 'bona', 'doncs', 'perque', 'aixo', 'nomes', 'molta', 'estava', 'podeu', 'teniu', 'voleu',
+    // Más palabras catalanas
+    'però', 'també', 'molt', 'gràcies', 'si', 'no', 'aqui', 'allà', 'demà', 'avui', 'ahir', 'sempre', 'mai', 'alguna', 'quelcom', 'tot', 'tots', 'tothom', 'ningú',
+    // Palabras laborales/portfolio catalanas
+    'dissenyador', 'experiència', 'portfolio', 'projecte', 'procés', 'habilitats', 'disponible', 'contacte', 'linkedin', 'cv'
+  ];
+
+  const esUnique = [
+    // Verbos comunes
+    'tengo', 'estoy', 'estás', 'estamos', 'tenemos', 'quiero', 'puedo', 'puedes', 'podemos', 'soy', 'eres', 'somos', 'veo', 'vemos', 'veía', 'veías',
+    // Preguntas
+    'cual', 'cuales', 'cuál', 'cuáles', 'cómo', 'qué', 'dónde', 'cuándo', 'cuánto',
+    // Palabras españolas únicas
+    'tambien', 'también', 'gracias', 'estas', 'cuentame', 'cuéntame', 'diseno', 'diseño', 'habilidades', 'disponible', 'buenos', 'buenas', 'entonces', 'porque', 'porqué', 'muy', 'seria', 'sería', 'podria', 'podría', 'tienes', 'trabajas', 'haces',
+    // Más palabras españolas
+    'pero', 'sino', 'desde', 'hasta', 'después', 'antes', 'ahora', 'luego', 'siempre', 'nunca', 'algo', 'nada', 'alguien', 'nadie', 'todo', 'todos', 'cada', 'otro',
+    // Palabras laborales/portfolio españolas
+    'diseñador', 'experiencia', 'portafolio', 'proyecto', 'proceso', 'habilidades', 'disponible', 'contacto', 'linkedin', 'cv'
+  ];
 
   let caScore = 0;
   let esScore = 0;
@@ -67,31 +90,13 @@ function detectLanguage(text, context = []) {
     if (esUnique.some(m => levenshtein(w, m) <= 1)) esScore += 2;
   }
 
-  if (/\b(projectes|treballes|disseny|gracies|tambe|nomes|estic|tinc)\b/.test(t)) caScore += 3;
-  if (/\b(tambien|gracias|diseno|puedes|estoy|tengo|haces)\b/.test(t)) esScore += 3;
+  if (/\b(projectes|treballes|disseny|gracies|tambe|nomes|estic|tinc|però|també|gràcies|dissenyador)\b/.test(t)) caScore += 3;
+  if (/\b(tambien|también|gracias|diseno|diseño|podria|podría|sería|seria|diseñador|experiencia)\b/.test(t)) esScore += 3;
 
-  let detected = null;
-  if (caScore > esScore && caScore >= 2) detected = 'ca';
-  else if (esScore > caScore && esScore >= 2) detected = 'es';
-
-  if (detected) {
-    try { localStorage.setItem('chatbot-lang', detected); } catch(e) {}
-    return detected;
-  }
-
-  for (let i = context.length - 1; i >= Math.max(0, context.length - 4); i--) {
-    const c = normalizeText(context[i].content || '');
-    const cWords = c.split(' ');
-    let cCa = 0, cEs = 0;
-    for (const w of cWords) {
-      if (caUnique.some(m => levenshtein(w, m) <= 1)) cCa++;
-      if (esUnique.some(m => levenshtein(w, m) <= 1)) cEs++;
-    }
-    if (cCa > cEs) return 'ca';
-    if (cEs > cCa) return 'es';
-  }
-
-  try { return localStorage.getItem('chatbot-lang') || 'en'; } catch(e) { return 'en'; }
+  if (caScore > esScore && caScore >= 2) return 'ca';
+  if (esScore > caScore && esScore >= 2) return 'es';
+  
+  return null;
 }
 
 /* ── Intent matching — fuzzy + word overlap + levenshtein ── */
@@ -408,7 +413,7 @@ class OscarChatbot {
       } catch(e) { sessionStorage.removeItem('chatbot-history'); }
     }
   
-    const storedLang = (() => { try { return localStorage.getItem('chatbot-lang') || 'en'; } catch(e) { return 'en'; } })();
+    const storedLang = localStorage.getItem('chatbot-lang') || 'en';
 
     // ── Actualizar perfil del visitante ──
     const profile = getVisitorProfile();
@@ -477,19 +482,6 @@ class OscarChatbot {
     }
   
     this.appendMessage('assistant', welcomeText);
-    // Actualizar perfil con el intent actual
-if (match?.id) {
-  const projectIds = ['project-map', 'project-mobile-first', 'project-self-service', 'project-smart-suggester'];
-  const profile = getVisitorProfile() || {};
-  if (projectIds.includes(match.id)) {
-    const seen = [...new Set([...(profile.seenProjects || []), match.id])];
-    updateVisitorProfile({ seenProjects: seen, lastIntent: match.id });
-  } else if (match.id === 'recruiter-summary') {
-    updateVisitorProfile({ isRecruiter: true, lastIntent: 'recruiter-summary' });
-  } else {
-    updateVisitorProfile({ lastIntent: match.id });
-  }
-}
     this.saveHistory();
   
     // Mostrar suggestions específicas de página o las genéricas
@@ -764,6 +756,18 @@ if (match && wasAlreadyDiscussed(match.id, this.conversationContext)) {
 }
   
       this.appendMessage('assistant', response, true);
+
+      if (smartSuggestions) {
+        this.showQuickReplies(smartSuggestions);
+      } else if (match && !wasAlreadyDiscussed(match.id, this.conversationContext.slice(0, -1))) {
+        const suggestions = match.suggestions && match.suggestions[lang];
+        if (suggestions && suggestions.length > 0) this.showQuickReplies(suggestions);
+        const HIGH_INTENT = ['availability', 'contact', 'cv-download', 'recruiter-summary', 'salary', 'why-hire-me'];
+        if (HIGH_INTENT.includes(match.id)) this.showCTAs(lang);
+      } else if (!match) {
+        // Si no hay match y no hay smartSuggestions, mostrar default
+        this.showSuggestions();
+      }
   
       const suggestions = match && match.suggestions && match.suggestions[lang];
       if (suggestions && suggestions.length > 0) this.showQuickReplies(suggestions);
@@ -799,7 +803,7 @@ if (match && wasAlreadyDiscussed(match.id, this.conversationContext)) {
     setTimeout(() => {
       typingEl.remove();
     
-      const lang = detectLanguage(text, this.conversationContext);
+      const lang = detectLanguageOnce(text);
       const match = findResponse(text, this.conversationContext);
     
       if (typeof gtag !== 'undefined') {
