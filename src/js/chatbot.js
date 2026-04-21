@@ -396,7 +396,9 @@ class OscarChatbot {
     }
 
     this.setTriggerActive(true);
-    setTimeout(() => this.inputEl.focus(), 300);
+    if (window.innerWidth > 1024) {
+      setTimeout(() => this.inputEl.focus(), 300);
+    }
   }
 
   close() {
