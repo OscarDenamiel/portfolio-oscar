@@ -424,6 +424,120 @@ class OscarChatbot {
   }
 
   showWelcome() {
+    const storedLang = localStorage.getItem('chatbot-lang') || 'en';
+  
+    const PAGE_CONTEXT = {
+      '/map':                  { id: 'project-map',             en: `I see you're checking out the Map Redesign 👀\n\nHappy to go deeper on any part of it — the research process, the results, or the decisions behind it. What are you curious about?`, es: `Veo que estás viendo el Map Redesign 👀\n\nPuedo contarte más sobre el proceso de research, los resultados o las decisiones detrás del proyecto. ¿Qué te interesa?`, ca: `Veig que estàs veient el Map Redesign 👀\n\nPuc explicar-te més sobre el procés de research, els resultats o les decisions darrere del projecte. Què t'interessa?` },
+      '/mobile-first':         { id: 'project-mobile-first',    en: `You're looking at Mobile First 👀\n\nThis one's close to my heart — it completely changed how I think about mobile design. Ask me anything about it.`, es: `Estás viendo el Mobile First 👀\n\nEste proyecto cambió mucho cómo pienso sobre el diseño mobile. Pregúntame lo que quieras.`, ca: `Estàs veient el Mobile First 👀\n\nAquest projecte va canviar molt com penso sobre el disseny mòbil. Pregunta'm el que vulguis.` },
+      '/self-service-booking': { id: 'project-self-service',    en: `You're on the Self-Service Bookings case study 👀\n\nThis one started from a very real operational problem. Want me to walk you through the thinking behind it?`, es: `Estás en el case study de Self-Service Bookings 👀\n\nEste empezó de un problema operacional muy real. ¿Quieres que te cuente el razonamiento detrás?`, ca: `Estàs al case study de Self-Service Bookings 👀\n\nAquest va començar d'un problema operacional molt real. Vols que t'expliqui el raonament?` },
+      '/smart-suggester':      { id: 'project-smart-suggester', en: `You're exploring the Smart Suggester 👀\n\nThis one's more technical than it looks. Happy to explain the UX decisions and the back-end collaboration behind it.`, es: `Estás explorando el Smart Suggester 👀\n\nEste es más técnico de lo que parece. Puedo explicarte las decisiones de UX y la colaboración con back-end.`, ca: `Estàs explorant el Smart Suggester 👀\n\nAquest és més tècnic del que sembla. Puc explicar-te les decisions de UX i la col·laboració amb back-end.` },
+      '/about':                { id: 'about',                   en: `You're on the About page 👋\n\nAsk me anything — about my background, what I'm working on, or what I'm looking for next.`, es: `Estás en la página About 👋\n\nPregúntame lo que quieras — sobre mi background, en qué estoy trabajando o qué busco.`, ca: `Estàs a la pàgina About 👋\n\nPregunta'm el que vulguis — sobre el meu background, en què estic treballant o què busco.` },
+    };
+  
+    // Chips contextuales por página
+    const PAGE_SUGGESTIONS = {
+      'project-map': {
+          es: [
+            { label: '⚡ Resumen del proyecto', id: 'project-map-summary' },
+            { label: '¿Cuáles fueron los resultados?', id: 'project-map-impact' },
+            { label: '¿Cómo fue el proceso de research?', id: 'project-map-research' },
+            { label: 'Ver todos los proyectos', id: 'projects-overview' }
+          ],
+          ca: [
+            { label: '⚡ Resum del projecte', id: 'project-map-summary' },
+            { label: 'Quins van ser els resultats?', id: 'project-map-impact' },
+            { label: 'Com va ser el procés de research?', id: 'project-map-research' },
+            { label: 'Veure tots els projectes', id: 'projects-overview' }
+          ],
+          en: [
+            { label: '⚡ Quick project summary', id: 'project-map-summary' },
+            { label: 'What were the results?', id: 'project-map-impact' },
+            { label: 'Walk me through the research', id: 'project-map-research' },
+            { label: 'What design decisions did you make?', id: 'project-map-decisions' }
+          ]
+        },
+      'project-mobile-first': {
+          es: [
+            { label: '⚡ Resumen del proyecto', id: 'project-mobile-first-summary' },
+            { label: '¿Cuáles fueron los resultados?', id: 'project-mobile-first-impact' },
+            { label: '¿Cómo fue el proceso de research?', id: 'project-mobile-first-research' },
+            { label: '¿Cómo validaste el diseño?', id: 'project-mobile-first-validation' }
+          ],
+          ca: [
+            { label: '⚡ Resum del projecte', id: 'project-mobile-first-summary' },
+            { label: 'Quins van ser els resultats?', id: 'project-mobile-first-impact' },
+            { label: 'Com va ser el procés de research?', id: 'project-mobile-first-research' },
+            { label: 'Com vas validar el disseny?', id: 'project-mobile-first-validation' }
+          ],
+          en: [
+            { label: '⚡ Quick project summary', id: 'project-mobile-first-summary' },
+            { label: 'What were the results?', id: 'project-mobile-first-impact' },
+            { label: 'Walk me through the research', id: 'project-mobile-first-research' },
+            { label: 'How did you validate the design?', id: 'project-mobile-first-validation' }
+          ]
+        },
+        'project-self-service': {
+          es: [
+            { label: '⚡ Resumen del proyecto', id: 'project-self-service-summary' },
+            { label: '¿Cuáles fueron los resultados?', id: 'project-self-service-impact' },
+            { label: '¿Cómo fue el proceso?', id: 'project-self-service-process' },
+            { label: 'Ver todos los proyectos', id: 'projects-overview' }
+          ],
+          ca: [
+            { label: '⚡ Resum del projecte', id: 'project-self-service-summary' },
+            { label: 'Quins van ser els resultats?', id: 'project-self-service-impact' },
+            { label: 'Com va ser el procés?', id: 'project-self-service-process' },
+            { label: 'Veure tots els projectes', id: 'projects-overview' }
+          ],
+          en: [
+            { label: '⚡ Quick project summary', id: 'project-self-service-summary' },
+            { label: 'What were the results?', id: 'project-self-service-impact' },
+            { label: 'Walk me through the process', id: 'project-self-service-process' },
+            { label: 'See all projects', id: 'projects-overview' }
+          ]
+        },
+        'project-smart-suggester': {
+          es: [
+            { label: '⚡ Resumen del proyecto', id: 'project-smart-suggester-summary' },
+            { label: '¿Cuáles fueron los resultados?', id: 'project-smart-suggester-impact' },
+            { label: '¿Cómo fue el proceso de research?', id: 'project-smart-suggester-research' },
+            { label: '¿Cómo trabajaste con ingeniería?', id: 'project-smart-suggester-engineering' }
+          ],
+          ca: [
+            { label: '⚡ Resum del projecte', id: 'project-smart-suggester-summary' },
+            { label: 'Quins van ser els resultats?', id: 'project-smart-suggester-impact' },
+            { label: 'Com va ser el procés de research?', id: 'project-smart-suggester-research' },
+            { label: 'Com vas treballar amb enginyeria?', id: 'project-smart-suggester-engineering' }
+          ],
+          en: [
+            { label: '⚡ Quick project summary', id: 'project-smart-suggester-summary' },
+            { label: 'What were the results?', id: 'project-smart-suggester-impact' },
+            { label: 'Walk me through the research', id: 'project-smart-suggester-research' },
+            { label: 'How did you work with engineering?', id: 'project-smart-suggester-engineering' }
+          ]
+        },
+      'about': {
+        es: [
+          { label: '¿Estás buscando trabajo?', id: 'availability' },
+          { label: '¿Tienes side projects?', id: 'side-projects' },
+          { label: 'Ver proyectos', id: 'projects-overview' }
+        ],
+        ca: [
+          { label: 'Estàs buscant feina?', id: 'availability' },
+          { label: 'Tens side projects?', id: 'side-projects' },
+          { label: 'Veure projectes', id: 'projects-overview' }
+        ],
+        en: [
+          { label: 'Are you open to new roles?', id: 'availability' },
+          { label: 'Do you have side projects?', id: 'side-projects' },
+          { label: 'See projects', id: 'projects-overview' }
+        ]
+      }
+    };
+  
+    const path = window.location.pathname;
+    const pageCtx = Object.entries(PAGE_CONTEXT).find(([key]) => path.includes(key));
+  
     const saved = sessionStorage.getItem('chatbot-history');
     if (saved) {
       try {
@@ -438,14 +552,30 @@ class OscarChatbot {
             id: null
           })).slice(-6);
           this.hasShownSuggestions = true;
+  
+          // Solo añadir mensaje contextual si estamos en una página de proyecto/about
+          // NO guardarlo en sessionStorage hasta que el usuario interactúe
+          if (pageCtx) {
+            const [, ctx] = pageCtx;
+            const contextMsg = ctx[storedLang] || ctx.en;
+            setTimeout(() => {
+              this.appendMessage('assistant', contextMsg);
+              const chips = PAGE_SUGGESTIONS[ctx.id]?.[storedLang] || PAGE_SUGGESTIONS[ctx.id]?.en;
+              if (chips) this.showQuickReplies(chips);
+              // NO llamamos saveHistory() aquí — se guarda solo cuando el user interactúe
+            }, 400);
+          }
+          // Si es homepage, mostrar suggestions genéricas
+          if (!pageCtx) {
+            this.hasShownSuggestions = false;
+            setTimeout(() => this.showSuggestions(), 400);
+          }
           return;
         }
       } catch(e) { sessionStorage.removeItem('chatbot-history'); }
     }
-
-    const storedLang = localStorage.getItem('chatbot-lang') || 'en';
-
-    // ── Actualizar perfil del visitante ──
+  
+    // ── Sin historial — primera apertura ──
     const profile = getVisitorProfile();
     const isReturn = profile && profile.visitCount > 0;
     const today = new Date().toISOString().split('T')[0];
@@ -454,36 +584,21 @@ class OscarChatbot {
       visitCount: (profile?.visitCount || 0) + 1,
       lastVisit: today
     });
-
-    // ── Detectar página actual ──
-    const PAGE_CONTEXT = {
-      '/map':                  { id: 'project-map',             en: `I see you're checking out the Map Redesign 👀\n\nHappy to go deeper on any part of it — the research process, the results, or the decisions behind it. What are you curious about?`, es: `Veo que estás viendo el Map Redesign 👀\n\nPuedo contarte más sobre el proceso de research, los resultados o las decisiones detrás del proyecto. ¿Qué te interesa?`, ca: `Veig que estàs veient el Map Redesign 👀\n\nPuc explicar-te més sobre el procés de research, els resultats o les decisions darrere del projecte. Què t'interessa?` },
-      '/mobile-first':         { id: 'project-mobile-first',    en: `You're looking at Mobile First 👀\n\nThis one's close to my heart — it completely changed how I think about mobile design. Ask me anything about it.`, es: `Estás viendo el Mobile First 👀\n\nEste proyecto cambió mucho cómo pienso sobre el diseño mobile. Pregúntame lo que quieras.`, ca: `Estàs veient el Mobile First 👀\n\nAquest projecte va canviar molt com penso sobre el disseny mòbil. Pregunta'm el que vulguis.` },
-      '/self-service-booking': { id: 'project-self-service',    en: `You're on the Self-Service Bookings case study 👀\n\nThis one started from a very real operational problem. Want me to walk you through the thinking behind it?`, es: `Estás en el case study de Self-Service Bookings 👀\n\nEste empezó de un problema operacional muy real. ¿Quieres que te cuente el razonamiento detrás?`, ca: `Estàs al case study de Self-Service Bookings 👀\n\nAquest va començar d'un problema operacional molt real. Vols que t'expliqui el raonament?` },
-      '/smart-suggester':      { id: 'project-smart-suggester', en: `You're exploring the Smart Suggester 👀\n\nThis one's more technical than it looks. Happy to explain the UX decisions and the back-end collaboration behind it.`, es: `Estás explorando el Smart Suggester 👀\n\nEste es más técnico de lo que parece. Puedo explicarte las decisiones de UX y la colaboración con back-end.`, ca: `Estàs explorant el Smart Suggester 👀\n\nAquest és més tècnic del que sembla. Puc explicar-te les decisions de UX i la col·laboració amb back-end.` },
-      '/about':                { id: 'about',                   en: `You're on the About page 👋\n\nAsk me anything — about my background, what I'm working on, or what I'm looking for next.`, es: `Estás en la página About 👋\n\nPregúntame lo que quieras — sobre mi background, en qué estoy trabajando o qué busco.`, ca: `Estàs a la pàgina About 👋\n\nPregunta'm el que vulguis — sobre el meu background, en què estic treballant o què busco.` },
-    };
-
-    const path = window.location.pathname;
-    const pageCtx = Object.entries(PAGE_CONTEXT).find(([key]) => path.includes(key));
-
+  
     let welcomeText;
     let contextSuggestions = null;
-
+  
     if (pageCtx) {
       const [, ctx] = pageCtx;
       welcomeText = ctx[storedLang] || ctx.en;
-      const pageEntry = KNOWLEDGE_BASE.find(e => e.id === ctx.id);
-      if (pageEntry && pageEntry.suggestions) {
-        contextSuggestions = pageEntry.suggestions[storedLang] || pageEntry.suggestions.en;
-      }
+      contextSuggestions = PAGE_SUGGESTIONS[ctx.id]?.[storedLang] || PAGE_SUGGESTIONS[ctx.id]?.en;
     } else {
       const welcomeMessages = {
         es: `Hola! Soy Oscar, Senior Product Designer en Barcelona. Puedo responderte en español, catalán o inglés — el que prefieras.\n\nPregúntame sobre mis proyectos, experiencia, proceso de diseño o lo que necesites. Este chat está en mejora constante y aprenderá para darte mejores respuestas con el tiempo.`,
         ca: `Hola! Soc l'Oscar, Senior Product Designer a Barcelona. Puc respondre't en català, castellà o anglès — el que prefereixis.\n\nPregunta'm sobre els meus projectes, experiència, procés de disseny o el que necessitis. Aquest xat està en millora constant i aprendrà per donar-te millors respostes amb el temps.`,
         en: `Hey! 👋 I'm Oscar — Senior Product Designer based in Barcelona. I can reply in English, Spanish or Catalan — just write in whichever you prefer.\n\nAsk me about my projects, experience, design process or anything else. This chat is constantly improving and will keep getting better over time.`
       };
-
+  
       if (isReturn && profile.lastIntent === 'recruiter-summary') {
         welcomeText = {
           es: `Bienvenido de nuevo 👋\n\nLa última vez estabas explorando el perfil de recruiter. ¿Sigues evaluando la oportunidad o tienes alguna pregunta concreta?`,
@@ -508,11 +623,10 @@ class OscarChatbot {
         welcomeText = welcomeMessages[storedLang];
       }
     }
-
+  
     this.appendMessage('assistant', welcomeText);
     this.saveHistory();
-
-    // Mostrar suggestions específicas de página o las genéricas
+  
     if (contextSuggestions) {
       this.hasShownSuggestions = true;
       this.showQuickReplies(contextSuggestions);
@@ -645,7 +759,7 @@ class OscarChatbot {
       copyBtn.className = 'chatbot-feedback-btn';
       copyBtn.setAttribute('aria-label', 'Copy response');
       copyBtn.setAttribute('data-tooltip', 'Copy');
-      copyBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
+      copyBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
       copyBtn.addEventListener('click', () => {
         const text = bubble.innerText;
         navigator.clipboard.writeText(text).then(() => {
@@ -661,8 +775,8 @@ class OscarChatbot {
 
       // Thumbs up / down
       [
-        { svg: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>`, tooltip: 'Helpful', type: 'helpful' },
-        { svg: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"/><path d="M17 2h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg>`, tooltip: 'Not helpful', type: 'not_helpful' },
+        { svg: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>`, tooltip: 'Helpful', type: 'helpful' },
+        { svg: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"/><path d="M17 2h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg>`, tooltip: 'Not helpful', type: 'not_helpful' },
       ].forEach(({ svg, tooltip, type }) => {
         const btn = document.createElement('button');
         btn.className = 'chatbot-feedback-btn';
