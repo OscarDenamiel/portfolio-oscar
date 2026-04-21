@@ -33,6 +33,7 @@
   display: flex;
   flex-direction: column;
   background: var(--bg);
+  overflow: hidden; /* ← añade esto */
   visibility: hidden;
   transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
               visibility 0s linear 0.45s;
@@ -340,6 +341,29 @@
   padding: 24px 16px 16px;
   border-top: none;
   flex-shrink: 0;
+}
+
+/* Mobile: fondo sólido para cubrir teclado */
+@media (max-width: 768px) {
+  .chatbot-input-area {
+    background: var(--bg);
+    padding: 12px 16px calc(16px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--border);
+  }
+}
+
+/* Desktop: efecto blur/gradiente */
+@media (min-width: 769px) {
+  .chatbot-input-area {
+    padding: 24px 16px 16px;
+    border-top: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .chatbot-messages {
+    padding-bottom: 100px;
+  }
 }
 
 .chatbot-input-row {
