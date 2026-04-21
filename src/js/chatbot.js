@@ -51,35 +51,41 @@ function fuzzyWordMatch(inputWords, triggerWords) {
   return matched;
 }
 
-/* ── Language detection ── */
+/* ── Language detection — once per session ── */
+function detectLanguageOnce(text) {
+  // 1. ¿Ya eligió antes?
+  const saved = localStorage.getItem('chatbot-lang');
+  if (saved) return saved;
+
+  // 2. Primera vez — combinar señales
+  const textLang = detectLanguageFromText(text);
+  const pageLang = detectLanguageByPage();
+
+  // Si user escribió en ES/CA, respeta eso. Si no, página o default EN
+  const lang = (textLang && textLang !== 'en') ? textLang : (pageLang || 'en');
+
+  localStorage.setItem('chatbot-lang', lang);
+  return lang;
+}
+
 function detectLanguageFromText(text) {
   const t = normalizeText(text);
   const words = t.split(' ');
 
   const caUnique = [
-    // Verbos comunes
-    'vaig', 'tinc', 'vull', 'pots', 'estic', 'puc', 'soc', 'està', 'estàs', 'estamos', 'veus', 'veia', 'veies', 'veiem',
-    // Preguntas
-    'quin', 'quina', 'quins', 'quines', 'com', 'què',
-    // Palabras catalanas únicas
+    'vaig', 'tinc', 'vull', 'pots', 'estic', 'puc', 'soc', 'esta', 'estas', 'estamos', 'veus', 'veia', 'veies', 'veiem',
+    'quin', 'quina', 'quins', 'quines', 'com', 'que',
     'projectes', 'feina', 'treballes', 'disseny', 'bon', 'bona', 'doncs', 'perque', 'aixo', 'nomes', 'molta', 'estava', 'podeu', 'teniu', 'voleu',
-    // Más palabras catalanas
-    'però', 'també', 'molt', 'gràcies', 'si', 'no', 'aqui', 'allà', 'demà', 'avui', 'ahir', 'sempre', 'mai', 'alguna', 'quelcom', 'tot', 'tots', 'tothom', 'ningú',
-    // Palabras laborales/portfolio catalanas
-    'dissenyador', 'experiència', 'portfolio', 'projecte', 'procés', 'habilitats', 'disponible', 'contacte', 'linkedin', 'cv'
+    'pero', 'tambe', 'molt', 'gracies', 'si', 'no', 'aqui', 'alla', 'dema', 'avui', 'ahir', 'sempre', 'mai', 'alguna', 'quelcom', 'tot', 'tots', 'tothom', 'ningu',
+    'dissenyador', 'experiencia', 'portfolio', 'projecte', 'proces', 'habilitats', 'disponible', 'contacte', 'linkedin', 'cv'
   ];
 
   const esUnique = [
-    // Verbos comunes
-    'tengo', 'estoy', 'estás', 'estamos', 'tenemos', 'quiero', 'puedo', 'puedes', 'podemos', 'soy', 'eres', 'somos', 'veo', 'vemos', 'veía', 'veías',
-    // Preguntas
-    'cual', 'cuales', 'cuál', 'cuáles', 'cómo', 'qué', 'dónde', 'cuándo', 'cuánto',
-    // Palabras españolas únicas
-    'tambien', 'también', 'gracias', 'estas', 'cuentame', 'cuéntame', 'diseno', 'diseño', 'habilidades', 'disponible', 'buenos', 'buenas', 'entonces', 'porque', 'porqué', 'muy', 'seria', 'sería', 'podria', 'podría', 'tienes', 'trabajas', 'haces',
-    // Más palabras españolas
-    'pero', 'sino', 'desde', 'hasta', 'después', 'antes', 'ahora', 'luego', 'siempre', 'nunca', 'algo', 'nada', 'alguien', 'nadie', 'todo', 'todos', 'cada', 'otro',
-    // Palabras laborales/portfolio españolas
-    'diseñador', 'experiencia', 'portafolio', 'proyecto', 'proceso', 'habilidades', 'disponible', 'contacto', 'linkedin', 'cv'
+    'tengo', 'estoy', 'estas', 'estamos', 'tenemos', 'quiero', 'puedo', 'puedes', 'podemos', 'soy', 'eres', 'somos', 'veo', 'vemos', 'veia', 'veias',
+    'cual', 'cuales', 'como', 'que', 'donde', 'cuando', 'cuanto',
+    'tambien', 'gracias', 'estas', 'cuentame', 'diseno', 'habilidades', 'disponible', 'buenos', 'buenas', 'entonces', 'porque', 'muy', 'seria', 'podria', 'tienes', 'trabajas', 'haces',
+    'pero', 'sino', 'desde', 'hasta', 'despues', 'antes', 'ahora', 'luego', 'siempre', 'nunca', 'algo', 'nada', 'alguien', 'nadie', 'todo', 'todos', 'cada', 'otro',
+    'disenador', 'experiencia', 'portafolio', 'proyecto', 'proceso', 'habilidades', 'disponible', 'contacto', 'linkedin', 'cv'
   ];
 
   let caScore = 0;
@@ -90,12 +96,21 @@ function detectLanguageFromText(text) {
     if (esUnique.some(m => levenshtein(w, m) <= 1)) esScore += 2;
   }
 
-  if (/\b(projectes|treballes|disseny|gracies|tambe|nomes|estic|tinc|però|també|gràcies|dissenyador)\b/.test(t)) caScore += 3;
-  if (/\b(tambien|también|gracias|diseno|diseño|podria|podría|sería|seria|diseñador|experiencia)\b/.test(t)) esScore += 3;
+  if (/\b(projectes|treballes|disseny|gracies|tambe|nomes|estic|tinc|pero|tambe|gracies|dissenyador)\b/.test(t)) caScore += 3;
+  if (/\b(tambien|gracias|diseno|podria|seria|disenador|experiencia)\b/.test(t)) esScore += 3;
 
   if (caScore > esScore && caScore >= 2) return 'ca';
   if (esScore > caScore && esScore >= 2) return 'es';
-  
+
+  return null;
+}
+
+function detectLanguageByPage() {
+  // Por ahora: EN por defecto
+  // Futuro: cuando se traduzca la web
+  // const path = window.location.pathname;
+  // if (path.includes('/es/')) return 'es';
+  // if (path.includes('/ca/')) return 'ca';
   return null;
 }
 
@@ -206,6 +221,7 @@ function updateVisitorProfile(updates) {
     return updated;
   } catch(e) { return null; }
 }
+
 /* ── Check if entry was already discussed this session ── */
 function wasAlreadyDiscussed(entryId, context) {
   return context.some(c => c.role === 'assistant' && c.id === entryId);
@@ -233,7 +249,6 @@ function detectFrustration(text, context) {
   const hasQmarks = (text.match(/\?/g) || []).length >= 2;
   const hasFrustrationWord = frustrationWords.some(w => t.includes(w));
 
-  // Count consecutive fallbacks in context
   const recentAssistant = context.filter(c => c.role === 'assistant').slice(-2);
   const consecutiveFallbacks = recentAssistant.filter(c => c.id === null).length;
 
@@ -367,19 +382,19 @@ class OscarChatbot {
   open() {
     this.isOpen = true;
     this.panel.classList.add('open');
-  
+
     const isMobile = window.innerWidth <= 768;
     if (isMobile) {
       this.overlay.classList.add('open');
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
     }
-  
+
     if (!this.welcomeShown) {
       this.welcomeShown = true;
       this.showWelcome();
     }
-  
+
     this.setTriggerActive(true);
     setTimeout(() => this.inputEl.focus(), 300);
   }
@@ -388,16 +403,16 @@ class OscarChatbot {
     // Detectar abandono post-fallback
     const lastContext = this.conversationContext[this.conversationContext.length - 1];
     const lastWasFallback = lastContext?.role === 'assistant' && lastContext?.id === null;
-    
+
     if (lastWasFallback && typeof gtag !== 'undefined') {
       gtag('event', 'chatbot_abandoned', {
         last_search_term: this.conversationContext
           .filter(c => c.role === 'user')
           .slice(-1)[0]?.content?.slice(0, 80) || 'unknown',
-        language: (() => { try { return localStorage.getItem('chatbot-lang') || 'en'; } catch(e) { return 'en'; } })()
+        language: localStorage.getItem('chatbot-lang') || 'en'
       });
     }
-  
+
     this.isOpen = false;
     this.overlay.classList.remove('open');
     this.panel.classList.remove('open');
@@ -425,7 +440,7 @@ class OscarChatbot {
         }
       } catch(e) { sessionStorage.removeItem('chatbot-history'); }
     }
-  
+
     const storedLang = localStorage.getItem('chatbot-lang') || 'en';
 
     // ── Actualizar perfil del visitante ──
@@ -437,26 +452,25 @@ class OscarChatbot {
       visitCount: (profile?.visitCount || 0) + 1,
       lastVisit: today
     });
-  
+
     // ── Detectar página actual ──
     const PAGE_CONTEXT = {
-      '/map':                  { id: 'project-map',           en: `I see you're checking out the Map Redesign 👀\n\nHappy to go deeper on any part of it — the research process, the results, or the decisions behind it. What are you curious about?`, es: `Veo que estás viendo el Map Redesign 👀\n\nPuedo contarte más sobre el proceso de research, los resultados o las decisiones detrás del proyecto. ¿Qué te interesa?`, ca: `Veig que estàs veient el Map Redesign 👀\n\nPuc explicar-te més sobre el procés de research, els resultats o les decisions darrere del projecte. Què t'interessa?` },
-      '/mobile-first':         { id: 'project-mobile-first',  en: `You're looking at Mobile First 👀\n\nThis one's close to my heart — it completely changed how I think about mobile design. Ask me anything about it.`, es: `Estás viendo el Mobile First 👀\n\nEste proyecto cambió mucho cómo pienso sobre el diseño mobile. Pregúntame lo que quieras.`, ca: `Estàs veient el Mobile First 👀\n\nAquest projecte va canviar molt com penso sobre el disseny mòbil. Pregunta'm el que vulguis.` },
-      '/self-service-booking': { id: 'project-self-service',  en: `You're on the Self-Service Bookings case study 👀\n\nThis one started from a very real operational problem. Want me to walk you through the thinking behind it?`, es: `Estás en el case study de Self-Service Bookings 👀\n\nEste empezó de un problema operacional muy real. ¿Quieres que te cuente el razonamiento detrás?`, ca: `Estàs al case study de Self-Service Bookings 👀\n\nAquest va començar d'un problema operacional molt real. Vols que t'expliqui el raonament?` },
+      '/map':                  { id: 'project-map',             en: `I see you're checking out the Map Redesign 👀\n\nHappy to go deeper on any part of it — the research process, the results, or the decisions behind it. What are you curious about?`, es: `Veo que estás viendo el Map Redesign 👀\n\nPuedo contarte más sobre el proceso de research, los resultados o las decisiones detrás del proyecto. ¿Qué te interesa?`, ca: `Veig que estàs veient el Map Redesign 👀\n\nPuc explicar-te més sobre el procés de research, els resultats o les decisions darrere del projecte. Què t'interessa?` },
+      '/mobile-first':         { id: 'project-mobile-first',    en: `You're looking at Mobile First 👀\n\nThis one's close to my heart — it completely changed how I think about mobile design. Ask me anything about it.`, es: `Estás viendo el Mobile First 👀\n\nEste proyecto cambió mucho cómo pienso sobre el diseño mobile. Pregúntame lo que quieras.`, ca: `Estàs veient el Mobile First 👀\n\nAquest projecte va canviar molt com penso sobre el disseny mòbil. Pregunta'm el que vulguis.` },
+      '/self-service-booking': { id: 'project-self-service',    en: `You're on the Self-Service Bookings case study 👀\n\nThis one started from a very real operational problem. Want me to walk you through the thinking behind it?`, es: `Estás en el case study de Self-Service Bookings 👀\n\nEste empezó de un problema operacional muy real. ¿Quieres que te cuente el razonamiento detrás?`, ca: `Estàs al case study de Self-Service Bookings 👀\n\nAquest va començar d'un problema operacional molt real. Vols que t'expliqui el raonament?` },
       '/smart-suggester':      { id: 'project-smart-suggester', en: `You're exploring the Smart Suggester 👀\n\nThis one's more technical than it looks. Happy to explain the UX decisions and the back-end collaboration behind it.`, es: `Estás explorando el Smart Suggester 👀\n\nEste es más técnico de lo que parece. Puedo explicarte las decisiones de UX y la colaboración con back-end.`, ca: `Estàs explorant el Smart Suggester 👀\n\nAquest és més tècnic del que sembla. Puc explicar-te les decisions de UX i la col·laboració amb back-end.` },
-      '/about':                { id: 'about',                 en: `You're on the About page 👋\n\nAsk me anything — about my background, what I'm working on, or what I'm looking for next.`, es: `Estás en la página About 👋\n\nPregúntame lo que quieras — sobre mi background, en qué estoy trabajando o qué busco.`, ca: `Estàs a la pàgina About 👋\n\nPregunta'm el que vulguis — sobre el meu background, en què estic treballant o què busco.` },
+      '/about':                { id: 'about',                   en: `You're on the About page 👋\n\nAsk me anything — about my background, what I'm working on, or what I'm looking for next.`, es: `Estás en la página About 👋\n\nPregúntame lo que quieras — sobre mi background, en qué estoy trabajando o qué busco.`, ca: `Estàs a la pàgina About 👋\n\nPregunta'm el que vulguis — sobre el meu background, en què estic treballant o què busco.` },
     };
-  
+
     const path = window.location.pathname;
     const pageCtx = Object.entries(PAGE_CONTEXT).find(([key]) => path.includes(key));
-  
+
     let welcomeText;
     let contextSuggestions = null;
-  
+
     if (pageCtx) {
       const [, ctx] = pageCtx;
       welcomeText = ctx[storedLang] || ctx.en;
-      // Sugerencias específicas de la página
       const pageEntry = KNOWLEDGE_BASE.find(e => e.id === ctx.id);
       if (pageEntry && pageEntry.suggestions) {
         contextSuggestions = pageEntry.suggestions[storedLang] || pageEntry.suggestions.en;
@@ -467,8 +481,7 @@ class OscarChatbot {
         ca: `Hola! Soc l'Oscar, Senior Product Designer a Barcelona. Puc respondre't en català, castellà o anglès — el que prefereixis.\n\nPregunta'm sobre els meus projectes, experiència, procés de disseny o el que necessitis. Aquest xat està en millora constant i aprendrà per donar-te millors respostes amb el temps.`,
         en: `Hey! 👋 I'm Oscar — Senior Product Designer based in Barcelona. I can reply in English, Spanish or Catalan — just write in whichever you prefer.\n\nAsk me about my projects, experience, design process or anything else. This chat is constantly improving and will keep getting better over time.`
       };
-    
-      // Return visitor — mensaje personalizado
+
       if (isReturn && profile.lastIntent === 'recruiter-summary') {
         welcomeText = {
           es: `Bienvenido de nuevo 👋\n\nLa última vez estabas explorando el perfil de recruiter. ¿Sigues evaluando la oportunidad o tienes alguna pregunta concreta?`,
@@ -493,10 +506,10 @@ class OscarChatbot {
         welcomeText = welcomeMessages[storedLang];
       }
     }
-  
+
     this.appendMessage('assistant', welcomeText);
     this.saveHistory();
-  
+
     // Mostrar suggestions específicas de página o las genéricas
     if (contextSuggestions) {
       this.hasShownSuggestions = true;
@@ -527,23 +540,22 @@ class OscarChatbot {
   showSuggestions() {
     if (this.hasShownSuggestions) return;
     this.hasShownSuggestions = true;
-  
+
     const wrapper = document.createElement('div');
     wrapper.className = 'chatbot-suggestions';
     wrapper.id = 'chatbot-suggestions';
-  
+
     CHATBOT_SUGGESTIONS.forEach(({ label, id }) => {
       const chip = document.createElement('button');
       chip.className = 'chatbot-chip';
       chip.textContent = label;
       chip.addEventListener('click', () => {
         wrapper.remove();
-        // Disparar directamente por ID, sin pasar por matching
         this.sendById(label, id);
       });
       wrapper.appendChild(chip);
     });
-  
+
     this.messagesEl.appendChild(wrapper);
     this.scrollToBottom();
   }
@@ -551,11 +563,11 @@ class OscarChatbot {
   showQuickReplies(suggestions) {
     const wrapper = document.createElement('div');
     wrapper.className = 'chatbot-suggestions';
-  
+
     suggestions.forEach(item => {
       const label = typeof item === 'string' ? item : item.label;
       const id = typeof item === 'object' ? item.id : null;
-  
+
       const chip = document.createElement('button');
       chip.className = 'chatbot-chip';
       chip.textContent = label;
@@ -570,7 +582,7 @@ class OscarChatbot {
       });
       wrapper.appendChild(chip);
     });
-  
+
     this.messagesEl.appendChild(wrapper);
     this.scrollToBottom();
   }
@@ -593,10 +605,10 @@ class OscarChatbot {
         { label: 'Download CV', href: 'https://drive.google.com/uc?export=download&id=1nvxUNm1693SgYEKQGExxxnDI-gNvVTKF' },
       ]
     };
-  
+
     const wrapper = document.createElement('div');
     wrapper.className = 'chatbot-suggestions chatbot-ctas';
-  
+
     (ctas[lang] || ctas.en).forEach(({ label, href }) => {
       const btn = document.createElement('a');
       btn.className = 'chatbot-chip chatbot-cta-btn';
@@ -606,91 +618,81 @@ class OscarChatbot {
       btn.rel = 'noopener noreferrer';
       wrapper.appendChild(btn);
     });
-  
+
     this.messagesEl.appendChild(wrapper);
     this.scrollToBottom();
   }
 
-  appendMessage(role, content, raw = false) {
+  appendMessage(role, content, raw = false, intentId = null) {
     const msg = document.createElement('div');
     msg.className = `chatbot-msg ${role}`;
-  
+
     const bubble = document.createElement('div');
     bubble.className = 'chatbot-bubble';
     bubble.innerHTML = raw ? this.formatRaw(content) : this.formatText(content);
-  
+
     msg.appendChild(bubble);
-  
-      // Feedback buttons — solo en mensajes del asistente
-  if (role === 'assistant') {
-    const feedback = document.createElement('div');
-    feedback.className = 'chatbot-feedback';
 
-    // Copy button
-    const copyBtn = document.createElement('button');
-    copyBtn.className = 'chatbot-feedback-btn';
-    copyBtn.setAttribute('aria-label', 'Copy response');
-    copyBtn.setAttribute('data-tooltip', 'Copy');
-    copyBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
-    copyBtn.addEventListener('click', () => {
-      const text = bubble.innerText;
-      navigator.clipboard.writeText(text).then(() => {
-        copyBtn.setAttribute('data-tooltip', 'Copied!');
-        copyBtn.classList.add('chatbot-feedback-btn--active');
-        setTimeout(() => {
-          copyBtn.setAttribute('data-tooltip', 'Copy');
-          copyBtn.classList.remove('chatbot-feedback-btn--active');
-        }, 2000);
+    // Feedback buttons — solo en mensajes del asistente
+    if (role === 'assistant') {
+      const feedback = document.createElement('div');
+      feedback.className = 'chatbot-feedback';
+
+      // Copy button
+      const copyBtn = document.createElement('button');
+      copyBtn.className = 'chatbot-feedback-btn';
+      copyBtn.setAttribute('aria-label', 'Copy response');
+      copyBtn.setAttribute('data-tooltip', 'Copy');
+      copyBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
+      copyBtn.addEventListener('click', () => {
+        const text = bubble.innerText;
+        navigator.clipboard.writeText(text).then(() => {
+          copyBtn.setAttribute('data-tooltip', 'Copied!');
+          copyBtn.classList.add('chatbot-feedback-btn--active');
+          setTimeout(() => {
+            copyBtn.setAttribute('data-tooltip', 'Copy');
+            copyBtn.classList.remove('chatbot-feedback-btn--active');
+          }, 2000);
+        });
       });
-    });
-    feedback.appendChild(copyBtn);
+      feedback.appendChild(copyBtn);
 
-    // Thumbs up / down
-    [
-      { emoji: '👍', svg: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>`, tooltip: 'Helpful', type: 'helpful' },
-      { emoji: '👎', svg: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"/><path d="M17 2h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg>`, tooltip: 'Not helpful', type: 'not_helpful' },
-    ].forEach(({ svg, tooltip, type }) => {
-      const btn = document.createElement('button');
-      btn.className = 'chatbot-feedback-btn';
-      btn.setAttribute('aria-label', tooltip);
-      btn.setAttribute('data-tooltip', tooltip);
-      btn.innerHTML = svg;
-      btn.addEventListener('click', () => {
-        // 📳 HAPTIC FEEDBACK
-        if (navigator.vibrate) {
-        navigator.vibrate(10); // súper sutil (recomendado)
-        }
+      // Thumbs up / down
+      [
+        { svg: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>`, tooltip: 'Helpful', type: 'helpful' },
+        { svg: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"/><path d="M17 2h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg>`, tooltip: 'Not helpful', type: 'not_helpful' },
+      ].forEach(({ svg, tooltip, type }) => {
+        const btn = document.createElement('button');
+        btn.className = 'chatbot-feedback-btn';
+        btn.setAttribute('aria-label', tooltip);
+        btn.setAttribute('data-tooltip', tooltip);
+        btn.innerHTML = svg;
+        btn.addEventListener('click', () => {
+          if (navigator.vibrate) navigator.vibrate(10);
 
-        const buttons = feedback.querySelectorAll('.chatbot-feedback-btn');
-      
-        // Reset estado de todos
-        buttons.forEach(b => {
-          if (b !== copyBtn) {
-            b.classList.remove('chatbot-feedback-btn--active');
+          const buttons = feedback.querySelectorAll('.chatbot-feedback-btn');
+          buttons.forEach(b => {
+            if (b !== copyBtn) b.classList.remove('chatbot-feedback-btn--active');
+          });
+
+          const isActive = btn.classList.contains('chatbot-feedback-btn--active');
+          if (!isActive) {
+            btn.classList.add('chatbot-feedback-btn--active');
+            if (typeof gtag !== 'undefined') {
+              gtag('event', 'chatbot_feedback', {
+                feedback_type: type,
+                response_preview: bubble.innerText.slice(0, 80),
+                matched_intent: intentId || 'unknown'
+              });
+            }
           }
         });
-      
-        // Toggle del botón actual
-        const isActive = btn.classList.contains('chatbot-feedback-btn--active');
-      
-        if (!isActive) {
-          btn.classList.add('chatbot-feedback-btn--active');
-      
-          if (typeof gtag !== 'undefined') {
-            gtag('event', 'chatbot_feedback', {
-              feedback_type: type, // helpful / not_helpful
-              response_preview: bubble.innerText.slice(0, 80),
-              matched_intent: match?.id || 'unknown'
-            });
-          }
-        }
+        feedback.appendChild(btn);
       });
-      feedback.appendChild(btn);
-    });
 
-    msg.appendChild(feedback);
-  }
-  
+      msg.appendChild(feedback);
+    }
+
     this.messagesEl.appendChild(msg);
     this.scrollToBottom();
     return bubble;
@@ -740,57 +742,60 @@ class OscarChatbot {
   sendById(label, entryId) {
     if (this.isLoading) return;
     this.isLoading = true;
-  
+
     this.appendMessage('user', label);
     this.conversationContext.push({ role: 'user', content: label });
     if (this.conversationContext.length > 6) this.conversationContext.shift();
-  
+
     const typingEl = this.showTyping();
-  
+
     setTimeout(() => {
       typingEl.remove();
-  
-      const lang = (() => { try { return localStorage.getItem('chatbot-lang') || 'en'; } catch(e) { return 'en'; } })();
+
+      const lang = localStorage.getItem('chatbot-lang') || 'en';
       const match = KNOWLEDGE_BASE.find(e => e.id === entryId);
-      let response;
+
       const alreadyMsg = {
         es: `Ya te conté sobre esto antes 😊 ¿Quieres que profundice en algún aspecto concreto?`,
         ca: `Ja t'ho he explicat abans 😊 Vols que aprofundeixi en algun aspecte concret?`,
         en: `I already covered this one 😊 Want me to go deeper on any specific aspect?`
       };
 
-if (match && wasAlreadyDiscussed(match.id, this.conversationContext)) {
-  response = alreadyMsg[lang];
-} else {
-  response = match ? match.response[lang] : FALLBACK[lang];
-  response = injectCaseStudyLinks(response);
-  const followup = match && match.followup && match.followup[lang];
-  if (followup) response += `\n\n${followup}`;
-}
-  
-      this.appendMessage('assistant', response, true);
+      let response;
+      if (match && wasAlreadyDiscussed(match.id, this.conversationContext)) {
+        response = alreadyMsg[lang];
+      } else {
+        response = match ? match.response[lang] : FALLBACK[lang];
+        response = injectCaseStudyLinks(response);
+        const followup = match && match.followup && match.followup[lang];
+        if (followup) response += `\n\n${followup}`;
+      }
 
-      if (smartSuggestions) {
-        this.showQuickReplies(smartSuggestions);
-      } else if (match && !wasAlreadyDiscussed(match.id, this.conversationContext.slice(0, -1))) {
-        const suggestions = match.suggestions && match.suggestions[lang];
+      this.appendMessage('assistant', response, true, match?.id || null);
+
+      const alreadyShown = wasAlreadyDiscussed(match?.id, this.conversationContext);
+      if (!alreadyShown) {
+        const suggestions = match && match.suggestions && match.suggestions[lang];
         if (suggestions && suggestions.length > 0) this.showQuickReplies(suggestions);
         const HIGH_INTENT = ['availability', 'contact', 'cv-download', 'recruiter-summary', 'salary', 'why-hire-me'];
-        if (HIGH_INTENT.includes(match.id)) this.showCTAs(lang);
-      } else if (!match) {
-        // Si no hay match y no hay smartSuggestions, mostrar default
-        this.showSuggestions();
+        if (match && HIGH_INTENT.includes(match.id)) this.showCTAs(lang);
       }
-  
-      const suggestions = match && match.suggestions && match.suggestions[lang];
-      if (suggestions && suggestions.length > 0) this.showQuickReplies(suggestions);
-  
-      const HIGH_INTENT = ['availability', 'contact', 'cv-download', 'recruiter-summary', 'salary', 'why-hire-me'];
-      if (match && HIGH_INTENT.includes(match.id)) this.showCTAs(lang);
-  
+
       this.conversationContext.push({ role: 'assistant', content: response, id: match?.id || null });
       if (this.conversationContext.length > 6) this.conversationContext.shift();
-  
+
+      if (match?.id) {
+        const projectIds = ['project-map', 'project-mobile-first', 'project-self-service', 'project-smart-suggester'];
+        const p = getVisitorProfile() || {};
+        if (projectIds.includes(match.id)) {
+          updateVisitorProfile({ seenProjects: [...new Set([...(p.seenProjects || []), match.id])], lastIntent: match.id });
+        } else if (match.id === 'recruiter-summary') {
+          updateVisitorProfile({ isRecruiter: true, lastIntent: 'recruiter-summary' });
+        } else {
+          updateVisitorProfile({ lastIntent: match.id });
+        }
+      }
+
       this.saveHistory();
       this.isLoading = false;
       this.sendBtn.disabled = !this.inputEl.value.trim();
@@ -815,10 +820,10 @@ if (match && wasAlreadyDiscussed(match.id, this.conversationContext)) {
 
     setTimeout(() => {
       typingEl.remove();
-    
+
       const lang = detectLanguageOnce(text);
       const match = findResponse(text, this.conversationContext);
-    
+
       if (typeof gtag !== 'undefined') {
         gtag('event', 'chatbot_message', {
           search_term: text,
@@ -826,16 +831,16 @@ if (match && wasAlreadyDiscussed(match.id, this.conversationContext)) {
           language: lang
         });
       }
-    
-      let response;
+
       const alreadyMsg = {
         es: `Ya te conté sobre esto antes 😊 ¿Quieres que profundice en algún aspecto concreto?`,
         ca: `Ja t'ho vaig explicar abans 😊 Vols que aprofundeixi en algun aspecte concret?`,
         en: `I already covered this one 😊 Want me to go deeper on any specific aspect?`
       };
-    
+
+      let response;
       let smartSuggestions = null;
-    
+
       if (!match) {
         // ── Frustration detection ──
         if (detectFrustration(text, this.conversationContext)) {
@@ -886,14 +891,9 @@ if (match && wasAlreadyDiscussed(match.id, this.conversationContext)) {
         const followup = match.followup && match.followup[lang];
         if (followup) response += `\n\n${followup}`;
       }
-    
-      // ── Typing delay proporcional a longitud ──
-      const baseDelay = 400;
-      const extraDelay = Math.min(response.length * 0.8, 800);
-      const totalDelay = baseDelay + extraDelay;
-    
-      this.appendMessage('assistant', response, true);
-    
+
+      this.appendMessage('assistant', response, true, match?.id || null);
+
       if (smartSuggestions) {
         this.showQuickReplies(smartSuggestions);
       } else if (match && !wasAlreadyDiscussed(match.id, this.conversationContext.slice(0, -1))) {
@@ -902,10 +902,10 @@ if (match && wasAlreadyDiscussed(match.id, this.conversationContext)) {
         const HIGH_INTENT = ['availability', 'contact', 'cv-download', 'recruiter-summary', 'salary', 'why-hire-me'];
         if (HIGH_INTENT.includes(match.id)) this.showCTAs(lang);
       }
-    
+
       this.conversationContext.push({ role: 'assistant', content: response, id: match?.id || null });
       if (this.conversationContext.length > 6) this.conversationContext.shift();
-    
+
       if (match?.id) {
         const projectIds = ['project-map', 'project-mobile-first', 'project-self-service', 'project-smart-suggester'];
         const p = getVisitorProfile() || {};
@@ -917,53 +917,53 @@ if (match && wasAlreadyDiscussed(match.id, this.conversationContext)) {
           updateVisitorProfile({ lastIntent: match.id });
         }
       }
-    
+
       this.saveHistory();
       this.isLoading = false;
       this.sendBtn.disabled = !this.inputEl.value.trim();
     }, Math.min(400 + Math.floor(text.length * 1.5), 1200));
   }
 
-startPlaceholderRotation() {
-  const placeholders = {
-    es: [
-      '¿En qué proyectos has trabajado?',
-      '¿Cuál es tu proceso de diseño?',
-      '¿Estás buscando trabajo?',
-      '¿Cómo trabajas con ingeniería?',
-      '¿Qué te diferencia de otros diseñadores?',
-    ],
-    ca: [
-      'En quins projectes has treballat?',
-      'Quin és el teu procés de disseny?',
-      'Estàs buscant feina?',
-      'Com treballes amb enginyeria?',
-      "Què et diferencia d'altres dissenyadors?",
-    ],
-    en: [
-      'What projects have you worked on?',
-      "What's your design process?",
-      'Are you open to new roles?',
-      'How do you work with engineering?',
-      'What sets you apart from other designers?',
-    ]
-  };
+  startPlaceholderRotation() {
+    const placeholders = {
+      es: [
+        '¿En qué proyectos has trabajado?',
+        '¿Cuál es tu proceso de diseño?',
+        '¿Estás buscando trabajo?',
+        '¿Cómo trabajas con ingeniería?',
+        '¿Qué te diferencia de otros diseñadores?',
+      ],
+      ca: [
+        'En quins projectes has treballat?',
+        'Quin és el teu procés de disseny?',
+        'Estàs buscant feina?',
+        'Com treballes amb enginyeria?',
+        "Què et diferencia d'altres dissenyadors?",
+      ],
+      en: [
+        'What projects have you worked on?',
+        "What's your design process?",
+        'Are you open to new roles?',
+        'How do you work with engineering?',
+        'What sets you apart from other designers?',
+      ]
+    };
 
-  let index = 0;
-  setInterval(() => {
-    const lang = (() => { try { return localStorage.getItem('chatbot-lang') || 'en'; } catch(e) { return 'en'; } })();
-    const list = placeholders[lang] || placeholders.en;
-    index = (index + 1) % list.length;
-    if (this.inputEl && document.activeElement !== this.inputEl) {
-      this.inputEl.style.transition = 'opacity 0.4s ease';
-      this.inputEl.style.opacity = '0';
-      setTimeout(() => {
-        this.inputEl.placeholder = list[index];
-        this.inputEl.style.opacity = '1';
-      }, 400);
-    }
-  }, 6000);
-}
+    let index = 0;
+    setInterval(() => {
+      const lang = localStorage.getItem('chatbot-lang') || 'en';
+      const list = placeholders[lang] || placeholders.en;
+      index = (index + 1) % list.length;
+      if (this.inputEl && document.activeElement !== this.inputEl) {
+        this.inputEl.style.transition = 'opacity 0.4s ease';
+        this.inputEl.style.opacity = '0';
+        setTimeout(() => {
+          this.inputEl.placeholder = list[index];
+          this.inputEl.style.opacity = '1';
+        }, 400);
+      }
+    }, 6000);
+  }
 }
 
 // ── Init ──
