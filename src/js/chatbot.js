@@ -753,27 +753,8 @@ class OscarChatbot {
     if (role === 'assistant') {
       const feedback = document.createElement('div');
       feedback.className = 'chatbot-feedback';
-
-      // Copy button
-      const copyBtn = document.createElement('button');
-      copyBtn.className = 'chatbot-feedback-btn';
-      copyBtn.setAttribute('aria-label', 'Copy response');
-      copyBtn.setAttribute('data-tooltip', 'Copy');
-      copyBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
-      copyBtn.addEventListener('click', () => {
-        const text = bubble.innerText;
-        navigator.clipboard.writeText(text).then(() => {
-          copyBtn.setAttribute('data-tooltip', 'Copied!');
-          copyBtn.classList.add('chatbot-feedback-btn--active');
-          setTimeout(() => {
-            copyBtn.setAttribute('data-tooltip', 'Copy');
-            copyBtn.classList.remove('chatbot-feedback-btn--active');
-          }, 2000);
-        });
-      });
-      feedback.appendChild(copyBtn);
-
-      // Thumbs up / down
+    
+      // 👍 Thumbs up / down
       [
         { svg: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>`, tooltip: 'Helpful', type: 'helpful' },
         { svg: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"/><path d="M17 2h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg>`, tooltip: 'Not helpful', type: 'not_helpful' },
@@ -785,12 +766,8 @@ class OscarChatbot {
         btn.innerHTML = svg;
         btn.addEventListener('click', () => {
           if (navigator.vibrate) navigator.vibrate(10);
-
           const buttons = feedback.querySelectorAll('.chatbot-feedback-btn');
-          buttons.forEach(b => {
-            if (b !== copyBtn) b.classList.remove('chatbot-feedback-btn--active');
-          });
-
+          buttons.forEach(b => b.classList.remove('chatbot-feedback-btn--active'));
           const isActive = btn.classList.contains('chatbot-feedback-btn--active');
           if (!isActive) {
             btn.classList.add('chatbot-feedback-btn--active');
@@ -805,7 +782,80 @@ class OscarChatbot {
         });
         feedback.appendChild(btn);
       });
+    
+      // 📋 Copy
+      const copyBtn = document.createElement('button');
+      copyBtn.className = 'chatbot-feedback-btn';
+      copyBtn.setAttribute('aria-label', 'Copy response');
+      copyBtn.setAttribute('data-tooltip', 'Copy');
+      copyBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(bubble.innerText).then(() => {
+          copyBtn.setAttribute('data-tooltip', 'Copied!');
+          copyBtn.classList.add('chatbot-feedback-btn--active');
+          setTimeout(() => {
+            copyBtn.setAttribute('data-tooltip', 'Copy');
+            copyBtn.classList.remove('chatbot-feedback-btn--active');
+          }, 2000);
+        });
+      });
+      feedback.appendChild(copyBtn);
+    
+      // 🔊 Speaker
+const speakerBtn = document.createElement('button');
+speakerBtn.className = 'chatbot-feedback-btn';
+speakerBtn.setAttribute('aria-label', 'Listen to response');
+speakerBtn.setAttribute('data-tooltip', 'Listen');
+speakerBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9v6h4l6 5V4L6 9H2z"/><line x1="15" y1="9" x2="15" y2="15"/><line x1="18" y1="7" x2="18" y2="17"/><line x1="21" y1="5" x2="21" y2="19"/></svg>`;
+speakerBtn.addEventListener('click', () => {
+  const lang = localStorage.getItem('chatbot-lang') || 'en';
+  const langMap = { es: 'es-ES', ca: 'ca-ES', en: 'en-US' };
 
+  if (window.speechSynthesis.speaking) {
+    window.speechSynthesis.cancel();
+    speakerBtn.classList.remove('chatbot-feedback-btn--active');
+    speakerBtn.setAttribute('data-tooltip', 'Listen');
+    return;
+  }
+
+  const targetLang = langMap[lang] || 'en-US';
+  const utterance = new SpeechSynthesisUtterance(bubble.innerText);
+  utterance.lang = targetLang;
+  utterance.rate = 0.95;
+  utterance.pitch = 1;
+
+  const voices = window.speechSynthesis.getVoices();
+  const preferred = voices.find(v =>
+    v.lang === targetLang && (
+      v.name.includes('Neural') ||
+      v.name.includes('Natural') ||
+      v.name.includes('Premium') ||
+      v.name.includes('Enhanced') ||
+      v.name.includes('Samantha') ||
+      v.name.includes('Monica')   ||
+      v.name.includes('Montse')
+    )
+  ) || voices.find(v => v.lang.startsWith(targetLang.split('-')[0]));
+
+  if (preferred) utterance.voice = preferred;
+
+  speakerBtn.classList.add('chatbot-feedback-btn--active');
+  speakerBtn.setAttribute('data-tooltip', 'Stop');
+  if (navigator.vibrate) navigator.vibrate(10);
+
+  utterance.onend = () => {
+    speakerBtn.classList.remove('chatbot-feedback-btn--active');
+    speakerBtn.setAttribute('data-tooltip', 'Listen');
+  };
+  utterance.onerror = () => {
+    speakerBtn.classList.remove('chatbot-feedback-btn--active');
+    speakerBtn.setAttribute('data-tooltip', 'Listen');
+  };
+
+  window.speechSynthesis.speak(utterance);
+});
+feedback.appendChild(speakerBtn);
+    
       msg.appendChild(feedback);
     }
 
