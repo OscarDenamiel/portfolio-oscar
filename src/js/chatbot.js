@@ -385,6 +385,19 @@ class OscarChatbot {
   }
 
   close() {
+    // Detectar abandono post-fallback
+    const lastContext = this.conversationContext[this.conversationContext.length - 1];
+    const lastWasFallback = lastContext?.role === 'assistant' && lastContext?.id === null;
+    
+    if (lastWasFallback && typeof gtag !== 'undefined') {
+      gtag('event', 'chatbot_abandoned', {
+        last_search_term: this.conversationContext
+          .filter(c => c.role === 'user')
+          .slice(-1)[0]?.content?.slice(0, 80) || 'unknown',
+        language: (() => { try { return localStorage.getItem('chatbot-lang') || 'en'; } catch(e) { return 'en'; } })()
+      });
+    }
+  
     this.isOpen = false;
     this.overlay.classList.remove('open');
     this.panel.classList.remove('open');
