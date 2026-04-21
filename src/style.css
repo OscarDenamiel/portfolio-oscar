@@ -554,6 +554,7 @@ hr {
     .sidebar .dark-mode-toggle-btn { display: none; }
 }
 
+
 @media (max-width: 768px) {
     .sidebar {
         width: 280px;
@@ -1090,28 +1091,26 @@ button { border: none; }
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--primary);
+    background-color: #5c5c6180;
     border-radius: 16px;
-    --s: 48px;
-    width: var(--s);
-    aspect-ratio: 1;
-    --g:/calc(var(--s)*0.201) calc(var(--s)*0.201) radial-gradient(50% 50%,#000 99%,#0000 101%) no-repeat;
-    mask: calc(50% + var(--s)*0.369) calc(50% + var(--s)*0) var(--g),calc(50% + var(--s)*0.261) calc(50% + var(--s)*0.261) var(--g),calc(50% + var(--s)*0) calc(50% + var(--s)*0.369) var(--g),calc(50% + var(--s)*-0.261) calc(50% + var(--s)*0.261) var(--g),calc(50% + var(--s)*-0.369) calc(50% + var(--s)*0) var(--g),calc(50% + var(--s)*-0.261) calc(50% + var(--s)*-0.261) var(--g),calc(50% + var(--s)*0) calc(50% + var(--s)*-0.369) var(--g),calc(50% + var(--s)*0.261) calc(50% + var(--s)*-0.261) var(--g),radial-gradient(calc(var(--s)*0.418),#000 99%,#0000 101%) subtract,calc(50% + var(--s)*0.447) calc(50% + var(--s)*0.185) var(--g),calc(50% + var(--s)*0.185) calc(50% + var(--s)*0.447) var(--g),calc(50% + var(--s)*-0.185) calc(50% + var(--s)*0.447) var(--g),calc(50% + var(--s)*-0.447) calc(50% + var(--s)*0.185) var(--g),calc(50% + var(--s)*-0.447) calc(50% + var(--s)*-0.185) var(--g),calc(50% + var(--s)*-0.185) calc(50% + var(--s)*-0.447) var(--g),calc(50% + var(--s)*0.185) calc(50% + var(--s)*-0.447) var(--g),calc(50% + var(--s)*0.447) calc(50% + var(--s)*-0.185) var(--g);
-}
-
-.home-button:hover {
-    background-color: var(--white);
-    transform: rotate(360deg);
-    transition: ease-in-out 1s;
-}
-
-@media (max-width: 768px) {
+    width: 48px;
+    height: 48px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .home-button:hover {
+    background-color: rgb(104, 102, 102);
+    transform: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  @media (max-width: 768px) {
     .home-button { display: none; }
-}
-
-@media (min-width: 769px) {
+  }
+  
+  @media (min-width: 769px) {
     .home-button-mobile { display: none !important; }
-}
+  }
 
 .scroll-to-top-btn {
     position: fixed;
@@ -2297,3 +2296,69 @@ td.emphasis { font-weight: 700; }
 
 /* Legacy scroll carousel wrapper */
 .scroll-carousel-wrapper { position: relative; }
+
+/* ── Chatbot trigger — AI gradient button ── */
+.chatbot-tooltip-wrapper .dark-mode-toggle-btn[aria-label="Open chatbot"],
+.header .dark-mode-toggle-btn[aria-label="Open chatbot"] {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    #FF791B,
+    #f7931e,
+    #db2800,
+    #ad7608,
+    #FF791B
+  );
+  background-size: 300% 300%;
+  animation: chatbot-gradient 12s ease infinite;
+  border-radius: 500px;
+  width: 48px;
+  height: 48px;
+  box-shadow:
+    0 0 16px 4px rgba(255, 121, 27, 0.4),
+    0 0 32px 8px rgba(219, 40, 0, 0.2);
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.chatbot-tooltip-wrapper .dark-mode-toggle-btn[aria-label="Open chatbot"]:hover,
+.header .dark-mode-toggle-btn[aria-label="Open chatbot"]:hover {
+  animation: chatbot-gradient 1.5s ease infinite;
+  box-shadow:
+    0 0 24px 8px rgba(255, 121, 27, 0.6),
+    0 0 48px 16px rgba(219, 40, 0, 0.3);
+  transform: scale(1.05);
+}
+
+.chatbot-tooltip-wrapper .dark-mode-toggle-btn[aria-label="Open chatbot"] .dark-mode-icon-img,
+.header .dark-mode-toggle-btn[aria-label="Open chatbot"] .dark-mode-icon-img {
+  filter: brightness(0) invert(1) !important;
+  z-index: 1;
+  position: relative;
+}
+
+@keyframes chatbot-gradient {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@media (max-width: 768px) {
+    .header .dark-mode-toggle-btn[aria-label="Open chatbot"] {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  /* Sidebar: tooltip a la derecha */
+  .sidebar .chatbot-tooltip {
+    top: 50% !important;
+    transform: translateY(-50%);
+    left: 60px !important;
+  }
+  
+  /* Header: tooltip debajo */
+  .header .chatbot-tooltip {
+    top: 48px !important;
+    left: auto !important;
+    right: 0 !important;
+  }

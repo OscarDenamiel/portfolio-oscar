@@ -255,6 +255,48 @@ function detectFrustration(text, context) {
   return hasQmarks || hasFrustrationWord || consecutiveFallbacks >= 2;
 }
 
+function typeText(element, html, speed = 10, animate = true) {
+  return new Promise(resolve => {
+    if (!animate) {
+      element.innerHTML = html;
+      resolve();
+      return;
+    }
+
+    // Renderizar todo de golpe
+    element.innerHTML = html;
+
+    // Animar cada párrafo/bloque con fade-in secuencial
+    const blocks = element.querySelectorAll('p, br, strong');
+    if (blocks.length === 0) {
+      // Texto simple — fade in del bubble entero
+      element.style.opacity = '0';
+      element.style.transition = 'opacity 0.3s ease';
+      requestAnimationFrame(() => {
+        element.style.opacity = '1';
+        setTimeout(resolve, 300);
+      });
+      return;
+    }
+
+    // Múltiples bloques — fade secuencial
+    const allP = element.querySelectorAll('p');
+    allP.forEach(p => {
+      p.style.opacity = '0';
+      p.style.transition = 'opacity 0.25s ease';
+    });
+
+    let i = 0;
+    const revealNext = () => {
+      if (i >= allP.length) { resolve(); return; }
+      allP[i].style.opacity = '1';
+      i++;
+      setTimeout(revealNext, 120);
+    };
+    setTimeout(revealNext, 50);
+  });
+}
+
 class OscarChatbot {
   constructor() {
     this.isOpen = false;
@@ -263,6 +305,10 @@ class OscarChatbot {
     this.welcomeShown = false;
     this.conversationContext = [];
     this.init();
+  }
+
+  scrollToUserMessage(msgEl) {
+    this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
   }
 
   init() {
@@ -362,6 +408,17 @@ class OscarChatbot {
       tooltip.textContent = 'Chat with Oscar';
       wrapper.appendChild(tooltip);
 
+      btn.addEventListener('mousemove', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        btn.style.backgroundPosition = `${x}% ${y}%`;
+      });
+      
+      btn.addEventListener('mouseleave', () => {
+        btn.style.backgroundPosition = '';
+      });
+
       btn.addEventListener('click', () => {
         if (this.isOpen) {
           this.close();
@@ -382,19 +439,27 @@ class OscarChatbot {
   open() {
     this.isOpen = true;
     this.panel.classList.add('open');
-
+  
     const isMobile = window.innerWidth <= 768;
     if (isMobile) {
       this.overlay.classList.add('open');
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
     }
-
+  
     if (!this.welcomeShown) {
       this.welcomeShown = true;
       this.showWelcome();
     }
-
+  
+    // Esperar a que termine la transición de apertura (450ms) 
+    // y luego posicionar sin animación
+    setTimeout(() => {
+      this.messagesEl.style.scrollBehavior = 'auto';
+      this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
+      this.messagesEl.style.scrollBehavior = '';
+    }, 460);
+  
     this.setTriggerActive(true);
     if (window.innerWidth > 1024) {
       setTimeout(() => this.inputEl.focus(), 300);
@@ -544,7 +609,7 @@ class OscarChatbot {
         const history = JSON.parse(saved);
         if (history.length > 0) {
           history.forEach(({ role, content, raw }) => {
-            this.appendMessage(role, content, raw || false);
+            this.appendMessage(role, content, raw || false, null, false); // ← false
           });
           this.conversationContext = history.map(h => ({
             role: h.role,
@@ -559,10 +624,10 @@ class OscarChatbot {
             const [, ctx] = pageCtx;
             const contextMsg = ctx[storedLang] || ctx.en;
             setTimeout(() => {
-              this.appendMessage('assistant', contextMsg);
+              this.appendMessage('assistant', contextMsg, false, null, false);
               const chips = PAGE_SUGGESTIONS[ctx.id]?.[storedLang] || PAGE_SUGGESTIONS[ctx.id]?.en;
               if (chips) this.showQuickReplies(chips);
-              // NO llamamos saveHistory() aquí — se guarda solo cuando el user interactúe
+              this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
             }, 400);
           }
           // Si es homepage, mostrar suggestions genéricas
@@ -624,7 +689,7 @@ class OscarChatbot {
       }
     }
   
-    this.appendMessage('assistant', welcomeText);
+    this.appendMessage('assistant', welcomeText, false, null, false);
     this.saveHistory();
   
     if (contextSuggestions) {
@@ -739,22 +804,19 @@ class OscarChatbot {
     this.scrollToBottom();
   }
 
-  appendMessage(role, content, raw = false, intentId = null) {
+  appendMessage(role, content, raw = false, intentId = null, animated = true) {
     const msg = document.createElement('div');
     msg.className = `chatbot-msg ${role}`;
-
+  
     const bubble = document.createElement('div');
     bubble.className = 'chatbot-bubble';
-    bubble.innerHTML = raw ? this.formatRaw(content) : this.formatText(content);
-
+  
     msg.appendChild(bubble);
-
-    // Feedback buttons — solo en mensajes del asistente
+  
     if (role === 'assistant') {
       const feedback = document.createElement('div');
       feedback.className = 'chatbot-feedback';
-    
-      // 👍 Thumbs up / down
+  
       [
         { svg: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>`, tooltip: 'Helpful', type: 'helpful' },
         { svg: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"/><path d="M17 2h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg>`, tooltip: 'Not helpful', type: 'not_helpful' },
@@ -782,8 +844,7 @@ class OscarChatbot {
         });
         feedback.appendChild(btn);
       });
-    
-      // 📋 Copy
+  
       const copyBtn = document.createElement('button');
       copyBtn.className = 'chatbot-feedback-btn';
       copyBtn.setAttribute('aria-label', 'Copy response');
@@ -800,68 +861,57 @@ class OscarChatbot {
         });
       });
       feedback.appendChild(copyBtn);
-    
-      // 🔊 Speaker
-const speakerBtn = document.createElement('button');
-speakerBtn.className = 'chatbot-feedback-btn';
-speakerBtn.setAttribute('aria-label', 'Listen to response');
-speakerBtn.setAttribute('data-tooltip', 'Listen');
-speakerBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9v6h4l6 5V4L6 9H2z"/><line x1="15" y1="9" x2="15" y2="15"/><line x1="18" y1="7" x2="18" y2="17"/><line x1="21" y1="5" x2="21" y2="19"/></svg>`;
-speakerBtn.addEventListener('click', () => {
-  const lang = localStorage.getItem('chatbot-lang') || 'en';
-  const langMap = { es: 'es-ES', ca: 'ca-ES', en: 'en-US' };
-
-  if (window.speechSynthesis.speaking) {
-    window.speechSynthesis.cancel();
-    speakerBtn.classList.remove('chatbot-feedback-btn--active');
-    speakerBtn.setAttribute('data-tooltip', 'Listen');
-    return;
-  }
-
-  const targetLang = langMap[lang] || 'en-US';
-  const utterance = new SpeechSynthesisUtterance(bubble.innerText);
-  utterance.lang = targetLang;
-  utterance.rate = 0.95;
-  utterance.pitch = 1;
-
-  const voices = window.speechSynthesis.getVoices();
-  const preferred = voices.find(v =>
-    v.lang === targetLang && (
-      v.name.includes('Neural') ||
-      v.name.includes('Natural') ||
-      v.name.includes('Premium') ||
-      v.name.includes('Enhanced') ||
-      v.name.includes('Samantha') ||
-      v.name.includes('Monica')   ||
-      v.name.includes('Montse')
-    )
-  ) || voices.find(v => v.lang.startsWith(targetLang.split('-')[0]));
-
-  if (preferred) utterance.voice = preferred;
-
-  speakerBtn.classList.add('chatbot-feedback-btn--active');
-  speakerBtn.setAttribute('data-tooltip', 'Stop');
-  if (navigator.vibrate) navigator.vibrate(10);
-
-  utterance.onend = () => {
-    speakerBtn.classList.remove('chatbot-feedback-btn--active');
-    speakerBtn.setAttribute('data-tooltip', 'Listen');
-  };
-  utterance.onerror = () => {
-    speakerBtn.classList.remove('chatbot-feedback-btn--active');
-    speakerBtn.setAttribute('data-tooltip', 'Listen');
-  };
-
-  window.speechSynthesis.speak(utterance);
-});
-feedback.appendChild(speakerBtn);
-    
+  
+      const speakerBtn = document.createElement('button');
+      speakerBtn.className = 'chatbot-feedback-btn';
+      speakerBtn.setAttribute('aria-label', 'Listen to response');
+      speakerBtn.setAttribute('data-tooltip', 'Listen');
+      speakerBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9v6h4l6 5V4L6 9H2z"/><line x1="15" y1="9" x2="15" y2="15"/><line x1="18" y1="7" x2="18" y2="17"/><line x1="21" y1="5" x2="21" y2="19"/></svg>`;
+      speakerBtn.addEventListener('click', () => {
+        const lang = localStorage.getItem('chatbot-lang') || 'en';
+        const langMap = { es: 'es-ES', ca: 'ca-ES', en: 'en-US' };
+        if (window.speechSynthesis.speaking) {
+          window.speechSynthesis.cancel();
+          speakerBtn.classList.remove('chatbot-feedback-btn--active');
+          speakerBtn.setAttribute('data-tooltip', 'Listen');
+          return;
+        }
+        const targetLang = langMap[lang] || 'en-US';
+        const utterance = new SpeechSynthesisUtterance(bubble.innerText);
+        utterance.lang = targetLang;
+        utterance.rate = 0.95;
+        utterance.pitch = 1;
+        const voices = window.speechSynthesis.getVoices();
+        const preferred = voices.find(v =>
+          v.lang === targetLang && (
+            v.name.includes('Neural') || v.name.includes('Natural') ||
+            v.name.includes('Premium') || v.name.includes('Enhanced') ||
+            v.name.includes('Samantha') || v.name.includes('Monica') || v.name.includes('Montse')
+          )
+        ) || voices.find(v => v.lang.startsWith(targetLang.split('-')[0]));
+        if (preferred) utterance.voice = preferred;
+        speakerBtn.classList.add('chatbot-feedback-btn--active');
+        speakerBtn.setAttribute('data-tooltip', 'Stop');
+        if (navigator.vibrate) navigator.vibrate(10);
+        utterance.onend = () => { speakerBtn.classList.remove('chatbot-feedback-btn--active'); speakerBtn.setAttribute('data-tooltip', 'Listen'); };
+        utterance.onerror = () => { speakerBtn.classList.remove('chatbot-feedback-btn--active'); speakerBtn.setAttribute('data-tooltip', 'Listen'); };
+        window.speechSynthesis.speak(utterance);
+      });
+      feedback.appendChild(speakerBtn);
+  
       msg.appendChild(feedback);
     }
-
+  
     this.messagesEl.appendChild(msg);
-    this.scrollToBottom();
-    return bubble;
+  
+    if (role === 'assistant') {
+      const formattedContent = raw ? this.formatRaw(content) : this.formatText(content);
+      bubble.innerHTML = '';
+      return typeText(bubble, formattedContent, 10, animated);
+    } else {
+      bubble.innerHTML = raw ? this.formatRaw(content) : this.formatText(content);
+      return Promise.resolve();
+    }
   }
 
   formatRaw(text) {
@@ -910,9 +960,10 @@ feedback.appendChild(speakerBtn);
     this.isLoading = true;
 
     this.appendMessage('user', label);
+    const userMsg = this.messagesEl.lastElementChild;
+    setTimeout(() => this.scrollToUserMessage(userMsg), 150);
     this.conversationContext.push({ role: 'user', content: label });
     if (this.conversationContext.length > 6) this.conversationContext.shift();
-
     const typingEl = this.showTyping();
 
     setTimeout(() => {
@@ -937,15 +988,15 @@ feedback.appendChild(speakerBtn);
         if (followup) response += `\n\n${followup}`;
       }
 
-      this.appendMessage('assistant', response, true, match?.id || null);
-
-      const alreadyShown = wasAlreadyDiscussed(match?.id, this.conversationContext);
-      if (!alreadyShown) {
-        const suggestions = match && match.suggestions && match.suggestions[lang];
-        if (suggestions && suggestions.length > 0) this.showQuickReplies(suggestions);
-        const HIGH_INTENT = ['availability', 'contact', 'cv-download', 'recruiter-summary', 'salary', 'why-hire-me'];
-        if (match && HIGH_INTENT.includes(match.id)) this.showCTAs(lang);
-      }
+      this.appendMessage('assistant', response, true, match?.id || null).then(() => {
+        const alreadyShown = wasAlreadyDiscussed(match?.id, this.conversationContext);
+        if (!alreadyShown) {
+          const suggestions = match && match.suggestions && match.suggestions[lang];
+          if (suggestions && suggestions.length > 0) this.showQuickReplies(suggestions);
+          const HIGH_INTENT = ['availability', 'contact', 'cv-download', 'recruiter-summary', 'salary', 'why-hire-me'];
+          if (match && HIGH_INTENT.includes(match.id)) this.showCTAs(lang);
+        }
+      });
 
       this.conversationContext.push({ role: 'assistant', content: response, id: match?.id || null });
       if (this.conversationContext.length > 6) this.conversationContext.shift();
@@ -965,7 +1016,7 @@ feedback.appendChild(speakerBtn);
       this.saveHistory();
       this.isLoading = false;
       this.sendBtn.disabled = !this.inputEl.value.trim();
-    }, Math.min(400 + Math.floor(label.length * 1.5), 1200));
+    }, Math.max(900, Math.min(400 + Math.floor(label.length * 1.5), 1200)));
   }
 
   send() {
@@ -978,6 +1029,8 @@ feedback.appendChild(speakerBtn);
     this.isLoading = true;
 
     this.appendMessage('user', text);
+    const userMsg = this.messagesEl.lastElementChild;
+    setTimeout(() => this.scrollToUserMessage(userMsg), 150);
 
     this.conversationContext.push({ role: 'user', content: text });
     if (this.conversationContext.length > 6) this.conversationContext.shift();
@@ -1058,16 +1111,16 @@ feedback.appendChild(speakerBtn);
         if (followup) response += `\n\n${followup}`;
       }
 
-      this.appendMessage('assistant', response, true, match?.id || null);
-
-      if (smartSuggestions) {
-        this.showQuickReplies(smartSuggestions);
-      } else if (match && !wasAlreadyDiscussed(match.id, this.conversationContext.slice(0, -1))) {
-        const suggestions = match.suggestions && match.suggestions[lang];
-        if (suggestions && suggestions.length > 0) this.showQuickReplies(suggestions);
-        const HIGH_INTENT = ['availability', 'contact', 'cv-download', 'recruiter-summary', 'salary', 'why-hire-me'];
-        if (HIGH_INTENT.includes(match.id)) this.showCTAs(lang);
-      }
+      this.appendMessage('assistant', response, true, match?.id || null).then(() => {
+        if (smartSuggestions) {
+          this.showQuickReplies(smartSuggestions);
+        } else if (match && !wasAlreadyDiscussed(match.id, this.conversationContext.slice(0, -1))) {
+          const suggestions = match.suggestions && match.suggestions[lang];
+          if (suggestions && suggestions.length > 0) this.showQuickReplies(suggestions);
+          const HIGH_INTENT = ['availability', 'contact', 'cv-download', 'recruiter-summary', 'salary', 'why-hire-me'];
+          if (HIGH_INTENT.includes(match.id)) this.showCTAs(lang);
+        }
+      });
 
       this.conversationContext.push({ role: 'assistant', content: response, id: match?.id || null });
       if (this.conversationContext.length > 6) this.conversationContext.shift();
@@ -1087,7 +1140,7 @@ feedback.appendChild(speakerBtn);
       this.saveHistory();
       this.isLoading = false;
       this.sendBtn.disabled = !this.inputEl.value.trim();
-    }, Math.min(400 + Math.floor(text.length * 1.5), 1200));
+    }, Math.max(900, Math.min(400 + Math.floor(text.length * 1.5), 1200)));
   }
 
   startPlaceholderRotation() {
