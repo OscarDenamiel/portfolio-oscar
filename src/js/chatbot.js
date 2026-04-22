@@ -2,6 +2,7 @@
    OSCAR CHATBOT — chatbot.js
    Chatbot para oscardenamiel.com
    Knowledge-based — sin dependencias externas
+   ChatGPT-style scroll behavior with spacer mechanism
 ============================================================ */
 
 import { KNOWLEDGE_BASE, FALLBACK } from '../data/chatbot-kb.js';
@@ -36,7 +37,7 @@ function levenshtein(a, b) {
   return matrix[b.length][a.length];
 }
 
-/* ── Fuzzy word match — tolerates typos ── */
+/* ── Fuzzy word match ── */
 function fuzzyWordMatch(inputWords, triggerWords) {
   let matched = 0;
   for (const tw of triggerWords) {
@@ -51,17 +52,14 @@ function fuzzyWordMatch(inputWords, triggerWords) {
   return matched;
 }
 
-/* ── Language detection — once per session ── */
+/* ── Language detection ── */
 function detectLanguageOnce(text) {
-  // 1. ¿Ya eligió antes?
   const saved = localStorage.getItem('chatbot-lang');
   if (saved) return saved;
 
-  // 2. Primera vez — combinar señales
   const textLang = detectLanguageFromText(text);
   const pageLang = detectLanguageByPage();
 
-  // Si user escribió en ES/CA, respeta eso. Si no, página o default EN
   const lang = (textLang && textLang !== 'en') ? textLang : (pageLang || 'en');
 
   localStorage.setItem('chatbot-lang', lang);
@@ -106,15 +104,10 @@ function detectLanguageFromText(text) {
 }
 
 function detectLanguageByPage() {
-  // Por ahora: EN por defecto
-  // Futuro: cuando se traduzca la web
-  // const path = window.location.pathname;
-  // if (path.includes('/es/')) return 'es';
-  // if (path.includes('/ca/')) return 'ca';
   return null;
 }
 
-/* ── Intent matching — fuzzy + word overlap + levenshtein ── */
+/* ── Intent matching ── */
 function findResponse(input, context = []) {
   const normalizedInput = normalizeText(input);
   const inputWords = normalizedInput.split(' ').filter(w => w.length > 0);
@@ -162,7 +155,7 @@ function findResponse(input, context = []) {
   return bestMatch;
 }
 
-/* ── Case study URLs — auto-linked wherever mentioned ── */
+/* ── Case study URLs ── */
 const CASE_STUDY_LINKS = {
   'oscardenamiel.com/map':                  { url: 'https://oscardenamiel.com/map',                  name: 'Map Redesign' },
   'oscardenamiel.com/mobile-first':         { url: 'https://oscardenamiel.com/mobile-first',         name: 'Mobile First' },
@@ -186,7 +179,6 @@ const CHATBOT_SUGGESTIONS = [
   { label: "Where do you see yourself in 3 years?", id: 'three-years' },
 ];
 
-/* ── Inject case study links into response text ── */
 function injectCaseStudyLinks(text) {
   let result = text;
   for (const { pattern, key } of CASE_STUDY_PATTERNS) {
@@ -198,7 +190,7 @@ function injectCaseStudyLinks(text) {
   return result;
 }
 
-/* ── Visitor profile — persists across sessions ── */
+/* ── Visitor profile ── */
 function getVisitorProfile() {
   try {
     const saved = localStorage.getItem('chatbot-visitor');
@@ -222,12 +214,10 @@ function updateVisitorProfile(updates) {
   } catch(e) { return null; }
 }
 
-/* ── Check if entry was already discussed this session ── */
 function wasAlreadyDiscussed(entryId, context) {
   return context.some(c => c.role === 'assistant' && c.id === entryId);
 }
 
-/* ── Detect user intent from unmatched input ── */
 function detectFallbackIntent(text) {
   const t = normalizeText(text);
   const recruiterSignals = ['hire', 'hiring', 'recruit', 'job', 'role', 'position', 'cv', 'resume', 'salary', 'available', 'opportunity', 'contrat', 'trabajo', 'puesto', 'feina', 'contractar'];
@@ -242,7 +232,6 @@ function detectFallbackIntent(text) {
   return 'curious';
 }
 
-/* ── Detect frustration signals ── */
 function detectFrustration(text, context) {
   const t = normalizeText(text);
   const frustrationWords = ['no entiendo', 'not working', 'no funciona', 'what', 'que', 'help', 'ayuda', 'ajuda', 'confused', 'confuso'];
@@ -255,46 +244,26 @@ function detectFrustration(text, context) {
   return hasQmarks || hasFrustrationWord || consecutiveFallbacks >= 2;
 }
 
-function typeText(element, html, speed = 10, animate = true) {
-  return new Promise(resolve => {
-    if (!animate) {
+/* ──────────────────────────────────────────────────────────────
+   TYPEWRITER — char-by-char animation
+   Pre-renders HTML invisible to lock final height (no layout shift)
+   ────────────────────────────────────────────────────────────── */
+   function typeText(element, html, speed = 8, animate = true) {
+    return new Promise(resolve => {
       element.innerHTML = html;
       resolve();
-      return;
-    }
-
-    // Renderizar todo de golpe
-    element.innerHTML = html;
-
-    // Animar cada párrafo/bloque con fade-in secuencial
-    const blocks = element.querySelectorAll('p, br, strong');
-    if (blocks.length === 0) {
-      // Texto simple — fade in del bubble entero
-      element.style.opacity = '0';
-      element.style.transition = 'opacity 0.3s ease';
-      requestAnimationFrame(() => {
-        element.style.opacity = '1';
-        setTimeout(resolve, 300);
-      });
-      return;
-    }
-
-    // Múltiples bloques — fade secuencial
-    const allP = element.querySelectorAll('p');
-    allP.forEach(p => {
-      p.style.opacity = '0';
-      p.style.transition = 'opacity 0.25s ease';
     });
+  }
 
-    let i = 0;
-    const revealNext = () => {
-      if (i >= allP.length) { resolve(); return; }
-      allP[i].style.opacity = '1';
-      i++;
-      setTimeout(revealNext, 120);
-    };
-    setTimeout(revealNext, 50);
-  });
+/* ──────────────────────────────────────────────────────────────
+   THINKING TIME — simulates real model latency
+   Min 700ms (orb visible) — Max 1400ms (not frustrating)
+   ────────────────────────────────────────────────────────────── */
+function calculateThinkingTime(text) {
+  const baseTime = 700;
+  const perChar = 1.2;
+  const calculated = baseTime + Math.floor(text.length * perChar);
+  return Math.max(700, Math.min(calculated, 1400));
 }
 
 class OscarChatbot {
@@ -305,10 +274,6 @@ class OscarChatbot {
     this.welcomeShown = false;
     this.conversationContext = [];
     this.init();
-  }
-
-  scrollToUserMessage(msgEl) {
-    this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
   }
 
   init() {
@@ -414,7 +379,7 @@ class OscarChatbot {
         const y = ((e.clientY - rect.top) / rect.height) * 100;
         btn.style.backgroundPosition = `${x}% ${y}%`;
       });
-      
+
       btn.addEventListener('mouseleave', () => {
         btn.style.backgroundPosition = '';
       });
@@ -436,30 +401,38 @@ class OscarChatbot {
     });
   }
 
+  /* ──────────────────────────────────────────────────────────
+     OPEN — shows panel already at the bottom, no visible scroll
+     ────────────────────────────────────────────────────────── */
   open() {
     this.isOpen = true;
+
+    // Render welcome FIRST (synchronous, no animation)
+    if (!this.welcomeShown) {
+      this.welcomeShown = true;
+      this.showWelcome();
+    }
+
+    // Position scroll at bottom BEFORE panel becomes visible.
+    // Panel uses visibility:hidden + transform — messagesEl has dimensions
+    // but is not yet painted, so scrollTop applies invisibly.
+    this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
+
+    // Now show the panel — it slides up already at the bottom
     this.panel.classList.add('open');
-  
+
     const isMobile = window.innerWidth <= 768;
     if (isMobile) {
       this.overlay.classList.add('open');
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
     }
-  
-    if (!this.welcomeShown) {
-      this.welcomeShown = true;
-      this.showWelcome();
-    }
-  
-    // Esperar a que termine la transición de apertura (450ms) 
-    // y luego posicionar sin animación
+
+    // Re-assert scroll after slide-up transition completes
     setTimeout(() => {
-      this.messagesEl.style.scrollBehavior = 'auto';
       this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
-      this.messagesEl.style.scrollBehavior = '';
     }, 460);
-  
+
     this.setTriggerActive(true);
     if (window.innerWidth > 1024) {
       setTimeout(() => this.inputEl.focus(), 300);
@@ -467,7 +440,6 @@ class OscarChatbot {
   }
 
   close() {
-    // Detectar abandono post-fallback
     const lastContext = this.conversationContext[this.conversationContext.length - 1];
     const lastWasFallback = lastContext?.role === 'assistant' && lastContext?.id === null;
 
@@ -490,7 +462,7 @@ class OscarChatbot {
 
   showWelcome() {
     const storedLang = localStorage.getItem('chatbot-lang') || 'en';
-  
+
     const PAGE_CONTEXT = {
       '/map':                  { id: 'project-map',             en: `I see you're checking out the Map Redesign 👀\n\nHappy to go deeper on any part of it — the research process, the results, or the decisions behind it. What are you curious about?`, es: `Veo que estás viendo el Map Redesign 👀\n\nPuedo contarte más sobre el proceso de research, los resultados o las decisiones detrás del proyecto. ¿Qué te interesa?`, ca: `Veig que estàs veient el Map Redesign 👀\n\nPuc explicar-te més sobre el procés de research, els resultats o les decisions darrere del projecte. Què t'interessa?` },
       '/mobile-first':         { id: 'project-mobile-first',    en: `You're looking at Mobile First 👀\n\nThis one's close to my heart — it completely changed how I think about mobile design. Ask me anything about it.`, es: `Estás viendo el Mobile First 👀\n\nEste proyecto cambió mucho cómo pienso sobre el diseño mobile. Pregúntame lo que quieras.`, ca: `Estàs veient el Mobile First 👀\n\nAquest projecte va canviar molt com penso sobre el disseny mòbil. Pregunta'm el que vulguis.` },
@@ -498,89 +470,88 @@ class OscarChatbot {
       '/smart-suggester':      { id: 'project-smart-suggester', en: `You're exploring the Smart Suggester 👀\n\nThis one's more technical than it looks. Happy to explain the UX decisions and the back-end collaboration behind it.`, es: `Estás explorando el Smart Suggester 👀\n\nEste es más técnico de lo que parece. Puedo explicarte las decisiones de UX y la colaboración con back-end.`, ca: `Estàs explorant el Smart Suggester 👀\n\nAquest és més tècnic del que sembla. Puc explicar-te les decisions de UX i la col·laboració amb back-end.` },
       '/about':                { id: 'about',                   en: `You're on the About page 👋\n\nAsk me anything — about my background, what I'm working on, or what I'm looking for next.`, es: `Estás en la página About 👋\n\nPregúntame lo que quieras — sobre mi background, en qué estoy trabajando o qué busco.`, ca: `Estàs a la pàgina About 👋\n\nPregunta'm el que vulguis — sobre el meu background, en què estic treballant o què busco.` },
     };
-  
-    // Chips contextuales por página
+
     const PAGE_SUGGESTIONS = {
       'project-map': {
-          es: [
-            { label: '⚡ Resumen del proyecto', id: 'project-map-summary' },
-            { label: '¿Cuáles fueron los resultados?', id: 'project-map-impact' },
-            { label: '¿Cómo fue el proceso de research?', id: 'project-map-research' },
-            { label: 'Ver todos los proyectos', id: 'projects-overview' }
-          ],
-          ca: [
-            { label: '⚡ Resum del projecte', id: 'project-map-summary' },
-            { label: 'Quins van ser els resultats?', id: 'project-map-impact' },
-            { label: 'Com va ser el procés de research?', id: 'project-map-research' },
-            { label: 'Veure tots els projectes', id: 'projects-overview' }
-          ],
-          en: [
-            { label: '⚡ Quick project summary', id: 'project-map-summary' },
-            { label: 'What were the results?', id: 'project-map-impact' },
-            { label: 'Walk me through the research', id: 'project-map-research' },
-            { label: 'What design decisions did you make?', id: 'project-map-decisions' }
-          ]
-        },
+        es: [
+          { label: '⚡ Resumen del proyecto', id: 'project-map-summary' },
+          { label: '¿Cuáles fueron los resultados?', id: 'project-map-impact' },
+          { label: '¿Cómo fue el proceso de research?', id: 'project-map-research' },
+          { label: 'Ver todos los proyectos', id: 'projects-overview' }
+        ],
+        ca: [
+          { label: '⚡ Resum del projecte', id: 'project-map-summary' },
+          { label: 'Quins van ser els resultats?', id: 'project-map-impact' },
+          { label: 'Com va ser el procés de research?', id: 'project-map-research' },
+          { label: 'Veure tots els projectes', id: 'projects-overview' }
+        ],
+        en: [
+          { label: '⚡ Quick project summary', id: 'project-map-summary' },
+          { label: 'What were the results?', id: 'project-map-impact' },
+          { label: 'Walk me through the research', id: 'project-map-research' },
+          { label: 'What design decisions did you make?', id: 'project-map-decisions' }
+        ]
+      },
       'project-mobile-first': {
-          es: [
-            { label: '⚡ Resumen del proyecto', id: 'project-mobile-first-summary' },
-            { label: '¿Cuáles fueron los resultados?', id: 'project-mobile-first-impact' },
-            { label: '¿Cómo fue el proceso de research?', id: 'project-mobile-first-research' },
-            { label: '¿Cómo validaste el diseño?', id: 'project-mobile-first-validation' }
-          ],
-          ca: [
-            { label: '⚡ Resum del projecte', id: 'project-mobile-first-summary' },
-            { label: 'Quins van ser els resultats?', id: 'project-mobile-first-impact' },
-            { label: 'Com va ser el procés de research?', id: 'project-mobile-first-research' },
-            { label: 'Com vas validar el disseny?', id: 'project-mobile-first-validation' }
-          ],
-          en: [
-            { label: '⚡ Quick project summary', id: 'project-mobile-first-summary' },
-            { label: 'What were the results?', id: 'project-mobile-first-impact' },
-            { label: 'Walk me through the research', id: 'project-mobile-first-research' },
-            { label: 'How did you validate the design?', id: 'project-mobile-first-validation' }
-          ]
-        },
-        'project-self-service': {
-          es: [
-            { label: '⚡ Resumen del proyecto', id: 'project-self-service-summary' },
-            { label: '¿Cuáles fueron los resultados?', id: 'project-self-service-impact' },
-            { label: '¿Cómo fue el proceso?', id: 'project-self-service-process' },
-            { label: 'Ver todos los proyectos', id: 'projects-overview' }
-          ],
-          ca: [
-            { label: '⚡ Resum del projecte', id: 'project-self-service-summary' },
-            { label: 'Quins van ser els resultats?', id: 'project-self-service-impact' },
-            { label: 'Com va ser el procés?', id: 'project-self-service-process' },
-            { label: 'Veure tots els projectes', id: 'projects-overview' }
-          ],
-          en: [
-            { label: '⚡ Quick project summary', id: 'project-self-service-summary' },
-            { label: 'What were the results?', id: 'project-self-service-impact' },
-            { label: 'Walk me through the process', id: 'project-self-service-process' },
-            { label: 'See all projects', id: 'projects-overview' }
-          ]
-        },
-        'project-smart-suggester': {
-          es: [
-            { label: '⚡ Resumen del proyecto', id: 'project-smart-suggester-summary' },
-            { label: '¿Cuáles fueron los resultados?', id: 'project-smart-suggester-impact' },
-            { label: '¿Cómo fue el proceso de research?', id: 'project-smart-suggester-research' },
-            { label: '¿Cómo trabajaste con ingeniería?', id: 'project-smart-suggester-engineering' }
-          ],
-          ca: [
-            { label: '⚡ Resum del projecte', id: 'project-smart-suggester-summary' },
-            { label: 'Quins van ser els resultats?', id: 'project-smart-suggester-impact' },
-            { label: 'Com va ser el procés de research?', id: 'project-smart-suggester-research' },
-            { label: 'Com vas treballar amb enginyeria?', id: 'project-smart-suggester-engineering' }
-          ],
-          en: [
-            { label: '⚡ Quick project summary', id: 'project-smart-suggester-summary' },
-            { label: 'What were the results?', id: 'project-smart-suggester-impact' },
-            { label: 'Walk me through the research', id: 'project-smart-suggester-research' },
-            { label: 'How did you work with engineering?', id: 'project-smart-suggester-engineering' }
-          ]
-        },
+        es: [
+          { label: '⚡ Resumen del proyecto', id: 'project-mobile-first-summary' },
+          { label: '¿Cuáles fueron los resultados?', id: 'project-mobile-first-impact' },
+          { label: '¿Cómo fue el proceso de research?', id: 'project-mobile-first-research' },
+          { label: '¿Cómo validaste el diseño?', id: 'project-mobile-first-validation' }
+        ],
+        ca: [
+          { label: '⚡ Resum del projecte', id: 'project-mobile-first-summary' },
+          { label: 'Quins van ser els resultats?', id: 'project-mobile-first-impact' },
+          { label: 'Com va ser el procés de research?', id: 'project-mobile-first-research' },
+          { label: 'Com vas validar el disseny?', id: 'project-mobile-first-validation' }
+        ],
+        en: [
+          { label: '⚡ Quick project summary', id: 'project-mobile-first-summary' },
+          { label: 'What were the results?', id: 'project-mobile-first-impact' },
+          { label: 'Walk me through the research', id: 'project-mobile-first-research' },
+          { label: 'How did you validate the design?', id: 'project-mobile-first-validation' }
+        ]
+      },
+      'project-self-service': {
+        es: [
+          { label: '⚡ Resumen del proyecto', id: 'project-self-service-summary' },
+          { label: '¿Cuáles fueron los resultados?', id: 'project-self-service-impact' },
+          { label: '¿Cómo fue el proceso?', id: 'project-self-service-process' },
+          { label: 'Ver todos los proyectos', id: 'projects-overview' }
+        ],
+        ca: [
+          { label: '⚡ Resum del projecte', id: 'project-self-service-summary' },
+          { label: 'Quins van ser els resultats?', id: 'project-self-service-impact' },
+          { label: 'Com va ser el procés?', id: 'project-self-service-process' },
+          { label: 'Veure tots els projectes', id: 'projects-overview' }
+        ],
+        en: [
+          { label: '⚡ Quick project summary', id: 'project-self-service-summary' },
+          { label: 'What were the results?', id: 'project-self-service-impact' },
+          { label: 'Walk me through the process', id: 'project-self-service-process' },
+          { label: 'See all projects', id: 'projects-overview' }
+        ]
+      },
+      'project-smart-suggester': {
+        es: [
+          { label: '⚡ Resumen del proyecto', id: 'project-smart-suggester-summary' },
+          { label: '¿Cuáles fueron los resultados?', id: 'project-smart-suggester-impact' },
+          { label: '¿Cómo fue el proceso de research?', id: 'project-smart-suggester-research' },
+          { label: '¿Cómo trabajaste con ingeniería?', id: 'project-smart-suggester-engineering' }
+        ],
+        ca: [
+          { label: '⚡ Resum del projecte', id: 'project-smart-suggester-summary' },
+          { label: 'Quins van ser els resultats?', id: 'project-smart-suggester-impact' },
+          { label: 'Com va ser el procés de research?', id: 'project-smart-suggester-research' },
+          { label: 'Com vas treballar amb enginyeria?', id: 'project-smart-suggester-engineering' }
+        ],
+        en: [
+          { label: '⚡ Quick project summary', id: 'project-smart-suggester-summary' },
+          { label: 'What were the results?', id: 'project-smart-suggester-impact' },
+          { label: 'Walk me through the research', id: 'project-smart-suggester-research' },
+          { label: 'How did you work with engineering?', id: 'project-smart-suggester-engineering' }
+        ]
+      },
       'about': {
         es: [
           { label: '¿Estás buscando trabajo?', id: 'availability' },
@@ -599,17 +570,18 @@ class OscarChatbot {
         ]
       }
     };
-  
+
     const path = window.location.pathname;
     const pageCtx = Object.entries(PAGE_CONTEXT).find(([key]) => path.includes(key));
-  
+
     const saved = sessionStorage.getItem('chatbot-history');
     if (saved) {
       try {
         const history = JSON.parse(saved);
         if (history.length > 0) {
+          // ── HISTORY RESTORED — instant, no animation ──
           history.forEach(({ role, content, raw }) => {
-            this.appendMessage(role, content, raw || false, null, false); // ← false
+            this.appendMessage(role, content, raw || false, null, false);
           });
           this.conversationContext = history.map(h => ({
             role: h.role,
@@ -617,30 +589,24 @@ class OscarChatbot {
             id: null
           })).slice(-6);
           this.hasShownSuggestions = true;
-  
-          // Solo añadir mensaje contextual si estamos en una página de proyecto/about
-          // NO guardarlo en sessionStorage hasta que el usuario interactúe
+
           if (pageCtx) {
             const [, ctx] = pageCtx;
             const contextMsg = ctx[storedLang] || ctx.en;
-            setTimeout(() => {
-              this.appendMessage('assistant', contextMsg, false, null, false);
-              const chips = PAGE_SUGGESTIONS[ctx.id]?.[storedLang] || PAGE_SUGGESTIONS[ctx.id]?.en;
-              if (chips) this.showQuickReplies(chips);
-              this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
-            }, 400);
-          }
-          // Si es homepage, mostrar suggestions genéricas
-          if (!pageCtx) {
+            // Contextual page message — also instant when restoring
+            this.appendMessage('assistant', contextMsg, false, null, false);
+            const chips = PAGE_SUGGESTIONS[ctx.id]?.[storedLang] || PAGE_SUGGESTIONS[ctx.id]?.en;
+            if (chips) this.showQuickReplies(chips);
+          } else {
             this.hasShownSuggestions = false;
-            setTimeout(() => this.showSuggestions(), 400);
+            this.showSuggestions();
           }
           return;
         }
       } catch(e) { sessionStorage.removeItem('chatbot-history'); }
     }
-  
-    // ── Sin historial — primera apertura ──
+
+    // ── First open — no history ──
     const profile = getVisitorProfile();
     const isReturn = profile && profile.visitCount > 0;
     const today = new Date().toISOString().split('T')[0];
@@ -649,10 +615,10 @@ class OscarChatbot {
       visitCount: (profile?.visitCount || 0) + 1,
       lastVisit: today
     });
-  
+
     let welcomeText;
     let contextSuggestions = null;
-  
+
     if (pageCtx) {
       const [, ctx] = pageCtx;
       welcomeText = ctx[storedLang] || ctx.en;
@@ -663,7 +629,7 @@ class OscarChatbot {
         ca: `Hola! Soc l'Oscar, Senior Product Designer a Barcelona. Puc respondre't en català, castellà o anglès — el que prefereixis.\n\nPregunta'm sobre els meus projectes, experiència, procés de disseny o el que necessitis. Aquest xat està en millora constant i aprendrà per donar-te millors respostes amb el temps.`,
         en: `Hey! 👋 I'm Oscar — Senior Product Designer based in Barcelona. I can reply in English, Spanish or Catalan — just write in whichever you prefer.\n\nAsk me about my projects, experience, design process or anything else. This chat is constantly improving and will keep getting better over time.`
       };
-  
+
       if (isReturn && profile.lastIntent === 'recruiter-summary') {
         welcomeText = {
           es: `Bienvenido de nuevo 👋\n\nLa última vez estabas explorando el perfil de recruiter. ¿Sigues evaluando la oportunidad o tienes alguna pregunta concreta?`,
@@ -688,10 +654,11 @@ class OscarChatbot {
         welcomeText = welcomeMessages[storedLang];
       }
     }
-  
+
+    // ── Welcome message — INSTANT, no typewriter ──
     this.appendMessage('assistant', welcomeText, false, null, false);
     this.saveHistory();
-  
+
     if (contextSuggestions) {
       this.hasShownSuggestions = true;
       this.showQuickReplies(contextSuggestions);
@@ -738,7 +705,6 @@ class OscarChatbot {
     });
 
     this.messagesEl.appendChild(wrapper);
-    this.scrollToBottom();
   }
 
   showQuickReplies(suggestions) {
@@ -765,7 +731,6 @@ class OscarChatbot {
     });
 
     this.messagesEl.appendChild(wrapper);
-    this.scrollToBottom();
   }
 
   showCTAs(lang) {
@@ -801,22 +766,24 @@ class OscarChatbot {
     });
 
     this.messagesEl.appendChild(wrapper);
-    this.scrollToBottom();
   }
 
+  /* ──────────────────────────────────────────────────────────
+     APPEND MESSAGE — always inserts before spacer
+     ────────────────────────────────────────────────────────── */
   appendMessage(role, content, raw = false, intentId = null, animated = true) {
     const msg = document.createElement('div');
     msg.className = `chatbot-msg ${role}`;
-  
+
     const bubble = document.createElement('div');
     bubble.className = 'chatbot-bubble';
-  
+
     msg.appendChild(bubble);
-  
+
     if (role === 'assistant') {
       const feedback = document.createElement('div');
       feedback.className = 'chatbot-feedback';
-  
+
       [
         { svg: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>`, tooltip: 'Helpful', type: 'helpful' },
         { svg: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"/><path d="M17 2h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg>`, tooltip: 'Not helpful', type: 'not_helpful' },
@@ -844,7 +811,7 @@ class OscarChatbot {
         });
         feedback.appendChild(btn);
       });
-  
+
       const copyBtn = document.createElement('button');
       copyBtn.className = 'chatbot-feedback-btn';
       copyBtn.setAttribute('aria-label', 'Copy response');
@@ -861,7 +828,7 @@ class OscarChatbot {
         });
       });
       feedback.appendChild(copyBtn);
-  
+
       const speakerBtn = document.createElement('button');
       speakerBtn.className = 'chatbot-feedback-btn';
       speakerBtn.setAttribute('aria-label', 'Listen to response');
@@ -898,16 +865,17 @@ class OscarChatbot {
         window.speechSynthesis.speak(utterance);
       });
       feedback.appendChild(speakerBtn);
-  
+
       msg.appendChild(feedback);
     }
-  
+
+    // Always insert before the bottom spacer
     this.messagesEl.appendChild(msg);
-  
+
     if (role === 'assistant') {
       const formattedContent = raw ? this.formatRaw(content) : this.formatText(content);
       bubble.innerHTML = '';
-      return typeText(bubble, formattedContent, 10, animated);
+      return typeText(bubble, formattedContent, 8, animated);
     } else {
       bubble.innerHTML = raw ? this.formatRaw(content) : this.formatText(content);
       return Promise.resolve();
@@ -944,26 +912,52 @@ class OscarChatbot {
     typing.id = 'chatbot-typing';
     typing.innerHTML = '<span></span><span></span><span></span>';
     this.messagesEl.appendChild(typing);
-    this.scrollToBottom();
+    this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
     return typing;
   }
 
-  scrollToBottom() {
-    this.messagesEl.scrollTo({
-      top: this.messagesEl.scrollHeight,
-      behavior: 'smooth'
+  /* ──────────────────────────────────────────────────────────
+     RESERVE SCROLL SPACE — sets spacer = container height
+     This is the key trick: ensures user msg can scroll to top
+     ────────────────────────────────────────────────────────── */
+  reserveScrollSpace() {
+    const containerHeight = this.messagesEl.clientHeight;
+    this.bottomSpacer.style.minHeight = containerHeight + 'px';
+  }
+
+  /* ──────────────────────────────────────────────────────────
+     SCROLL USER MSG TO TOP — positions at 12px from header
+     Instant, no smooth animation
+     ────────────────────────────────────────────────────────── */
+  scrollUserMsgToTop(msgEl) {
+    const originalBehavior = this.messagesEl.style.scrollBehavior;
+    this.messagesEl.style.scrollBehavior = 'auto';
+    this.messagesEl.scrollTop = msgEl.offsetTop - 12;
+    requestAnimationFrame(() => {
+      this.messagesEl.style.scrollBehavior = originalBehavior;
     });
   }
 
+  /* ──────────────────────────────────────────────────────────
+     SEND BY ID — for chip clicks
+     ────────────────────────────────────────────────────────── */
   sendById(label, entryId) {
     if (this.isLoading) return;
     this.isLoading = true;
 
+    // 1. Append user message
     this.appendMessage('user', label);
-    const userMsg = this.messagesEl.lastElementChild;
-    setTimeout(() => this.scrollToUserMessage(userMsg), 150);
+    const allUserMsgs = this.messagesEl.querySelectorAll('.chatbot-msg.user');
+    const userMsg = allUserMsgs[allUserMsgs.length - 1];
+
+    // 2. Scroll to bottom to new message
+    this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
+    
+
     this.conversationContext.push({ role: 'user', content: label });
     if (this.conversationContext.length > 6) this.conversationContext.shift();
+
+    // 3. Show typing orb
     const typingEl = this.showTyping();
 
     setTimeout(() => {
@@ -989,13 +983,15 @@ class OscarChatbot {
       }
 
       this.appendMessage('assistant', response, true, match?.id || null).then(() => {
-        const alreadyShown = wasAlreadyDiscussed(match?.id, this.conversationContext);
-        if (!alreadyShown) {
-          const suggestions = match && match.suggestions && match.suggestions[lang];
-          if (suggestions && suggestions.length > 0) this.showQuickReplies(suggestions);
-          const HIGH_INTENT = ['availability', 'contact', 'cv-download', 'recruiter-summary', 'salary', 'why-hire-me'];
-          if (match && HIGH_INTENT.includes(match.id)) this.showCTAs(lang);
-        }
+        const suggestions = match && match.suggestions && match.suggestions[lang];
+        if (suggestions && suggestions.length > 0) this.showQuickReplies(suggestions);
+        const HIGH_INTENT = ['availability', 'contact', 'cv-download', 'recruiter-summary', 'salary', 'why-hire-me'];
+        if (match && HIGH_INTENT.includes(match.id)) this.showCTAs(lang);
+        
+        // Un solo scroll al final, después de que todo esté en el DOM
+        requestAnimationFrame(() => {
+          this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
+        });
       });
 
       this.conversationContext.push({ role: 'assistant', content: response, id: match?.id || null });
@@ -1016,9 +1012,12 @@ class OscarChatbot {
       this.saveHistory();
       this.isLoading = false;
       this.sendBtn.disabled = !this.inputEl.value.trim();
-    }, Math.max(900, Math.min(400 + Math.floor(label.length * 1.5), 1200)));
+    }, calculateThinkingTime(label));
   }
 
+  /* ──────────────────────────────────────────────────────────
+     SEND — for typed messages
+     ────────────────────────────────────────────────────────── */
   send() {
     const text = this.inputEl.value.trim();
     if (!text || this.isLoading) return;
@@ -1028,13 +1027,19 @@ class OscarChatbot {
     this.sendBtn.disabled = true;
     this.isLoading = true;
 
+    // 1. Append user message
     this.appendMessage('user', text);
-    const userMsg = this.messagesEl.lastElementChild;
-    setTimeout(() => this.scrollToUserMessage(userMsg), 150);
+    const allUserMsgs = this.messagesEl.querySelectorAll('.chatbot-msg.user');
+    const userMsg = allUserMsgs[allUserMsgs.length - 1];
+
+    // 2. Scroll to bottom to new message
+    this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
+    
 
     this.conversationContext.push({ role: 'user', content: text });
     if (this.conversationContext.length > 6) this.conversationContext.shift();
 
+    // 3. Show typing orb
     const typingEl = this.showTyping();
 
     setTimeout(() => {
@@ -1061,7 +1066,6 @@ class OscarChatbot {
       let smartSuggestions = null;
 
       if (!match) {
-        // ── Frustration detection ──
         if (detectFrustration(text, this.conversationContext)) {
           response = {
             es: `Parece que no te estoy siendo muy útil 😅\n\nDéjame intentarlo de otra forma — cuéntame qué buscas exactamente:`,
@@ -1074,7 +1078,6 @@ class OscarChatbot {
             { label: lang === 'es' ? 'Solo tengo curiosidad' : lang === 'ca' ? 'Només tinc curiositat' : 'Just curious', id: 'recommendation-curious' }
           ];
         } else {
-          // ── Smart fallback by intent ──
           const intent = detectFallbackIntent(text);
           if (intent === 'recruiter') {
             response = {
@@ -1112,14 +1115,15 @@ class OscarChatbot {
       }
 
       this.appendMessage('assistant', response, true, match?.id || null).then(() => {
-        if (smartSuggestions) {
-          this.showQuickReplies(smartSuggestions);
-        } else if (match && !wasAlreadyDiscussed(match.id, this.conversationContext.slice(0, -1))) {
-          const suggestions = match.suggestions && match.suggestions[lang];
-          if (suggestions && suggestions.length > 0) this.showQuickReplies(suggestions);
-          const HIGH_INTENT = ['availability', 'contact', 'cv-download', 'recruiter-summary', 'salary', 'why-hire-me'];
-          if (HIGH_INTENT.includes(match.id)) this.showCTAs(lang);
-        }
+        const suggestions = match && match.suggestions && match.suggestions[lang];
+        if (suggestions && suggestions.length > 0) this.showQuickReplies(suggestions);
+        const HIGH_INTENT = ['availability', 'contact', 'cv-download', 'recruiter-summary', 'salary', 'why-hire-me'];
+        if (match && HIGH_INTENT.includes(match.id)) this.showCTAs(lang);
+        
+        // Un solo scroll al final, después de que todo esté en el DOM
+        requestAnimationFrame(() => {
+          this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
+        });
       });
 
       this.conversationContext.push({ role: 'assistant', content: response, id: match?.id || null });
@@ -1140,7 +1144,7 @@ class OscarChatbot {
       this.saveHistory();
       this.isLoading = false;
       this.sendBtn.disabled = !this.inputEl.value.trim();
-    }, Math.max(900, Math.min(400 + Math.floor(text.length * 1.5), 1200)));
+    }, calculateThinkingTime(text));
   }
 
   startPlaceholderRotation() {

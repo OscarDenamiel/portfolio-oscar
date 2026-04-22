@@ -9,7 +9,7 @@ export const KNOWLEDGE_BASE = [
   // ── SALUDO ─────────────────────────────────────────────────
   {
     id: 'greeting',
-    triggers: ['hola', 'hey', 'hello', 'hi', 'buenos dias', 'buenas', 'bon dia', 'bona tarda', 'good morning', 'sup', 'howdy', 'greetings', 'si', 'ok', 'vale', 'dale', 'bueno', 'claro'],
+    triggers: ['hola', 'hey', 'hello', 'hi', 'buenos dias', 'buenas', 'bon dia', 'bona tarda', 'good morning', 'sup', 'howdy', 'greetings', 'si', 'ok', 'vale', 'dale', 'bueno', 'claro', 'funciona', 'com va?', 'funciona', 'com va', 'com anem', 'como vas', 'how are you', 'tot be', 'todo bien'],
     response: {
       es: `Hola! Soy Oscar, Senior Product Designer en Barcelona. Cuéntame, qué te trae por aquí?`,
       ca: `Hola! Soc l'Oscar, Senior Product Designer a Barcelona. En què et puc ajudar?`,
@@ -37,7 +37,7 @@ export const KNOWLEDGE_BASE = [
   // ── PROYECTOS OVERVIEW ─────────────────────────────────────
   {
     id: 'projects-overview',
-    triggers: ['proyectos', 'projects', 'projectes', 'case studies', 'case study', 'portfolio', 'que has hecho', 'what have you done', 'que has fet', 'trabajo', 'work', 'show me your work', 'show me work', 'tus proyectos', 'your projects', 'els teus projectes', 'que veo', 'what do i see', 'que hay aqui', 'que tienes', 'what do you have'],
+    triggers: ['proyectos', 'projects', 'que veo', 'what do i see', 'que hay aqui', 'projectes', 'case studies', 'case study', 'portfolio', 'que has hecho', 'what have you done', 'que has fet', 'trabajo', 'work', 'show me your work', 'show me work', 'tus proyectos', 'your projects', 'els teus projectes', 'que veo', 'what do i see', 'que hay aqui', 'que tienes', 'what do you have'],
     response: {
       es: `Tengo 4 case studies publicados, todos con resultados reales y medibles\n\n**Map Redesign** → +17% CTR, +25% CVR, +43% sesión (Stayforlong)\n**Mobile First** → +8% CVR, -12% reembolsos, +7% beneficio diario (Leadtech)\n**Self-Service Bookings** → -17% contactos soporte, +8% retención (Stayforlong)\n**Smart Suggester** → -40% tiempo búsqueda, +9% tráfico al funnel (Stayforlong)\n\nTe interesa alguno en concreto?`,
       ca: `Tinc 4 case studies publicats, tots amb resultats reals i mesurables\n\n**Map Redesign** → +17% CTR, +25% CVR, +43% sessió (Stayforlong)\n**Mobile First** → +8% CVR, -12% reemborsaments, +7% benefici diari (Leadtech)\n**Self-Service Bookings** → -17% contactes suport, +8% retenció (Stayforlong)\n**Smart Suggester** → -40% temps cerca, +9% trànsit al funnel (Stayforlong)\n\nT'interessa algun en concret?`,
@@ -787,7 +787,7 @@ export const KNOWLEDGE_BASE = [
   // ── POR QUÉ CONTRATARME / PITCH 60 SEGUNDOS ──────────────
   {
     id: 'why-hire-me',
-    triggers: ['por que contratarte', 'why should we hire you', 'per que contractar-te', 'que te hace diferente', 'what makes you different', 'que et fa diferent', 'convenceme', 'convince me', 'convence\'m', 'pitch', 'en 60 segundos', 'in 60 seconds', 'en 60 segons', 'elevator pitch', 'value proposition', 'propuesta de valor', 'por que te tenemos que contratar', 'porque tenemos que contratarte', 'por que contratarte', 'why should we hire you', 'convince me', 'convenceme'],
+    triggers: ['porque te tenemos que contratar', 'por que te tenemos que contratar', 'convince me', 'por que contratarte', 'why should we hire you', 'per que contractar-te', 'que te hace diferente', 'what makes you different', 'que et fa diferent', 'convenceme', 'convince me', 'convence\'m', 'pitch', 'en 60 segundos', 'in 60 seconds', 'en 60 segons', 'elevator pitch', 'value proposition', 'propuesta de valor', 'por que te tenemos que contratar', 'porque tenemos que contratarte', 'por que contratarte', 'why should we hire you', 'convince me', 'convenceme'],
     response: {
       es: `Soy un Product Designer con un background técnico y de negocio que pocos diseñadores tienen.\n\nPor un lado, tengo formación en Data Analysis y experiencia trabajando como lead PD en empresas donde reportaba directamente al C-Level y participaba en la definición de goals y roadmap — no solo ejecutaba diseño, tomaba decisiones estratégicas. En Stayforlong soy el único Product Designer de la empresa, lo que me da una visión transversal del negocio que no tendrías con un diseñador más especialista.\n\nPor otro lado, hice un bootcamp de full-stack development, lo que me permite hablar el idioma de ingeniería, hacer handoffs precisos y entender los trade-offs técnicos antes de proponer soluciones.\n\nNo me defino como UX/UI. Me defino como Product Designer especialista en Growth — mi trabajo mueve métricas de negocio, no solo mejora la experiencia.`,
       ca: `Soc un Product Designer amb un background tècnic i de negoci que pocs dissenyadors tenen.\n\nD'una banda, tinc formació en Data Analysis i experiència treballant com a lead PD en empreses on reportava directament al C-Level i participava en la definició de goals i roadmap. A Stayforlong soc l'únic Product Designer de l'empresa, cosa que em dona una visió transversal del negoci.\n\nDe l'altra, vaig fer un bootcamp de full-stack development, cosa que em permet parlar l'idioma d'enginyeria i fer handoffs precisos.\n\nNo em defineixo com a UX/UI. Em defineixo com a Product Designer especialista en Growth.`,
@@ -870,6 +870,23 @@ export const KNOWLEDGE_BASE = [
       ca: `Perfecte, aquí va el resum ràpid 👋\n\n**Oscar Denamiel — Senior Product Designer**\n8+ anys · Barcelona · Disponible\n\n**Especialitat:** Growth, CRO, UX Research, Design Systems AI-Ready\n**Sectors:** Travel Tech, E-commerce, Fintech\n\n**Top resultats:**\n→ +25% CVR i +43% sessió (Map Redesign, Stayforlong)\n→ +8% CVR i +7% benefici diari (Mobile First, Leadtech)\n→ -17% contactes suport (Self-Service Bookings)\n→ 3M+ usuaris impactats · 100+ experiments validats\n\n**Stack:** Figma, A/B testing, Hotjar, Amplitude, Python/SQL\n**Modalitat:** Remot, híbrid o presencial · Obert a reubicació\n\n📧 <a href="mailto:oscardenamiel@gmail.com" class="text-link" target="_blank">oscardenamiel@gmail.com</a>\n💼 <a href="https://linkedin.com/in/oscardenamiel" class="text-link" target="_blank">linkedin.com/in/oscardenamiel</a>`,
       en: `Perfect, here's the quick summary 👋\n\n**Oscar Denamiel — Senior Product Designer**\n8+ years · Barcelona · Available\n\n**Specialty:** Growth, CRO, UX Research, AI-Ready Design Systems\n**Sectors:** Travel Tech, E-commerce, Fintech\n\n**Top results:**\n→ +25% CVR and +43% session duration (Map Redesign, Stayforlong)\n→ +8% CVR and +7% daily profit (Mobile First, Leadtech)\n→ -17% support contacts (Self-Service Bookings)\n→ 3M+ users impacted · 100+ experiments validated\n\n**Stack:** Figma, A/B testing, Hotjar, Amplitude, Python/SQL\n**Format:** Remote, hybrid or on-site · Open to relocation\n\n📧 <a href="mailto:oscardenamiel@gmail.com" class="text-link" target="_blank">oscardenamiel@gmail.com</a>\n💼 <a href="https://linkedin.com/in/oscardenamiel" class="text-link" target="_blank">linkedin.com/in/oscardenamiel</a>`
     },
+    suggestions: {
+      es: [
+        { label: 'Ver mis proyectos', id: 'projects-overview' },
+        { label: 'Descargar CV', id: 'cv-download' },
+        { label: 'Contactar directamente', id: 'contact' }
+      ],
+      ca: [
+        { label: 'Veure els meus projectes', id: 'projects-overview' },
+        { label: 'Descarregar CV', id: 'cv-download' },
+        { label: 'Contactar directament', id: 'contact' }
+      ],
+      en: [
+        { label: 'See my projects', id: 'projects-overview' },
+        { label: 'Download CV', id: 'cv-download' },
+        { label: 'Contact directly', id: 'contact' }
+      ]
+    }
   },
 
   // ── MAP REDESIGN — EXECUTIVE SUMMARY ──────────────────────
