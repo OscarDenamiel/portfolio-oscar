@@ -31,6 +31,7 @@ export default defineConfig({
         /^chatbot/,
         /^orb-/,
         /^chatbot-typing/,
+        { pattern: /dark-mode-toggle-btn/, greedy: true },
       ],
     }),
   ],
