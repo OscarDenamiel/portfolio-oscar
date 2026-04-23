@@ -1,3 +1,4 @@
+// v2
 import { projects } from './data/projects.js';
 import { initMobileMenu } from './js/mobileMenu.js';
 import { initAudioManager } from './js/audioManager.js';
