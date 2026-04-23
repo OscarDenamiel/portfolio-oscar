@@ -27,7 +27,10 @@ export default defineConfig({
         'typing-complete',
         /^body/,
         /^dark-mode/,
-        /^kb-/
+        /^kb-/,
+        /^chatbot/,
+        /^orb-/,
+        /^chatbot-typing/,
       ],
     }),
   ],
