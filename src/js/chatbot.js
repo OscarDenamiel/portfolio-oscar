@@ -6,6 +6,7 @@
 ============================================================ */
 
 import { KNOWLEDGE_BASE, FALLBACK } from '../data/chatbot-kb.js';
+import { FALLBACK_BY_INTENT, FALLBACK_SUGGESTIONS } from '../data/kb/fallback.js';
 import '../chatbot.css';
 
 /* ── Text normalization ── */
@@ -264,6 +265,29 @@ function calculateThinkingTime(text) {
   const perChar = 1.2;
   const calculated = baseTime + Math.floor(text.length * perChar);
   return Math.max(700, Math.min(calculated, 1400));
+}
+
+/* ──────────────────────────────────────────────────────────────
+   STRUCTURED LOGGING — solo en development
+   Guarda {query, matchedIntent, score, lang, timestamp}
+   Revisa con: JSON.parse(localStorage.getItem('chatbot-logs'))
+   Limpia con: localStorage.removeItem('chatbot-logs')
+────────────────────────────────────────────────────────────── */
+function logQuery(query, matchedIntent, lang) {
+  if (!window.location.hostname.includes('localhost')) return;
+  
+  try {
+    const logs = JSON.parse(localStorage.getItem('chatbot-logs') || '[]');
+    logs.push({
+      query,
+      matchedIntent: matchedIntent || 'no_match',
+      lang,
+      timestamp: new Date().toISOString()
+    });
+    // Máximo 200 entradas
+    if (logs.length > 200) logs.shift();
+    localStorage.setItem('chatbot-logs', JSON.stringify(logs));
+  } catch(e) {}
 }
 
 class OscarChatbot {
@@ -1102,6 +1126,8 @@ class OscarChatbot {
         });
       }
 
+      logQuery(text, match?.id || null, lang);
+
       const alreadyMsg = {
         es: `Ya te conté sobre esto antes 😊 ¿Quieres que profundice en algún aspecto concreto?`,
         ca: `Ja t'ho vaig explicar abans 😊 Vols que aprofundeixi en algun aspecte concret?`,
@@ -1112,45 +1138,10 @@ class OscarChatbot {
       let smartSuggestions = null;
 
       if (!match) {
-        if (detectFrustration(text, this.conversationContext)) {
-          response = {
-            es: `Parece que no te estoy siendo muy útil 😅\n\nDéjame intentarlo de otra forma — cuéntame qué buscas exactamente:`,
-            ca: `Sembla que no t'estic sent molt útil 😅\n\nDeixa'm intentar-ho d'una altra manera — explica'm què busques exactament:`,
-            en: `Seems like I'm not being very helpful 😅\n\nLet me try a different approach — tell me what you're looking for:`
-          }[lang];
-          smartSuggestions = [
-            { label: lang === 'es' ? 'Soy recruiter o hiring manager' : lang === 'ca' ? 'Soc recruiter o hiring manager' : "I'm a recruiter or hiring manager", id: 'recommendation-recruiter' },
-            { label: lang === 'es' ? 'Busco colaborar o hacer networking' : lang === 'ca' ? 'Busco col·laborar o fer networking' : 'Looking to collaborate or network', id: 'recommendation-collaborate' },
-            { label: lang === 'es' ? 'Solo tengo curiosidad' : lang === 'ca' ? 'Només tinc curiositat' : 'Just curious', id: 'recommendation-curious' }
-          ];
-        } else {
-          const intent = detectFallbackIntent(text);
-          if (intent === 'recruiter') {
-            response = {
-              es: `No tengo una respuesta preparada para eso exactamente, pero si estás evaluando mi perfil, esto te puede ayudar:`,
-              ca: `No tinc una resposta preparada per a això exactament, però si estàs avaluant el meu perfil, això et pot ajudar:`,
-              en: `I don't have a prepared answer for that exactly, but if you're evaluating my profile, this might help:`
-            }[lang];
-            smartSuggestions = [
-              { label: lang === 'es' ? 'Ver resumen de recruiter' : lang === 'ca' ? 'Veure resum de recruiter' : 'See recruiter summary', id: 'recruiter-summary' },
-              { label: lang === 'es' ? 'Ver proyectos con resultados' : lang === 'ca' ? 'Veure projectes amb resultats' : 'See projects with results', id: 'projects-overview' },
-              { label: lang === 'es' ? 'Descargar CV' : lang === 'ca' ? 'Descarregar CV' : 'Download CV', id: 'cv-download' }
-            ];
-          } else if (intent === 'tech') {
-            response = {
-              es: `No tengo respuesta específica para eso, pero si te interesa el stack técnico del portfolio:`,
-              ca: `No tinc resposta específica per a això, però si t'interessa l'stack tècnic del portfolio:`,
-              en: `I don't have a specific answer for that, but if you're curious about the technical side:`
-            }[lang];
-            smartSuggestions = [
-              { label: lang === 'es' ? 'Cómo está construido el portfolio' : lang === 'ca' ? 'Com està construït el portfolio' : 'How this portfolio is built', id: 'portfolio-stack' },
-              { label: lang === 'es' ? 'Arquitectura de componentes' : lang === 'ca' ? 'Arquitectura de components' : 'Component architecture', id: 'component-architecture' },
-              { label: lang === 'es' ? 'Cómo funciona el chatbot' : lang === 'ca' ? 'Com funciona el chatbot' : 'How the chatbot works', id: 'chatbot' }
-            ];
-          } else {
-            response = FALLBACK[lang];
-          }
-        }
+        const isFrustrated = detectFrustration(text, this.conversationContext);
+        const intent = isFrustrated ? 'frustrated' : detectFallbackIntent(text);
+        response = (FALLBACK_BY_INTENT[intent] || FALLBACK)[lang];
+        smartSuggestions = FALLBACK_SUGGESTIONS[intent]?.[lang] || FALLBACK_SUGGESTIONS.frustrated[lang];
       } else if (wasAlreadyDiscussed(match.id, this.conversationContext)) {
         response = alreadyMsg[lang];
       } else {
@@ -1159,22 +1150,24 @@ class OscarChatbot {
         const followup = match.followup && match.followup[lang];
         if (followup) response += `\n\n${followup}`;
       }
-
+      
       this.appendMessage('assistant', response, true, match?.id || null).then(() => {
-        const suggestions = match && match.suggestions && match.suggestions[lang];
-        if (suggestions && suggestions.length > 0) this.showQuickReplies(suggestions);
-        const HIGH_INTENT = ['availability', 'contact', 'cv-download', 'recruiter-summary', 'salary', 'why-hire-me'];
-        if (match && HIGH_INTENT.includes(match.id)) this.showCTAs(lang);
-        
-        // Un solo scroll al final, después de que todo esté en el DOM
+        if (smartSuggestions) {
+          this.showQuickReplies(smartSuggestions);
+        } else if (match) {
+          const suggestions = match.suggestions && match.suggestions[lang];
+          if (suggestions && suggestions.length > 0) this.showQuickReplies(suggestions);
+          const HIGH_INTENT = ['availability', 'contact', 'cv-download', 'recruiter-summary', 'salary', 'why-hire-me'];
+          if (HIGH_INTENT.includes(match.id)) this.showCTAs(lang);
+        }
         requestAnimationFrame(() => {
           this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
         });
       });
-
+      
       this.conversationContext.push({ role: 'assistant', content: response, id: match?.id || null });
       if (this.conversationContext.length > 6) this.conversationContext.shift();
-
+      
       if (match?.id) {
         const projectIds = ['project-map', 'project-mobile-first', 'project-self-service', 'project-smart-suggester'];
         const p = getVisitorProfile() || {};
@@ -1186,7 +1179,7 @@ class OscarChatbot {
           updateVisitorProfile({ lastIntent: match.id });
         }
       }
-
+      
       this.saveHistory();
       this.isLoading = false;
       this.sendBtn.disabled = !this.inputEl.value.trim();

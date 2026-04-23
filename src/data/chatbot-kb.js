@@ -19,4 +19,4 @@ export const KNOWLEDGE_BASE = [
   ...tech,
 ];
 
-export { FALLBACK };
+export { FALLBACK } from './kb/fallback.js';
