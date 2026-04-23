@@ -463,6 +463,45 @@ class OscarChatbot {
   showWelcome() {
     const storedLang = localStorage.getItem('chatbot-lang') || 'en';
 
+    // ── UTM LinkedIn detection ──
+    const urlParams = new URLSearchParams(window.location.search);
+    const isLinkedIn = urlParams.get('utm_source') === 'linkedin';
+    
+    if (isLinkedIn) {
+      const linkedInWelcome = {
+        es: `Hola! 👋 Veo que vienes de LinkedIn — bienvenido.\n\nSoy Oscar, Senior Product Designer en Barcelona con 8+ años de experiencia en Travel Tech y E-commerce. Si estás evaluando mi perfil, puedo ayudarte a encontrar lo que necesitas rápido.`,
+        ca: `Hola! 👋 Veig que véns de LinkedIn — benvingut.\n\nSoc l'Oscar, Senior Product Designer a Barcelona amb 8+ anys d'experiència en Travel Tech i E-commerce. Si estàs avaluant el meu perfil, puc ajudar-te a trobar el que necessites ràpid.`,
+        en: `Hey! 👋 Looks like you're coming from LinkedIn — welcome.\n\nI'm Oscar, Senior Product Designer based in Barcelona with 8+ years in Travel Tech and E-commerce. If you're evaluating my profile, I can help you find what you need fast.`
+      };
+      
+      const linkedInChips = {
+        es: [
+          { label: '⚡ Resumen para recruiters', id: 'recruiter-summary' },
+          { label: 'Ver proyectos con resultados', id: 'projects-overview' },
+          { label: 'Descargar CV', id: 'cv-download' },
+          { label: 'Contactar directamente', id: 'contact' }
+        ],
+        ca: [
+          { label: '⚡ Resum per a recruiters', id: 'recruiter-summary' },
+          { label: 'Veure projectes amb resultats', id: 'projects-overview' },
+          { label: 'Descarregar CV', id: 'cv-download' },
+          { label: 'Contactar directament', id: 'contact' }
+        ],
+        en: [
+          { label: '⚡ Recruiter summary', id: 'recruiter-summary' },
+          { label: 'See projects with results', id: 'projects-overview' },
+          { label: 'Download CV', id: 'cv-download' },
+          { label: 'Contact directly', id: 'contact' }
+        ]
+      };
+      
+      this.appendMessage('assistant', linkedInWelcome[storedLang] || linkedInWelcome.en, false, null, false);
+      this.hasShownSuggestions = true;
+      this.showQuickReplies(linkedInChips[storedLang] || linkedInChips.en);
+      this.saveHistory();
+      return; // salir — no mostrar el welcome genérico
+    }
+
     const PAGE_CONTEXT = {
       '/map':                  { id: 'project-map',             en: `I see you're checking out the Map Redesign 👀\n\nHappy to go deeper on any part of it — the research process, the results, or the decisions behind it. What are you curious about?`, es: `Veo que estás viendo el Map Redesign 👀\n\nPuedo contarte más sobre el proceso de research, los resultados o las decisiones detrás del proyecto. ¿Qué te interesa?`, ca: `Veig que estàs veient el Map Redesign 👀\n\nPuc explicar-te més sobre el procés de research, els resultats o les decisions darrere del projecte. Què t'interessa?` },
       '/mobile-first':         { id: 'project-mobile-first',    en: `You're looking at Mobile First 👀\n\nThis one's close to my heart — it completely changed how I think about mobile design. Ask me anything about it.`, es: `Estás viendo el Mobile First 👀\n\nEste proyecto cambió mucho cómo pienso sobre el diseño mobile. Pregúntame lo que quieras.`, ca: `Estàs veient el Mobile First 👀\n\nAquest projecte va canviar molt com penso sobre el disseny mòbil. Pregunta'm el que vulguis.` },
@@ -574,16 +613,21 @@ class OscarChatbot {
     const path = window.location.pathname;
     const pageCtx = Object.entries(PAGE_CONTEXT).find(([key]) => path.includes(key));
 
-    const saved = sessionStorage.getItem('chatbot-history');
+    const saved = localStorage.getItem('chatbot-history');
     if (saved) {
       try {
-        const history = JSON.parse(saved);
-        if (history.length > 0) {
+        const { messages, savedAt } = JSON.parse(saved);
+        const ninetyDays = 90 * 24 * 60 * 60 * 1000;
+        const isExpired = Date.now() - savedAt > ninetyDays;
+
+        if (isExpired) {
+          localStorage.removeItem('chatbot-history');
+        } else if (messages && messages.length > 0) {
           // ── HISTORY RESTORED — instant, no animation ──
-          history.forEach(({ role, content, raw }) => {
+          messages.forEach(({ role, content, raw }) => {
             this.appendMessage(role, content, raw || false, null, false);
           });
-          this.conversationContext = history.map(h => ({
+          this.conversationContext = messages.map(h => ({
             role: h.role,
             content: h.content,
             id: null
@@ -593,7 +637,6 @@ class OscarChatbot {
           if (pageCtx) {
             const [, ctx] = pageCtx;
             const contextMsg = ctx[storedLang] || ctx.en;
-            // Contextual page message — also instant when restoring
             this.appendMessage('assistant', contextMsg, false, null, false);
             const chips = PAGE_SUGGESTIONS[ctx.id]?.[storedLang] || PAGE_SUGGESTIONS[ctx.id]?.en;
             if (chips) this.showQuickReplies(chips);
@@ -603,7 +646,7 @@ class OscarChatbot {
           }
           return;
         }
-      } catch(e) { sessionStorage.removeItem('chatbot-history'); }
+      } catch(e) { localStorage.removeItem('chatbot-history'); }
     }
 
     // ── First open — no history ──
@@ -682,7 +725,10 @@ class OscarChatbot {
         });
       }
     });
-    sessionStorage.setItem('chatbot-history', JSON.stringify(history));
+    localStorage.setItem('chatbot-history', JSON.stringify({
+      messages: history,
+      savedAt: Date.now()
+    }));
   }
 
   showSuggestions() {
