@@ -11,6 +11,7 @@ export default defineConfig({
         'self-service-booking': resolve(__dirname, 'self-service-booking.html'),
         'smart-suggester': resolve(__dirname, 'smart-suggester.html'),
         'mobile-first': resolve(__dirname, 'mobile-first.html'),
+        'mobile-growth': resolve(__dirname, 'mobile-growth.html'),
       }
     }
   }

@@ -25,6 +25,7 @@ const MORE_PROJECTS_MAP = {
   '/self-service-booking': 'more-projects-self-service.html',
   '/smart-suggester':      'more-projects-smart-suggester.html',
   '/mobile-first':         'more-projects-mobile-first.html',
+  '/mobile-growth': 'more-projects-mobile-growth.html',
 };
 
 // --- LOAD PROJECT PAGE COMPONENTS ---

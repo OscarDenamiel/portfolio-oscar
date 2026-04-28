@@ -1,8 +1,7 @@
 /* ============================================================
-   OSCAR CHATBOT — chatbot.js
-   Chatbot para oscardenamiel.com
+   OSCAR CHATBOT — chatbot.js v3.1
+   Google-style input card + Visual Viewport keyboard fix
    Knowledge-based — sin dependencias externas
-   ChatGPT-style scroll behavior with spacer mechanism
 ============================================================ */
 
 import { KNOWLEDGE_BASE, FALLBACK } from '../data/chatbot-kb.js';
@@ -57,12 +56,9 @@ function fuzzyWordMatch(inputWords, triggerWords) {
 function detectLanguageOnce(text) {
   const saved = localStorage.getItem('chatbot-lang');
   if (saved) return saved;
-
   const textLang = detectLanguageFromText(text);
   const pageLang = detectLanguageByPage();
-
   const lang = (textLang && textLang !== 'en') ? textLang : (pageLang || 'en');
-
   localStorage.setItem('chatbot-lang', lang);
   return lang;
 }
@@ -100,7 +96,6 @@ function detectLanguageFromText(text) {
 
   if (caScore > esScore && caScore >= 2) return 'ca';
   if (esScore > caScore && esScore >= 2) return 'es';
-
   return null;
 }
 
@@ -128,7 +123,6 @@ function findResponse(input, context = []) {
     for (const trigger of entry.triggers) {
       const normalizedTrigger = normalizeText(trigger);
       const triggerWords = normalizedTrigger.split(' ').filter(w => w.length > 0);
-
       let score = 0;
 
       if (normalizedInput.includes(normalizedTrigger)) {
@@ -137,9 +131,7 @@ function findResponse(input, context = []) {
         const matched = fuzzyWordMatch(inputWords, triggerWords);
         if (matched > 0) {
           const overlap = matched / triggerWords.length;
-          if (overlap >= 0.6) {
-            score = overlap * trigger.length;
-          }
+          if (overlap >= 0.6) score = overlap * trigger.length;
         }
       }
 
@@ -202,12 +194,8 @@ function getVisitorProfile() {
 function updateVisitorProfile(updates) {
   try {
     const current = getVisitorProfile() || {
-      lang: 'en',
-      visitCount: 0,
-      lastVisit: null,
-      seenProjects: [],
-      isRecruiter: false,
-      lastIntent: null
+      lang: 'en', visitCount: 0, lastVisit: null,
+      seenProjects: [], isRecruiter: false, lastIntent: null
     };
     const updated = { ...current, ...updates };
     localStorage.setItem('chatbot-visitor', JSON.stringify(updated));
@@ -224,10 +212,8 @@ function detectFallbackIntent(text) {
   const recruiterSignals = ['hire', 'hiring', 'recruit', 'job', 'role', 'position', 'cv', 'resume', 'salary', 'available', 'opportunity', 'contrat', 'trabajo', 'puesto', 'feina', 'contractar'];
   const techSignals = ['built', 'code', 'stack', 'vite', 'javascript', 'css', 'github', 'deploy', 'framework', 'component', 'construido', 'codigo', 'construït', 'codi'];
   const words = t.split(' ');
-
   let recruiterScore = words.filter(w => recruiterSignals.some(s => levenshtein(w, s) <= 1)).length;
   let techScore = words.filter(w => techSignals.some(s => levenshtein(w, s) <= 1)).length;
-
   if (recruiterScore > techScore && recruiterScore > 0) return 'recruiter';
   if (techScore > recruiterScore && techScore > 0) return 'tech';
   return 'curious';
@@ -238,28 +224,20 @@ function detectFrustration(text, context) {
   const frustrationWords = ['no entiendo', 'not working', 'no funciona', 'what', 'que', 'help', 'ayuda', 'ajuda', 'confused', 'confuso'];
   const hasQmarks = (text.match(/\?/g) || []).length >= 2;
   const hasFrustrationWord = frustrationWords.some(w => t.includes(w));
-
   const recentAssistant = context.filter(c => c.role === 'assistant').slice(-2);
   const consecutiveFallbacks = recentAssistant.filter(c => c.id === null).length;
-
   return hasQmarks || hasFrustrationWord || consecutiveFallbacks >= 2;
 }
 
-/* ──────────────────────────────────────────────────────────────
-   TYPEWRITER — char-by-char animation
-   Pre-renders HTML invisible to lock final height (no layout shift)
-   ────────────────────────────────────────────────────────────── */
-   function typeText(element, html, speed = 8, animate = true) {
-    return new Promise(resolve => {
-      element.innerHTML = html;
-      resolve();
-    });
-  }
+/* ── Typewriter ── */
+function typeText(element, html, speed = 8, animate = true) {
+  return new Promise(resolve => {
+    element.innerHTML = html;
+    resolve();
+  });
+}
 
-/* ──────────────────────────────────────────────────────────────
-   THINKING TIME — simulates real model latency
-   Min 700ms (orb visible) — Max 1400ms (not frustrating)
-   ────────────────────────────────────────────────────────────── */
+/* ── Thinking time ── */
 function calculateThinkingTime(text) {
   const baseTime = 700;
   const perChar = 1.2;
@@ -267,28 +245,21 @@ function calculateThinkingTime(text) {
   return Math.max(700, Math.min(calculated, 1400));
 }
 
-/* ──────────────────────────────────────────────────────────────
-   STRUCTURED LOGGING — solo en development
-   Guarda {query, matchedIntent, score, lang, timestamp}
-   Revisa con: JSON.parse(localStorage.getItem('chatbot-logs'))
-   Limpia con: localStorage.removeItem('chatbot-logs')
-────────────────────────────────────────────────────────────── */
+/* ── Dev logging ── */
 function logQuery(query, matchedIntent, lang) {
   if (!window.location.hostname.includes('localhost')) return;
-  
   try {
     const logs = JSON.parse(localStorage.getItem('chatbot-logs') || '[]');
-    logs.push({
-      query,
-      matchedIntent: matchedIntent || 'no_match',
-      lang,
-      timestamp: new Date().toISOString()
-    });
-    // Máximo 200 entradas
+    logs.push({ query, matchedIntent: matchedIntent || 'no_match', lang, timestamp: new Date().toISOString() });
     if (logs.length > 200) logs.shift();
     localStorage.setItem('chatbot-logs', JSON.stringify(logs));
   } catch(e) {}
 }
+
+
+/* ════════════════════════════════════════════════════════════
+   CLASS
+════════════════════════════════════════════════════════════ */
 
 class OscarChatbot {
   constructor() {
@@ -307,6 +278,10 @@ class OscarChatbot {
     this.startPlaceholderRotation();
   }
 
+  /* ────────────────────────────────────────────────────────
+     BUILD DOM
+     Nueva estructura: card con dos filas en mobile
+  ──────────────────────────────────────────────────────── */
   buildDOM() {
     this.overlay = document.createElement('div');
     this.overlay.className = 'chatbot-overlay';
@@ -333,21 +308,44 @@ class OscarChatbot {
           </svg>
         </button>
       </div>
+
       <div class="chatbot-messages" id="chatbot-messages"></div>
+
       <div class="chatbot-input-area">
-        <div class="chatbot-input-row">
-          <textarea
-            class="chatbot-input"
-            id="chatbot-input"
-            placeholder="Ask me anything..."
-            rows="1"
-            aria-label="Type your message"
-          ></textarea>
-          <button class="chatbot-send" id="chatbot-send" aria-label="Send message" disabled>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 19V5M5 12l7-7 7 7"/>
-            </svg>
-          </button>
+        <div class="chatbot-input-backdrop" id="chatbot-input-backdrop"></div>
+        <div class="chatbot-input-card">
+
+          <!-- Fila superior: textarea + X + send (send visible en desktop) -->
+          <div class="chatbot-input-row">
+            <textarea
+              class="chatbot-input"
+              id="chatbot-input"
+              placeholder="Ask me anything..."
+              rows="1"
+              aria-label="Type your message"
+            ></textarea>
+            <button class="chatbot-input-clear" aria-label="Clear input">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M18 6L6 18M6 6l12 12"/>
+              </svg>
+            </button>
+            <!-- Send desktop (inline en el pill) -->
+            <button class="chatbot-send" id="chatbot-send" aria-label="Send message" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 19V5M5 12l7-7 7 7"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Fila inferior: solo send, visible con foco -->
+          <div class="chatbot-input-actions">
+            <button class="chatbot-send chatbot-send--mobile" aria-label="Send message" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 19V5M5 12l7-7 7 7"/>
+              </svg>
+            </button>
+          </div>
+
         </div>
       </div>
     `;
@@ -355,21 +353,34 @@ class OscarChatbot {
     document.body.appendChild(this.overlay);
     document.body.appendChild(this.panel);
 
-    this.messagesEl = this.panel.querySelector('#chatbot-messages');
-    this.inputEl = this.panel.querySelector('#chatbot-input');
-    this.sendBtn = this.panel.querySelector('#chatbot-send');
-    this.closeBtn = this.panel.querySelector('.chatbot-close');
+    // Referencias
+    this.messagesEl    = this.panel.querySelector('#chatbot-messages');
+    this.inputEl       = this.panel.querySelector('#chatbot-input');
+    this.sendBtn       = this.panel.querySelector('#chatbot-send');
+    this.sendBtnMob    = this.panel.querySelector('.chatbot-send--mobile');
+    this.clearBtn      = this.panel.querySelector('.chatbot-input-clear');
+    this.inputCard     = this.panel.querySelector('.chatbot-input-card');
+    this.inputBackdrop = this.panel.querySelector('#chatbot-input-backdrop');
+    this.closeBtn      = this.panel.querySelector('.chatbot-close');
   }
 
+  /* ────────────────────────────────────────────────────────
+     ATTACH EVENTS
+  ──────────────────────────────────────────────────────── */
   attachEvents() {
     this.closeBtn.addEventListener('click', () => this.close());
 
+    // ── Input: autosize + toggle has-text + habilitar sends ──
     this.inputEl.addEventListener('input', () => {
-      this.sendBtn.disabled = !this.inputEl.value.trim() || this.isLoading;
+      const hasText = !!this.inputEl.value.trim();
+      this.sendBtn.disabled = !hasText || this.isLoading;
+      if (this.sendBtnMob) this.sendBtnMob.disabled = !hasText || this.isLoading;
       this.inputEl.style.height = 'auto';
       this.inputEl.style.height = Math.min(this.inputEl.scrollHeight, 120) + 'px';
+      if (this.inputCard) this.inputCard.classList.toggle('has-text', hasText);
     });
 
+    // ── Enter para enviar ──
     this.inputEl.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
@@ -377,13 +388,129 @@ class OscarChatbot {
       }
     });
 
-    this.sendBtn.addEventListener('click', () => this.send());
+    // ── Focus: abre el card, backdrop, bloquea scroll ──
+    this.inputEl.addEventListener('focus', () => {
+      if (window.innerWidth > 768) return;
+      this.panel.classList.add('input-focused');
+      this.messagesEl.style.overflowY = 'hidden';
+    });
 
+    // ── Blur: cierra el card (delay para que el click en send funcione) ──
+    this.inputEl.addEventListener('blur', () => {
+      if (window.innerWidth > 768) return;
+      setTimeout(() => {
+        // Solo cerrar si el foco no fue al send ni al clear
+        if (document.activeElement !== this.sendBtnMob &&
+            document.activeElement !== this.clearBtn) {
+          this.panel.classList.remove('input-focused');
+          this.messagesEl.style.overflowY = '';
+        }
+      }, 150);
+    });
+
+    // ── Backdrop click: cierra el card ──
+    if (this.inputBackdrop) {
+      this.inputBackdrop.addEventListener('click', () => {
+        this.inputEl.blur();
+        this.panel.classList.remove('input-focused');
+        this.messagesEl.style.overflowY = '';
+      });
+    }
+
+    // ── Send buttons ──
+    this.sendBtn.addEventListener('click', () => this.send());
+    if (this.sendBtnMob) {
+      this.sendBtnMob.addEventListener('click', () => this.send());
+    }
+
+    // ── Clear button — cancela foco Y borra texto ──
+    if (this.clearBtn) {
+      this.clearBtn.addEventListener('click', () => {
+        this.inputEl.value = '';
+        this.inputEl.style.height = 'auto';
+        this.sendBtn.disabled = true;
+        if (this.sendBtnMob) this.sendBtnMob.disabled = true;
+        if (this.inputCard) this.inputCard.classList.remove('has-text');
+        this.panel.classList.remove('input-focused');
+        this.messagesEl.style.overflowY = '';
+        this.inputEl.blur();
+      });
+    }
+
+    // ── Escape para cerrar ──
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && this.isOpen) this.close();
     });
+
+    // ── Keyboard handler (mobile) ──
+    this.initKeyboardHandler();
   }
 
+  /* ────────────────────────────────────────────────────────
+     KEYBOARD HANDLER — Visual Viewport API
+     Comprime el panel exactamente donde termina el teclado
+  ──────────────────────────────────────────────────────── */
+  initKeyboardHandler() {
+    if (typeof window === 'undefined') return;
+    const isMobile = () => window.innerWidth <= 768;
+
+    if (window.visualViewport) {
+      const onViewportResize = () => {
+        if (!isMobile() || !this.isOpen) return;
+
+        const vv = window.visualViewport;
+        const kbHeight = window.innerHeight - (vv.height + vv.offsetTop);
+        const kbVisible = kbHeight > 80;
+
+        if (kbVisible) {
+          this.panel.style.bottom = `${kbHeight}px`;
+          this.panel.classList.add('kb-open');
+          requestAnimationFrame(() => {
+            this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
+          });
+        } else {
+          this.panel.style.bottom = '0px';
+          this.panel.classList.remove('kb-open');
+        }
+      };
+
+      window.visualViewport.addEventListener('resize', onViewportResize, { passive: true });
+      window.visualViewport.addEventListener('scroll', onViewportResize, { passive: true });
+
+    } else {
+      // Fallback para navegadores sin visualViewport
+      this.inputEl.addEventListener('focus', () => {
+        if (!isMobile() || !this.isOpen) return;
+        setTimeout(() => {
+          this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
+        }, 350);
+      }, { passive: true });
+
+      this.inputEl.addEventListener('blur', () => {
+        if (!isMobile()) return;
+        this.panel.style.bottom = '0px';
+        this.panel.classList.remove('kb-open');
+      }, { passive: true });
+    }
+
+    // Auto-scroll cuando crece el textarea (solo si ya estamos abajo)
+    this.inputEl.addEventListener('input', () => {
+      if (!isMobile()) return;
+      const atBottom =
+        this.messagesEl.scrollHeight -
+        this.messagesEl.scrollTop -
+        this.messagesEl.clientHeight < 80;
+      if (atBottom) {
+        requestAnimationFrame(() => {
+          this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
+        });
+      }
+    }, { passive: true });
+  }
+
+  /* ────────────────────────────────────────────────────────
+     INJECT TRIGGER
+  ──────────────────────────────────────────────────────── */
   injectTrigger() {
     this.triggerBtns = document.querySelectorAll('[aria-label="Open chatbot"]');
     this.triggerBtns.forEach(btn => {
@@ -409,11 +536,7 @@ class OscarChatbot {
       });
 
       btn.addEventListener('click', () => {
-        if (this.isOpen) {
-          this.close();
-        } else {
-          this.open();
-        }
+        if (this.isOpen) { this.close(); } else { this.open(); }
       });
     });
   }
@@ -425,24 +548,18 @@ class OscarChatbot {
     });
   }
 
-  /* ──────────────────────────────────────────────────────────
-     OPEN — shows panel already at the bottom, no visible scroll
-     ────────────────────────────────────────────────────────── */
+  /* ────────────────────────────────────────────────────────
+     OPEN
+  ──────────────────────────────────────────────────────── */
   open() {
     this.isOpen = true;
 
-    // Render welcome FIRST (synchronous, no animation)
     if (!this.welcomeShown) {
       this.welcomeShown = true;
       this.showWelcome();
     }
 
-    // Position scroll at bottom BEFORE panel becomes visible.
-    // Panel uses visibility:hidden + transform — messagesEl has dimensions
-    // but is not yet painted, so scrollTop applies invisibly.
     this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
-
-    // Now show the panel — it slides up already at the bottom
     this.panel.classList.add('open');
 
     const isMobile = window.innerWidth <= 768;
@@ -452,7 +569,6 @@ class OscarChatbot {
       document.documentElement.style.overflow = 'hidden';
     }
 
-    // Re-assert scroll after slide-up transition completes
     setTimeout(() => {
       this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
     }, 460);
@@ -463,6 +579,9 @@ class OscarChatbot {
     }
   }
 
+  /* ────────────────────────────────────────────────────────
+     CLOSE
+  ──────────────────────────────────────────────────────── */
   close() {
     const lastContext = this.conversationContext[this.conversationContext.length - 1];
     const lastWasFallback = lastContext?.role === 'assistant' && lastContext?.id === null;
@@ -479,25 +598,33 @@ class OscarChatbot {
     this.isOpen = false;
     this.overlay.classList.remove('open');
     this.panel.classList.remove('open');
+    this.panel.classList.remove('input-focused');
+    this.messagesEl.style.overflowY = '';
+    // Restaurar bottom por si el teclado lo había movido
+    this.panel.style.bottom = '';
+    this.panel.classList.remove('kb-open');
     document.body.style.overflow = '';
     document.documentElement.style.overflow = '';
     this.setTriggerActive(false);
   }
 
+  /* ────────────────────────────────────────────────────────
+     SHOW WELCOME
+  ──────────────────────────────────────────────────────── */
   showWelcome() {
     const storedLang = localStorage.getItem('chatbot-lang') || 'en';
 
     // ── UTM LinkedIn detection ──
     const urlParams = new URLSearchParams(window.location.search);
     const isLinkedIn = urlParams.get('utm_source') === 'linkedin';
-    
+
     if (isLinkedIn) {
       const linkedInWelcome = {
         es: `Hola! 👋 Veo que vienes de LinkedIn — bienvenido.\n\nSoy Oscar, Senior Product Designer en Barcelona con 8+ años de experiencia en Travel Tech y E-commerce. Si estás evaluando mi perfil, puedo ayudarte a encontrar lo que necesitas rápido.`,
         ca: `Hola! 👋 Veig que véns de LinkedIn — benvingut.\n\nSoc l'Oscar, Senior Product Designer a Barcelona amb 8+ anys d'experiència en Travel Tech i E-commerce. Si estàs avaluant el meu perfil, puc ajudar-te a trobar el que necessites ràpid.`,
         en: `Hey! 👋 Looks like you're coming from LinkedIn — welcome.\n\nI'm Oscar, Senior Product Designer based in Barcelona with 8+ years in Travel Tech and E-commerce. If you're evaluating my profile, I can help you find what you need fast.`
       };
-      
+
       const linkedInChips = {
         es: [
           { label: '⚡ Resumen para recruiters', id: 'recruiter-summary' },
@@ -518,12 +645,12 @@ class OscarChatbot {
           { label: 'Contact directly', id: 'contact' }
         ]
       };
-      
+
       this.appendMessage('assistant', linkedInWelcome[storedLang] || linkedInWelcome.en, false, null, false);
       this.hasShownSuggestions = true;
       this.showQuickReplies(linkedInChips[storedLang] || linkedInChips.en);
       this.saveHistory();
-      return; // salir — no mostrar el welcome genérico
+      return;
     }
 
     const PAGE_CONTEXT = {
@@ -536,101 +663,29 @@ class OscarChatbot {
 
     const PAGE_SUGGESTIONS = {
       'project-map': {
-        es: [
-          { label: '⚡ Resumen del proyecto', id: 'project-map-summary' },
-          { label: '¿Cuáles fueron los resultados?', id: 'project-map-impact' },
-          { label: '¿Cómo fue el proceso de research?', id: 'project-map-research' },
-          { label: 'Ver todos los proyectos', id: 'projects-overview' }
-        ],
-        ca: [
-          { label: '⚡ Resum del projecte', id: 'project-map-summary' },
-          { label: 'Quins van ser els resultats?', id: 'project-map-impact' },
-          { label: 'Com va ser el procés de research?', id: 'project-map-research' },
-          { label: 'Veure tots els projectes', id: 'projects-overview' }
-        ],
-        en: [
-          { label: '⚡ Quick project summary', id: 'project-map-summary' },
-          { label: 'What were the results?', id: 'project-map-impact' },
-          { label: 'Walk me through the research', id: 'project-map-research' },
-          { label: 'What design decisions did you make?', id: 'project-map-decisions' }
-        ]
+        es: [{ label: '⚡ Resumen del proyecto', id: 'project-map-summary' }, { label: '¿Cuáles fueron los resultados?', id: 'project-map-impact' }, { label: '¿Cómo fue el proceso de research?', id: 'project-map-research' }, { label: 'Ver todos los proyectos', id: 'projects-overview' }],
+        ca: [{ label: '⚡ Resum del projecte', id: 'project-map-summary' }, { label: 'Quins van ser els resultats?', id: 'project-map-impact' }, { label: 'Com va ser el procés de research?', id: 'project-map-research' }, { label: 'Veure tots els projectes', id: 'projects-overview' }],
+        en: [{ label: '⚡ Quick project summary', id: 'project-map-summary' }, { label: 'What were the results?', id: 'project-map-impact' }, { label: 'Walk me through the research', id: 'project-map-research' }, { label: 'What design decisions did you make?', id: 'project-map-decisions' }]
       },
       'project-mobile-first': {
-        es: [
-          { label: '⚡ Resumen del proyecto', id: 'project-mobile-first-summary' },
-          { label: '¿Cuáles fueron los resultados?', id: 'project-mobile-first-impact' },
-          { label: '¿Cómo fue el proceso de research?', id: 'project-mobile-first-research' },
-          { label: '¿Cómo validaste el diseño?', id: 'project-mobile-first-validation' }
-        ],
-        ca: [
-          { label: '⚡ Resum del projecte', id: 'project-mobile-first-summary' },
-          { label: 'Quins van ser els resultats?', id: 'project-mobile-first-impact' },
-          { label: 'Com va ser el procés de research?', id: 'project-mobile-first-research' },
-          { label: 'Com vas validar el disseny?', id: 'project-mobile-first-validation' }
-        ],
-        en: [
-          { label: '⚡ Quick project summary', id: 'project-mobile-first-summary' },
-          { label: 'What were the results?', id: 'project-mobile-first-impact' },
-          { label: 'Walk me through the research', id: 'project-mobile-first-research' },
-          { label: 'How did you validate the design?', id: 'project-mobile-first-validation' }
-        ]
+        es: [{ label: '⚡ Resumen del proyecto', id: 'project-mobile-first-summary' }, { label: '¿Cuáles fueron los resultados?', id: 'project-mobile-first-impact' }, { label: '¿Cómo fue el proceso de research?', id: 'project-mobile-first-research' }, { label: '¿Cómo validaste el diseño?', id: 'project-mobile-first-validation' }],
+        ca: [{ label: '⚡ Resum del projecte', id: 'project-mobile-first-summary' }, { label: 'Quins van ser els resultats?', id: 'project-mobile-first-impact' }, { label: 'Com va ser el procés de research?', id: 'project-mobile-first-research' }, { label: 'Com vas validar el disseny?', id: 'project-mobile-first-validation' }],
+        en: [{ label: '⚡ Quick project summary', id: 'project-mobile-first-summary' }, { label: 'What were the results?', id: 'project-mobile-first-impact' }, { label: 'Walk me through the research', id: 'project-mobile-first-research' }, { label: 'How did you validate the design?', id: 'project-mobile-first-validation' }]
       },
       'project-self-service': {
-        es: [
-          { label: '⚡ Resumen del proyecto', id: 'project-self-service-summary' },
-          { label: '¿Cuáles fueron los resultados?', id: 'project-self-service-impact' },
-          { label: '¿Cómo fue el proceso?', id: 'project-self-service-process' },
-          { label: 'Ver todos los proyectos', id: 'projects-overview' }
-        ],
-        ca: [
-          { label: '⚡ Resum del projecte', id: 'project-self-service-summary' },
-          { label: 'Quins van ser els resultats?', id: 'project-self-service-impact' },
-          { label: 'Com va ser el procés?', id: 'project-self-service-process' },
-          { label: 'Veure tots els projectes', id: 'projects-overview' }
-        ],
-        en: [
-          { label: '⚡ Quick project summary', id: 'project-self-service-summary' },
-          { label: 'What were the results?', id: 'project-self-service-impact' },
-          { label: 'Walk me through the process', id: 'project-self-service-process' },
-          { label: 'See all projects', id: 'projects-overview' }
-        ]
+        es: [{ label: '⚡ Resumen del proyecto', id: 'project-self-service-summary' }, { label: '¿Cuáles fueron los resultados?', id: 'project-self-service-impact' }, { label: '¿Cómo fue el proceso?', id: 'project-self-service-process' }, { label: 'Ver todos los proyectos', id: 'projects-overview' }],
+        ca: [{ label: '⚡ Resum del projecte', id: 'project-self-service-summary' }, { label: 'Quins van ser els resultats?', id: 'project-self-service-impact' }, { label: 'Com va ser el procés?', id: 'project-self-service-process' }, { label: 'Veure tots els projectes', id: 'projects-overview' }],
+        en: [{ label: '⚡ Quick project summary', id: 'project-self-service-summary' }, { label: 'What were the results?', id: 'project-self-service-impact' }, { label: 'Walk me through the process', id: 'project-self-service-process' }, { label: 'See all projects', id: 'projects-overview' }]
       },
       'project-smart-suggester': {
-        es: [
-          { label: '⚡ Resumen del proyecto', id: 'project-smart-suggester-summary' },
-          { label: '¿Cuáles fueron los resultados?', id: 'project-smart-suggester-impact' },
-          { label: '¿Cómo fue el proceso de research?', id: 'project-smart-suggester-research' },
-          { label: '¿Cómo trabajaste con ingeniería?', id: 'project-smart-suggester-engineering' }
-        ],
-        ca: [
-          { label: '⚡ Resum del projecte', id: 'project-smart-suggester-summary' },
-          { label: 'Quins van ser els resultats?', id: 'project-smart-suggester-impact' },
-          { label: 'Com va ser el procés de research?', id: 'project-smart-suggester-research' },
-          { label: 'Com vas treballar amb enginyeria?', id: 'project-smart-suggester-engineering' }
-        ],
-        en: [
-          { label: '⚡ Quick project summary', id: 'project-smart-suggester-summary' },
-          { label: 'What were the results?', id: 'project-smart-suggester-impact' },
-          { label: 'Walk me through the research', id: 'project-smart-suggester-research' },
-          { label: 'How did you work with engineering?', id: 'project-smart-suggester-engineering' }
-        ]
+        es: [{ label: '⚡ Resumen del proyecto', id: 'project-smart-suggester-summary' }, { label: '¿Cuáles fueron los resultados?', id: 'project-smart-suggester-impact' }, { label: '¿Cómo fue el proceso de research?', id: 'project-smart-suggester-research' }, { label: '¿Cómo trabajaste con ingeniería?', id: 'project-smart-suggester-engineering' }],
+        ca: [{ label: '⚡ Resum del projecte', id: 'project-smart-suggester-summary' }, { label: 'Quins van ser els resultats?', id: 'project-smart-suggester-impact' }, { label: 'Com va ser el procés de research?', id: 'project-smart-suggester-research' }, { label: 'Com vas treballar amb enginyeria?', id: 'project-smart-suggester-engineering' }],
+        en: [{ label: '⚡ Quick project summary', id: 'project-smart-suggester-summary' }, { label: 'What were the results?', id: 'project-smart-suggester-impact' }, { label: 'Walk me through the research', id: 'project-smart-suggester-research' }, { label: 'How did you work with engineering?', id: 'project-smart-suggester-engineering' }]
       },
       'about': {
-        es: [
-          { label: '¿Estás buscando trabajo?', id: 'availability' },
-          { label: '¿Tienes side projects?', id: 'side-projects' },
-          { label: 'Ver proyectos', id: 'projects-overview' }
-        ],
-        ca: [
-          { label: 'Estàs buscant feina?', id: 'availability' },
-          { label: 'Tens side projects?', id: 'side-projects' },
-          { label: 'Veure projectes', id: 'projects-overview' }
-        ],
-        en: [
-          { label: 'Are you open to new roles?', id: 'availability' },
-          { label: 'Do you have side projects?', id: 'side-projects' },
-          { label: 'See projects', id: 'projects-overview' }
-        ]
+        es: [{ label: '¿Estás buscando trabajo?', id: 'availability' }, { label: '¿Tienes side projects?', id: 'side-projects' }, { label: 'Ver proyectos', id: 'projects-overview' }],
+        ca: [{ label: 'Estàs buscant feina?', id: 'availability' }, { label: 'Tens side projects?', id: 'side-projects' }, { label: 'Veure projectes', id: 'projects-overview' }],
+        en: [{ label: 'Are you open to new roles?', id: 'availability' }, { label: 'Do you have side projects?', id: 'side-projects' }, { label: 'See projects', id: 'projects-overview' }]
       }
     };
 
@@ -647,14 +702,11 @@ class OscarChatbot {
         if (isExpired) {
           localStorage.removeItem('chatbot-history');
         } else if (messages && messages.length > 0) {
-          // ── HISTORY RESTORED — instant, no animation ──
           messages.forEach(({ role, content, raw }) => {
             this.appendMessage(role, content, raw || false, null, false);
           });
           this.conversationContext = messages.map(h => ({
-            role: h.role,
-            content: h.content,
-            id: null
+            role: h.role, content: h.content, id: null
           })).slice(-6);
           this.hasShownSuggestions = true;
 
@@ -722,7 +774,6 @@ class OscarChatbot {
       }
     }
 
-    // ── Welcome message — INSTANT, no typewriter ──
     this.appendMessage('assistant', welcomeText, false, null, false);
     this.saveHistory();
 
@@ -734,6 +785,9 @@ class OscarChatbot {
     }
   }
 
+  /* ────────────────────────────────────────────────────────
+     SAVE HISTORY
+  ──────────────────────────────────────────────────────── */
   saveHistory() {
     const msgs = this.messagesEl.querySelectorAll('.chatbot-msg');
     const history = [];
@@ -742,19 +796,15 @@ class OscarChatbot {
       const bubble = msg.querySelector('.chatbot-bubble');
       if (bubble) {
         const hasHTML = bubble.querySelector('a') !== null;
-        history.push({
-          role,
-          content: hasHTML ? bubble.innerHTML : bubble.innerText,
-          raw: hasHTML
-        });
+        history.push({ role, content: hasHTML ? bubble.innerHTML : bubble.innerText, raw: hasHTML });
       }
     });
-    localStorage.setItem('chatbot-history', JSON.stringify({
-      messages: history,
-      savedAt: Date.now()
-    }));
+    localStorage.setItem('chatbot-history', JSON.stringify({ messages: history, savedAt: Date.now() }));
   }
 
+  /* ────────────────────────────────────────────────────────
+     SUGGESTIONS
+  ──────────────────────────────────────────────────────── */
   showSuggestions() {
     if (this.hasShownSuggestions) return;
     this.hasShownSuggestions = true;
@@ -767,10 +817,7 @@ class OscarChatbot {
       const chip = document.createElement('button');
       chip.className = 'chatbot-chip';
       chip.textContent = label;
-      chip.addEventListener('click', () => {
-        wrapper.remove();
-        this.sendById(label, id);
-      });
+      chip.addEventListener('click', () => { wrapper.remove(); this.sendById(label, id); });
       wrapper.appendChild(chip);
     });
 
@@ -784,18 +831,12 @@ class OscarChatbot {
     suggestions.forEach(item => {
       const label = typeof item === 'string' ? item : item.label;
       const id = typeof item === 'object' ? item.id : null;
-
       const chip = document.createElement('button');
       chip.className = 'chatbot-chip';
       chip.textContent = label;
       chip.addEventListener('click', () => {
         wrapper.remove();
-        if (id) {
-          this.sendById(label, id);
-        } else {
-          this.inputEl.value = label;
-          this.send();
-        }
+        if (id) { this.sendById(label, id); } else { this.inputEl.value = label; this.send(); }
       });
       wrapper.appendChild(chip);
     });
@@ -838,16 +879,15 @@ class OscarChatbot {
     this.messagesEl.appendChild(wrapper);
   }
 
-  /* ──────────────────────────────────────────────────────────
-     APPEND MESSAGE — always inserts before spacer
-     ────────────────────────────────────────────────────────── */
+  /* ────────────────────────────────────────────────────────
+     APPEND MESSAGE
+  ──────────────────────────────────────────────────────── */
   appendMessage(role, content, raw = false, intentId = null, animated = true) {
     const msg = document.createElement('div');
     msg.className = `chatbot-msg ${role}`;
 
     const bubble = document.createElement('div');
     bubble.className = 'chatbot-bubble';
-
     msg.appendChild(bubble);
 
     if (role === 'assistant') {
@@ -939,7 +979,6 @@ class OscarChatbot {
       msg.appendChild(feedback);
     }
 
-    // Always insert before the bottom spacer
     this.messagesEl.appendChild(msg);
 
     if (role === 'assistant') {
@@ -986,48 +1025,30 @@ class OscarChatbot {
     return typing;
   }
 
-  /* ──────────────────────────────────────────────────────────
-     RESERVE SCROLL SPACE — sets spacer = container height
-     This is the key trick: ensures user msg can scroll to top
-     ────────────────────────────────────────────────────────── */
   reserveScrollSpace() {
     const containerHeight = this.messagesEl.clientHeight;
-    this.bottomSpacer.style.minHeight = containerHeight + 'px';
+    if (this.bottomSpacer) this.bottomSpacer.style.minHeight = containerHeight + 'px';
   }
 
-  /* ──────────────────────────────────────────────────────────
-     SCROLL USER MSG TO TOP — positions at 12px from header
-     Instant, no smooth animation
-     ────────────────────────────────────────────────────────── */
   scrollUserMsgToTop(msgEl) {
     const originalBehavior = this.messagesEl.style.scrollBehavior;
     this.messagesEl.style.scrollBehavior = 'auto';
     this.messagesEl.scrollTop = msgEl.offsetTop - 12;
-    requestAnimationFrame(() => {
-      this.messagesEl.style.scrollBehavior = originalBehavior;
-    });
+    requestAnimationFrame(() => { this.messagesEl.style.scrollBehavior = originalBehavior; });
   }
 
-  /* ──────────────────────────────────────────────────────────
-     SEND BY ID — for chip clicks
-     ────────────────────────────────────────────────────────── */
+  /* ────────────────────────────────────────────────────────
+     SEND BY ID — chip clicks
+  ──────────────────────────────────────────────────────── */
   sendById(label, entryId) {
     if (this.isLoading) return;
     this.isLoading = true;
 
-    // 1. Append user message
     this.appendMessage('user', label);
-    const allUserMsgs = this.messagesEl.querySelectorAll('.chatbot-msg.user');
-    const userMsg = allUserMsgs[allUserMsgs.length - 1];
-
-    // 2. Scroll to bottom to new message
     this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
-    
-
     this.conversationContext.push({ role: 'user', content: label });
     if (this.conversationContext.length > 6) this.conversationContext.shift();
 
-    // 3. Show typing orb
     const typingEl = this.showTyping();
 
     setTimeout(() => {
@@ -1057,11 +1078,7 @@ class OscarChatbot {
         if (suggestions && suggestions.length > 0) this.showQuickReplies(suggestions);
         const HIGH_INTENT = ['availability', 'contact', 'cv-download', 'recruiter-summary', 'salary', 'why-hire-me'];
         if (match && HIGH_INTENT.includes(match.id)) this.showCTAs(lang);
-        
-        // Un solo scroll al final, después de que todo esté en el DOM
-        requestAnimationFrame(() => {
-          this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
-        });
+        requestAnimationFrame(() => { this.messagesEl.scrollTop = this.messagesEl.scrollHeight; });
       });
 
       this.conversationContext.push({ role: 'assistant', content: response, id: match?.id || null });
@@ -1082,12 +1099,13 @@ class OscarChatbot {
       this.saveHistory();
       this.isLoading = false;
       this.sendBtn.disabled = !this.inputEl.value.trim();
+      if (this.sendBtnMob) this.sendBtnMob.disabled = !this.inputEl.value.trim();
     }, calculateThinkingTime(label));
   }
 
-  /* ──────────────────────────────────────────────────────────
-     SEND — for typed messages
-     ────────────────────────────────────────────────────────── */
+  /* ────────────────────────────────────────────────────────
+     SEND — typed messages
+  ──────────────────────────────────────────────────────── */
   send() {
     const text = this.inputEl.value.trim();
     if (!text || this.isLoading) return;
@@ -1095,21 +1113,17 @@ class OscarChatbot {
     this.inputEl.value = '';
     this.inputEl.style.height = 'auto';
     this.sendBtn.disabled = true;
+    if (this.sendBtnMob) this.sendBtnMob.disabled = true;
+    if (this.inputCard) this.inputCard.classList.remove('has-text');
+    this.panel.classList.remove('input-focused');
+    this.messagesEl.style.overflowY = '';
     this.isLoading = true;
 
-    // 1. Append user message
     this.appendMessage('user', text);
-    const allUserMsgs = this.messagesEl.querySelectorAll('.chatbot-msg.user');
-    const userMsg = allUserMsgs[allUserMsgs.length - 1];
-
-    // 2. Scroll to bottom to new message
     this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
-    
-
     this.conversationContext.push({ role: 'user', content: text });
     if (this.conversationContext.length > 6) this.conversationContext.shift();
 
-    // 3. Show typing orb
     const typingEl = this.showTyping();
 
     setTimeout(() => {
@@ -1150,7 +1164,7 @@ class OscarChatbot {
         const followup = match.followup && match.followup[lang];
         if (followup) response += `\n\n${followup}`;
       }
-      
+
       this.appendMessage('assistant', response, true, match?.id || null).then(() => {
         if (smartSuggestions) {
           this.showQuickReplies(smartSuggestions);
@@ -1160,14 +1174,12 @@ class OscarChatbot {
           const HIGH_INTENT = ['availability', 'contact', 'cv-download', 'recruiter-summary', 'salary', 'why-hire-me'];
           if (HIGH_INTENT.includes(match.id)) this.showCTAs(lang);
         }
-        requestAnimationFrame(() => {
-          this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
-        });
+        requestAnimationFrame(() => { this.messagesEl.scrollTop = this.messagesEl.scrollHeight; });
       });
-      
+
       this.conversationContext.push({ role: 'assistant', content: response, id: match?.id || null });
       if (this.conversationContext.length > 6) this.conversationContext.shift();
-      
+
       if (match?.id) {
         const projectIds = ['project-map', 'project-mobile-first', 'project-self-service', 'project-smart-suggester'];
         const p = getVisitorProfile() || {};
@@ -1179,36 +1191,22 @@ class OscarChatbot {
           updateVisitorProfile({ lastIntent: match.id });
         }
       }
-      
+
       this.saveHistory();
       this.isLoading = false;
       this.sendBtn.disabled = !this.inputEl.value.trim();
+      if (this.sendBtnMob) this.sendBtnMob.disabled = !this.inputEl.value.trim();
     }, calculateThinkingTime(text));
   }
 
+  /* ────────────────────────────────────────────────────────
+     PLACEHOLDER ROTATION
+  ──────────────────────────────────────────────────────── */
   startPlaceholderRotation() {
     const placeholders = {
-      es: [
-        '¿En qué proyectos has trabajado?',
-        '¿Cuál es tu proceso de diseño?',
-        '¿Estás buscando trabajo?',
-        '¿Cómo trabajas con ingeniería?',
-        '¿Qué te diferencia de otros diseñadores?',
-      ],
-      ca: [
-        'En quins projectes has treballat?',
-        'Quin és el teu procés de disseny?',
-        'Estàs buscant feina?',
-        'Com treballes amb enginyeria?',
-        "Què et diferencia d'altres dissenyadors?",
-      ],
-      en: [
-        'What projects have you worked on?',
-        "What's your design process?",
-        'Are you open to new roles?',
-        'How do you work with engineering?',
-        'What sets you apart from other designers?',
-      ]
+      es: ['¿En qué proyectos has trabajado?', '¿Cuál es tu proceso de diseño?', '¿Estás buscando trabajo?', '¿Cómo trabajas con ingeniería?', '¿Qué te diferencia de otros diseñadores?'],
+      ca: ['En quins projectes has treballat?', 'Quin és el teu procés de disseny?', 'Estàs buscant feina?', 'Com treballes amb enginyeria?', "Què et diferencia d'altres dissenyadors?"],
+      en: ['What projects have you worked on?', "What's your design process?", 'Are you open to new roles?', 'How do you work with engineering?', 'What sets you apart from other designers?']
     };
 
     let index = 0;

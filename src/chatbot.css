@@ -45,20 +45,27 @@
               visibility 0s linear 0s;
 }
 
-/* ── MOBILE: bottom sheet ── */
+/* ── MOBILE: full screen ── */
 @media (max-width: 768px) {
   .chatbot-panel {
+    top: 0;
     bottom: 0;
     left: 0;
     right: 0;
     width: 100%;
-    height: calc(100dvh - 65px - 16px);
-    border-radius: 24px 24px 0 0;
-    border-top: 1px solid var(--border);
+    height: 100%;
+    border-radius: 0;
+    border: none;
     transform: translateY(100%);
+    transition: bottom 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                visibility 0s linear 0.45s;
   }
   .chatbot-panel.open {
     transform: translateY(0);
+    transition: bottom 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                visibility 0s linear 0s;
   }
 }
 
@@ -78,6 +85,9 @@
   }
   .chatbot-panel.open {
     transform: translateX(0);
+  }
+  .chatbot-input-clear {
+    display: none;
   }
 }
 @media (min-width: 1300px) {
@@ -156,8 +166,8 @@
 }
 
 .chatbot-header-text h3 {
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 600;
   margin: 0 0 2px;
   color: var(--text-primary);
   font-family: 'Plus Jakarta Sans', sans-serif;
@@ -219,6 +229,7 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  scrollbar-gutter: stable;
 }
 
 .chatbot-messages::-webkit-scrollbar { width: 3px; }
@@ -394,7 +405,174 @@
 
 @media (max-width: 768px) {
   .chatbot-messages {
-    padding-bottom: 100px;
+    padding-bottom: 16px;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════
+   INPUT MOBILE — animación de crecimiento al ganar foco
+   Solo afecta a ≤768px. Desktop sin cambios.
+
+   Técnica sin layout shift:
+   - .chatbot-input-card: envuelve el pill. Transiciona solo
+     border-radius, box-shadow, border-color (GPU).
+   - .chatbot-input-actions: height FIJA 52px siempre.
+     Aparece con opacity+translateY. Cero reflow.
+   - .chatbot-input-row .chatbot-send: fade-out con foco.
+     Sigue ocupando espacio (display:flex, no display:none).
+   - .input-focused: clase en .chatbot-panel, añadida por JS.
+════════════════════════════════════════════════════════════ */
+@media (min-width: 769px) {
+  .chatbot-input-actions{
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+
+  /* Backdrop — cubre mensajes sin moverlos */
+  .chatbot-input-backdrop {
+    position: absolute;
+    inset: 0;
+    top: -2000px;
+    background: rgba(0,0,0,0);
+    pointer-events: none;
+    transition: background 0.3s ease;
+    z-index: 1;
+  }
+
+  .chatbot-panel.input-focused .chatbot-input-backdrop {
+    background: rgba(0,0,0,0.55);
+    pointer-events: all;
+  }
+
+  /* Input area en flujo (no absolute) */
+  .chatbot-input-area {
+    position: relative !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+    flex-shrink: 0;
+    padding: 8px 12px max(12px, env(safe-area-inset-bottom));
+    background: transparent;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    z-index: 2;
+  }
+
+  /* Card — pill por defecto, card con foco.
+     SOLO transiciona propiedades compositor (sin reflow). */
+  .chatbot-input-card {
+    display: grid;
+    grid-template-rows: auto 0fr;
+    background: #1e1e20;
+    border-radius: 26px;
+    border: 1px solid rgba(255,255,255,0.08);
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+    box-shadow:
+      0 2px 6px rgba(0,0,0,0.3),
+      0 1px 0 rgba(255,255,255,0.04) inset;
+    transition:
+      grid-template-rows 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+      border-radius 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow    0.32s cubic-bezier(0.4, 0, 0.2, 1),
+      border-color  0.32s ease;
+  }
+
+  .chatbot-panel.input-focused .chatbot-input-card {
+    grid-template-rows: auto fr;
+    border-radius: 26px;
+    border-color: rgba(255,255,255,0.11);
+    box-shadow:
+      0 -2px 0 rgba(255,255,255,0.05) inset,
+      0 14px 40px rgba(0,0,0,0.75),
+      0 4px 12px rgba(0,0,0,0.5),
+      0 0 0 1px rgba(255,121,27,0.04);
+  }
+
+  /* Fila superior — padding fijo, sin transición de layout */
+  .chatbot-input-row {
+    padding: 8px 8px 8px 16px !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Fila inferior — HEIGHT FIJA 52px siempre.
+     Animación: solo opacity + translateY. Cero reflow. */
+  .chatbot-input-actions {
+    display: none;
+    align-items: self-end;
+    justify-content: flex-end;
+    padding: 4px 8px 8px;
+    height: 80px;
+    flex-shrink: 0;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(4px);
+    transition:
+      opacity   0s ease,
+      transform 0s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .chatbot-panel.input-focused .chatbot-input-actions {
+    display: flex;
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
+  }
+
+  /* Send en pill: siempre en flujo, se desvanece con foco */
+  .chatbot-input-row .chatbot-send {
+    display: flex !important;
+    width: 34px !important;
+    height: 34px !important;
+    align-self: center;
+    flex-shrink: 0;
+    transition: opacity 0s ease;
+  }
+
+  .chatbot-panel.input-focused .chatbot-input-row .chatbot-send {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Send en actions */
+  .chatbot-input-actions .chatbot-send {
+    display: flex;
+    width: 34px; height: 34px;
+  }
+
+  /* X — visible solo con foco */
+  .chatbot-input-clear {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    position: absolute;
+    top: 9px;
+    right: 8px;
+    opacity: 0;
+    pointer-events: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 500px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease;
+    flex-shrink: 0;
+
+   
+  }
+
+  .chatbot-panel.input-focused .chatbot-input-clear {
+    opacity: 1;
+    pointer-events: all;
   }
 }
 

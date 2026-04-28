@@ -35,4 +35,13 @@ export const projects = [
     audio: '/audio/mobile-first.mp3',
     url: '/mobile-first',
   },
+  {
+    id: 'mobile-growth',
+    title: 'Scaling mobile growth',
+    description: 'Turned a fragmented mobile experience into a €9.2M revenue channel in 9 months (20% GMV share, +66% conversion rate).',
+    thumbnail: '/images/projects/mobile-first/Mobile-first Thumbnail.webp',
+    thumbnailAlt: 'Mobile First project thumbnail',
+    audio: '/audio/mobile-first.mp3',
+    url: '/mobile-growth',
+  },
 ];

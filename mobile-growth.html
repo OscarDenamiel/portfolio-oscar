@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="canonical" href="https://oscardenamiel.com/mobile-app">
+
+  <link rel="icon" href="/images/favicons/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F9F8F6">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#19171C">
+
+  <title>Scaling Mobile Growth · Product Design Case Study</title>
+
+  <meta property="og:title" content="Scaling Mobile Growth · Oscar Denamiel" />
+  <meta property="og:site_name" content="Oscar Denamiel · Senior Product Designer">
+  <meta property="og:url" content="https://oscardenamiel.com/mobile-app" />
+  <meta name="description" content="How a fragmented mobile experience became a €9.2M revenue channel in 9 months — 20% of total gross GMV and +66% conversion rate lift.">
+  <meta property="og:description" content="How a fragmented mobile experience became a €9.2M revenue channel in 9 months — 20% of total gross GMV and +66% conversion rate lift." />
+  <meta property="og:image" content="https://oscardenamiel.com/images/og-mobile-app.webp">
+  <meta property="og:type" content="website">
+
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css">
+
+  <!-- Microsoft Clarity -->
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "wazavttkc2");
+  </script>
+
+  <!-- Vercel Analytics -->
+  <script defer src="/_vercel/insights/script.js"></script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ETPHS34BS7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ETPHS34BS7');
+  </script>
+</head>
+
+<body>
+
+  <!-- Progress bar -->
+  <div class="progress-container">
+    <div class="progress-bar" id="myProgressBar"></div>
+  </div>
+
+  <div class="content-container content-container--visible">
+
+    <div id="header-placeholder"></div>
+    <div id="sidebar-placeholder"></div>
+
+    <div class="content-container content-container--visible">
+      <div class="main-container-no-home">
+        <div class="project-container">
+
+
+          <!-- PATRÓN 1: PROJECT HERO -->
+          <div class="project-hero">
+
+            <div class="project-info animate-fade-up">
+              <h2>Scaling mobile growth</h2>
+              <p class="p-large project-hero-description">
+                <strong>Turned a fragmented mobile experience into a €9.2M revenue channel
+                in 9 months (20% of total gross GMV share, +66% conversion rate lift) using
+                strategic design, not engineering workarounds.</strong>
+              </p>
+              <div class="project-tags">
+                <span class="project-tag">2025-2026</span>
+                <span class="project-tag">9 months</span>
+                <span class="project-tag">+35% retention</span>
+                <span class="project-tag">+15% LTV</span>
+                <span class="project-tag">133k app downloads</span>
+              </div>
+            </div>
+
+            <div class="project-hero-image animate-fade-in delay-600">
+              <img src="/images/projects/mobile-app/hero.webp" alt="Stayforlong app hero — key screens">
+            </div>
+
+          </div>
+          <!-- / PATRÓN 1: PROJECT HERO -->
+
+          <!-- PATRÓN 14: CAROUSEL — context (3 cards) -->
+          <div class="section-spacer reveal">
+            <div class="carousel-wrapper">
+              <div class="carousel-track"
+                  id="context-carousel"
+                  data-cols-mobile="1.5"
+                  data-cols-tablet="2"
+                  data-cols-desktop="3">
+                <div class="scroll-spacer"></div>
+
+                <div class="carousel-item">
+                  <div class="carousel-card">
+                    <span class="carousel-card-label">The Problem</span>
+                    <h5>Broken mobile, zero scale.</h5>
+                    <p class="p-small">A fragmented web experience, broken navigation, conversion stuck
+                    at 1.5%, no design system, no native developers and low budget.</p>
+                  </div>
+                </div>
+
+                <div class="carousel-item">
+                  <div class="carousel-card">
+                    <span class="carousel-card-label">My Role</span>
+                    <h5>Lead Product Designer</h5>
+                    <p class="p-small">Led end-to-end product and design strategy, from heuristic audit
+                    to defining a mobile-first system used across web and app.</p>
+                  </div>
+                </div>
+
+                <div class="carousel-item">
+                  <div class="carousel-card">
+                    <span class="carousel-card-label">The Outcome</span>
+                    <h5>€9.2M revenue, 20% GMV.</h5>
+                    <p class="p-small">In 9 months, conversion increased by 66% and mobile apps became
+                    a core revenue channel based on 3 foundational design decisions.</p>
+                  </div>
+                </div>
+
+              </div>
+              <div class="carousel-controls">
+                <button class="carousel-btn carousel-btn--prev" id="context-prev" aria-label="Previous">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(270deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <button class="carousel-btn carousel-btn--next" id="context-next" aria-label="Next">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(90deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- / PATRÓN 14: context-carousel -->
+
+
+          <!-- PATRÓN 2A: THE HOOK -->
+          <div class="section-text section-spacer reveal">
+            <h3>The hook</h3>
+            <p class="p-large">
+              Stayforlong, an OTA specializing in long-stay rentals, had been deferring its mobile app
+              for years. The engineering team was small. No native developers. No budget. And the web
+              mobile experience was fundamentally broken: fragmented UI patterns, no design system,
+              navigation that failed unpredictably.
+            </p>
+            <p class="p-large">
+              By April 2026, just 9 months after the launch, the app became 20% of the company's
+              total gross GMV, increased mobile conversion 66%, and raised customer LTV 17%
+              year-over-year.
+            </p>
+            <p class="p-large">
+              This is how a small team, tight constraints, and strategic insights turned a
+              years-old gap into a growth engine.
+            </p>
+          </div>
+          <!-- / PATRÓN 2A -->
+
+
+          <!-- PATRÓN 3: HERO IMAGE -->
+          <div class="section-image section-spacer reveal">
+            <img src="/images/projects/mobile-app/hero.webp" alt="Stayforlong app hero — key screens">
+          </div>
+          <!-- / PATRÓN 3 -->
+
+          <!-- ============================================================
+               PATRÓN 2: SECTION TEXT
+               Uso: bloques de texto centrado, ancho máximo 640px en desktop.
+               Variantes:
+               A) Solo h3 + párrafo (Executive Summary, Personal Thoughts...)
+               B) Con h6 label + h3 (secciones con contexto/fase)
+               Reglas:
+               - Siempre lleva section-spacer + reveal
+               - Nunca inline styles en textos
+               - Usar p-large para párrafos introductorios
+               - Usar p-small para párrafos de detalle
+          =============================================================== -->
+
+          <!-- SECTION TEXT — Variante A: Solo h3 + párrafo -->
+          <div class="section-text section-spacer reveal">
+            <h6>THE PROBLEM</h6>
+            <h3>A broken web mobile experience</h3>
+              <p class="p-large">
+                In mid-2025, Stayforlong's web mobile was losing market share to competitors like Booking and Airbnb. The <strong>conversion rate hovered around 1.5%</strong>, half the desktop rate. But the real problem wasn't the platform, it was how the platform was built.
+              </p>
+              
+          </div>
+          <!-- / SECTION TEXT A -->
+
+          <!-- CAROUSEL — Variante imágenes + texto -->
+          <div class="section-spacer reveal">
+            <h4>My heuristic evaluation revealed:</h4>
+            <div class="carousel-wrapper">
+              <div class="carousel-track"
+                   id="media-carousel"
+                   data-cols-mobile="1.5"
+                   data-cols-tablet="2"
+                   data-cols-desktop="3">
+                <div class="scroll-spacer"></div>
+          
+                <div class="carousel-item">
+                  <img style="width: 100%; border-radius: 24px; margin-bottom: 16px;" src="/images/imagen-1.webp" alt="Liquid Glass">
+                  <p class="p-small"><strong>No design system.</strong> Components were inconsistent. Button styles varied. Ad-hoc variables.</p>
+                </div>
+          
+                <div class="carousel-item">
+                  <img style="width: 100%; border-radius: 24px; margin-bottom: 16px;" src="/images/imagen-2.webp" alt="Lock Screen">
+                  <p class="p-small"><strong>Broken navigation.</strong> The browser's back button didn't work predictably. Users got stuck in loops.</p>
+                </div>
+
+                <div class="carousel-item">
+                  <img style="width: 100%; border-radius: 24px; margin-bottom: 16px;" src="/images/imagen-2.webp" alt="Lock Screen">
+                  <p class="p-small"><strong>Browser-dependent patterns.</strong> Features that worked in Chrome failed in Safari.</p>
+                </div>
+                
+                <div class="carousel-item">
+                  <img style="width: 100%; border-radius: 24px; margin-bottom: 16px;" src="/images/imagen-2.webp" alt="Lock Screen">
+                  <p class="p-small"><strong>No mobile-first thinking.</strong> The UI was a compressed desktop redesign, not a mobile-native experience.</p>
+                </div>
+
+                <div class="carousel-item">
+                  <img style="width: 100%; border-radius: 24px; margin-bottom: 16px;" src="/images/imagen-2.webp" alt="Lock Screen">
+                  <p class="p-small"><strong>Hidden core actions.</strong> The four actions users cared about most (search, view bookings, account, and support) were scattered behind menus and nested views.</p>
+                </div>
+          
+              </div>
+              <div class="carousel-controls">
+                <button class="carousel-btn carousel-btn--prev" id="media-prev" aria-label="Previous">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(270deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <button class="carousel-btn carousel-btn--next" id="media-next" aria-label="Next">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(90deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- / PATRÓN 14: Variante imágenes + texto -->
+
+
+          <!-- PATRÓN 4: A BROKEN WEB MOBILE EXPERIENCE -->
+          <div class="full-width-section background-section section-spacer reveal">
+            <div class="container-full">
+
+              
+
+              
+
+              <div class="section-columns">
+                <div class="section-column reveal reveal-delay-1">
+                  <img class="image-grid" src="/images/projects/mobile-app/problem-01.webp" alt="No design system">
+                  <h4>No design system</h4>
+                  <p class="p-small">Components were inconsistent. Button styles varied. Ad-hoc variables
+                  with no shared foundation across screens.</p>
+                </div>
+                <div class="section-column reveal reveal-delay-2">
+                  <img class="image-grid" src="/images/projects/mobile-app/problem-02.webp" alt="Broken navigation">
+                  <h4>Broken navigation</h4>
+                  <p class="p-small">The browser's back button didn't work predictably. Users got stuck
+                  in loops. Pages opened in new tabs with no way to recover.</p>
+                </div>
+              </div>
+
+              <div class="section-columns section-columns--no-margin">
+                <div class="section-column reveal reveal-delay-1">
+                  <img class="image-grid" src="/images/projects/mobile-app/problem-03.webp" alt="No mobile-first thinking">
+                  <h4>No mobile-first thinking</h4>
+                  <p class="p-small">The UI was a compressed desktop redesign. Browser-dependent patterns:
+                  features that worked in Chrome failed in Safari.</p>
+                </div>
+                <div class="section-column reveal reveal-delay-2">
+                  <img class="image-grid" src="/images/projects/mobile-app/problem-04.webp" alt="Hidden core actions">
+                  <h4>Hidden core actions</h4>
+                  <p class="p-small">The four actions users cared about most (search, bookings, account,
+                  support) were scattered behind menus and nested views.</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <!-- / PATRÓN 4: broken web -->
+
+
+          <!-- PATRÓN 3: HEURISTIC EVALUATION CHART (continues grey bg visually) -->
+          <div class="full-width-section background-section">
+            <div class="container-full" style="padding-top: 0;">
+              <div class="section-image reveal">
+                <img src="/images/projects/mobile-app/heuristic-evaluation-chart.webp" alt="Spider net chart showing heuristic evaluation results — 59.99% usability score">
+              </div>
+              <p class="p-small pie-foto">Heuristic evaluation results: 59.99% usability score.
+              Help (44.31%) and Navigation (66.79%) were the two critical categories.</p>
+            </div>
+          </div>
+          <!-- / PATRÓN 3 heuristic -->
+
+
+          <!-- PATRÓN 2B: AHA MOMENT -->
+          <div class="section-text section-spacer reveal">
+            <h6>AHA MOMENT</h6>
+            <h3>The constraint that became a catalyst</h3>
+            <p class="p-small">
+              Here's where the story could have ended: we need a native iOS and Android app,
+              but we can't build it.
+            </p>
+            <p class="p-small">
+              The engineering team: David (EM), Carlos (Staff FE), and Jesús Gándara (contractor).
+              No native developers. No budget for Reskyt, the SaaS wrapper solution other startups
+              were using. No capacity to hire.
+            </p>
+            <p class="p-small">
+              But in June 2025, our CTO watched a demo of a pattern he'd seen before: a PWA wrapped
+              in a native shell using Expo and React Native. Take the responsive web app, wrap it
+              with native capabilities (push notifications, app store integration, offline support),
+              and ship it.
+            </p>
+            <p class="p-small">
+              The insight was simple: we can build this ourselves. We already have a responsive web.
+              The wrapper is a solved problem. The constraints forced us to be rigorous in deciding
+              what really mattered.
+            </p>
+          </div>
+          <!-- / PATRÓN 2B: aha moment -->
+
+
+          <!-- PATRÓN 6: QUOTE 1 -->
+          <div class="quote-section section-spacer reveal">
+            <div class="quote-content">
+              <h4 style="margin: 0;">"We didn't build a native app. We made the web so good it deserved to be one."</h4>
+            </div>
+          </div>
+          <!-- / PATRÓN 6 -->
+
+
+          <!-- PATRÓN 2B: MY ROLE -->
+          <div class="section-text section-spacer reveal">
+            <h6>MY ROLE</h6>
+            <h3>3 decisions that made the app work</h3>
+            <p class="p-large">
+              I joined as Lead Product Designer before kickoff. I began with a heuristic evaluation
+              that revealed 4 non-negotiables for the app to work: consistent navigation, bottom
+              navigation with 4 core actions, progressive disclosure, and persistent UI elements.
+              These weren't design preferences. They were survival requirements. From them emerged
+              3 foundational decisions.
+            </p>
+          </div>
+          <!-- / PATRÓN 2B: my role -->
+
+
+          <!-- PATRÓN 14: CAROUSEL — decisions (3 cards) -->
+          <div class="section-spacer reveal">
+            <div class="carousel-wrapper">
+              <div class="carousel-track"
+                  id="decisions-carousel"
+                  data-cols-mobile="1.5"
+                  data-cols-tablet="2"
+                  data-cols-desktop="3">
+                <div class="scroll-spacer"></div>
+
+                <div class="carousel-item">
+                  <div class="carousel-card">
+                    <span class="carousel-card-label">Decision 1</span>
+                    <h5>Persistent navigation system</h5>
+                    <p class="p-small">I defined a fixed navigation model (bottom nav + consistent back
+                    behavior) to make core actions always reachable in one tap.</p>
+                  </div>
+                </div>
+
+                <div class="carousel-item">
+                  <div class="carousel-card">
+                    <span class="carousel-card-label">Decision 2</span>
+                    <h5>Progressive disclosure</h5>
+                    <p class="p-small">I made the next booking step always visible, improved information
+                    hierarchy and removed endless scroll from HDP.</p>
+                  </div>
+                </div>
+
+                <div class="carousel-item">
+                  <div class="carousel-card">
+                    <span class="carousel-card-label">Decision 3</span>
+                    <h5>Architecture shift</h5>
+                    <p class="p-small">I drove the move from a monolithic frontend to a hexagonal
+                    architecture, separating business logic from UI and enabling a scalable design system.</p>
+                  </div>
+                </div>
+
+              </div>
+              <div class="carousel-controls">
+                <button class="carousel-btn carousel-btn--prev" id="decisions-prev" aria-label="Previous">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(270deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <button class="carousel-btn carousel-btn--next" id="decisions-next" aria-label="Next">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(90deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- / PATRÓN 14: decisions-carousel -->
+
+
+          <!-- PATRÓN 4: DECISION 1 — Persistent navigation -->
+          <div class="full-width-section background-section section-spacer reveal">
+            <div class="container-full">
+
+              <h6>DECISION 1</h6>
+              <h3>Persistent navigation system</h3>
+              <p class="p-large">
+                Web mobile navigation was broken. Back behavior depended on browser quirks. Core
+                actions were hidden behind menus. HDP was endless scroll. Users got lost, couldn't
+                recover, bounced before booking.
+              </p>
+
+              <div class="section-columns-text">
+                <div class="section-column">
+                  <h4>Hamburger menu</h4>
+                </div>
+                <div class="section-column">
+                  <p class="small">Hide nav, reclaim space. Problem: users hunt for it every context
+                  switch. Works for secondary navigation, not core actions.</p>
+                </div>
+              </div>
+
+              <div class="section-columns-text">
+                <div class="section-column">
+                  <h4>Persistent tabs</h4>
+                </div>
+                <div class="section-column">
+                  <p class="small">Show tabs at top, always visible. Problem: 6-inch screens have no
+                  real estate. Tabs don't signal "you are here" reliably across flows.</p>
+                </div>
+              </div>
+
+              <div class="section-columns-text">
+                <div class="section-column">
+                  <h4>Bottom navigation ✓</h4>
+                </div>
+                <div class="section-column">
+                  <p class="small">Fixed bar, always visible, thumb-friendly. The iOS/Android standard.
+                  On Stayforlong, the 4 main actions were obvious: search, bookings, help, account.</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <!-- / PATRÓN 4: decision 1 -->
+
+
+          <!-- PATRÓN 9: BEFORE / AFTER — navigation -->
+          <div class="section-columns section-columns--full-width section-spacer">
+            <div class="section-column reveal reveal-delay-1">
+              <img class="image-grid-large" src="/images/projects/mobile-app/nav-before.webp" alt="Before — hamburger menu">
+              <p class="p-small pie-foto">Before — hamburger menu, scattered core actions, broken back behavior</p>
+            </div>
+            <div class="section-column reveal reveal-delay-2">
+              <img class="image-grid-large" src="/images/projects/mobile-app/nav-after.webp" alt="After — bottom navigation">
+              <p class="p-small pie-foto">After — persistent bottom navigation, 4 core actions always visible</p>
+            </div>
+          </div>
+          <!-- / PATRÓN 9 -->
+
+
+          <!-- PATRÓN 2A: WHY BOTTOM NAV WON -->
+          <div class="section-text section-spacer reveal">
+            <h3>Why bottom navigation won</h3>
+            <p class="p-small">
+              On apps, users expect persistent, always-visible navigation. A hamburger menu is a
+              web convention — users accept hunting for it. On an app, it feels broken. A user
+              shouldn't need three taps to jump from search to bookings.
+            </p>
+            <p class="p-small">
+              We tested early: 85% of users preferred bottom nav. Persistence beat hidden menus
+              every time. Time to task reduced significantly.
+            </p>
+            <p class="p-small">
+              Why this was an app enabler: Core actions always reachable in one tap. Navigation
+              became predictable and learnable. Reduced support contacts for "how do I find X".
+              It became the anchor for every other pattern: CTAs, filters, bottom-sheets, modals.
+            </p>
+            <p class="p-small">
+              The result: Users knew where to go. Navigation became invisible. The bottom bar
+              became our design system's signature.
+            </p>
+          </div>
+          <!-- / PATRÓN 2A -->
+
+
+          <!-- PATRÓN 4: DECISION 2 — Progressive disclosure -->
+          <div class="full-width-section background-section section-spacer reveal">
+            <div class="container-full">
+
+              <h6>DECISION 2</h6>
+              <h3>Progressive disclosure</h3>
+              <p class="p-large">
+                HDP was an endless scroll. Everything above the fold because we had nowhere else
+                to put it. Users scrolled through reviews, amenities, policies, and bounced before
+                reaching the booking button.
+              </p>
+
+              <div class="section-columns-text">
+                <div class="section-column">
+                  <h4>Show everything</h4>
+                </div>
+                <div class="section-column">
+                  <p class="small">Users get lost in information. They bounce before reaching critical
+                  content (rooms, pricing, booking button).</p>
+                </div>
+              </div>
+
+              <div class="section-columns-text">
+                <div class="section-column">
+                  <h4>Expandable sections</h4>
+                </div>
+                <div class="section-column">
+                  <p class="small">Users don't interact with accordions. Feels like mobile web, not app.</p>
+                </div>
+              </div>
+
+              <div class="section-columns-text">
+                <div class="section-column">
+                  <h4>Native patterns ✓</h4>
+                </div>
+                <div class="section-column">
+                  <p class="small">Bottomsheets for room details, modals for filters, accordions for
+                  amenities. Show summary, hide complexity until tapped.</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <!-- / PATRÓN 4: decision 2 -->
+
+
+          <!-- PATRÓN 9: BEFORE / AFTER — HDP -->
+          <div class="section-columns section-columns--full-width section-spacer">
+            <div class="section-column reveal reveal-delay-1">
+              <img class="image-grid-large" src="/images/projects/mobile-app/hdp-before.webp" alt="Before — HDP endless scroll">
+              <p class="p-small pie-foto">Before — HDP endless scroll, all information above the fold</p>
+            </div>
+            <div class="section-column reveal reveal-delay-2">
+              <img class="image-grid-large" src="/images/projects/mobile-app/hdp-after.webp" alt="After — progressive disclosure">
+              <p class="p-small pie-foto">After — progressive disclosure, bottomsheets, clear hierarchy</p>
+            </div>
+          </div>
+          <!-- / PATRÓN 9 -->
+
+
+          <!-- PATRÓN 2A: WHY PROGRESSIVE DISCLOSURE WON -->
+          <div class="section-text section-spacer reveal">
+            <h3>Why progressive disclosure won</h3>
+            <p class="p-small">
+              On a 6-inch phone, you can't show everything at once. Progressive disclosure isn't
+              optional — it's how mobile apps function. It reduces cognitive load. Users see what
+              matters, when they need it. Native apps don't show everything. They guide through
+              steps. That's what users expect.
+            </p>
+            <p class="p-small">
+              The result: HDP went from endless scroll to information hierarchy. Conversion improved
+              because the booking step was always visible. This tied directly to the +28% CR uplift
+              on SERP cards with visible CTAs.
+            </p>
+          </div>
+          <!-- / PATRÓN 2A -->
+
+
+          <!-- PATRÓN 4: DECISION 3 — Architecture shift -->
+          <div class="full-width-section background-section section-spacer reveal">
+            <div class="container-full">
+
+              <h6>DECISION 3</h6>
+              <h3>Architecture shift — monolithic to hexagonal</h3>
+              <p class="p-large">
+                There was a design system in Figma, but it didn't exist in production. UI and
+                business logic were fused together. A Button component carried state, API calls,
+                business rules. You couldn't reuse it without duplicating code or creating tangled
+                dependencies. We couldn't scale.
+              </p>
+
+              <div class="section-columns-text">
+                <div class="section-column">
+                  <h4>Keep monolithic</h4>
+                </div>
+                <div class="section-column">
+                  <p class="small">Faster short-term, but each feature increases complexity.
+                  We'd never ship a proper app — just a web wrapper.</p>
+                </div>
+              </div>
+
+              <div class="section-columns-text">
+                <div class="section-column">
+                  <h4>Separate UI from logic</h4>
+                </div>
+                <div class="section-column">
+                  <p class="small">More upfront work, but true reusability. Business logic
+                  independent from UI.</p>
+                </div>
+              </div>
+
+              <div class="section-columns-text">
+                <div class="section-column">
+                  <h4>Hexagonal architecture ✓</h4>
+                </div>
+                <div class="section-column">
+                  <p class="small">Pure design system (visual atoms only), UIKit layer
+                  (context-aware components with business logic), core logic completely isolated.
+                  Ports and adapters at the edges.</p>
+                </div>
+              </div>
+
+              <p class="p-small" style="padding-top: 32px;">
+                This wasn't just a technical improvement. It was what enabled us to scale beyond
+                the app — future platforms, faster iteration, reduced tech debt. True component
+                reusability across web and app. Business logic testable and swappable without
+                breaking UI.
+              </p>
+
+            </div>
+          </div>
+          <!-- / PATRÓN 4: decision 3 -->
+
+
+          <!-- PATRÓN 3: ARCHITECTURE DIAGRAM -->
+          <div class="section-image section-spacer reveal">
+            <img src="/images/projects/mobile-app/architecture-diagram.webp" alt="Hexagonal architecture diagram — Design System, UIKit, Core logic layers">
+          </div>
+          <p class="p-small pie-foto">Hexagonal architecture: Design System (visual atoms) → UIKit (business logic) → Core (isolated).
+          Web, app and future platforms share the same foundation.</p>
+          <!-- / PATRÓN 3 -->
+
+
+          <!-- PATRÓN 2B: SUPPORTING DECISIONS -->
+          <div class="section-text section-spacer reveal">
+            <h6>SUPPORTING DECISIONS</h6>
+            <h3>Reinforcing the core system</h3>
+            <p class="p-large">
+              These decisions weren't foundational, but they reinforced the 3 core decisions:
+            </p>
+          </div>
+          <!-- / PATRÓN 2B -->
+
+
+          <!-- PATRÓN 14: CAROUSEL — supporting (3 cards) -->
+          <div class="section-spacer reveal">
+            <div class="carousel-wrapper">
+              <div class="carousel-track"
+                  id="supporting-carousel"
+                  data-cols-mobile="1.5"
+                  data-cols-tablet="2"
+                  data-cols-desktop="3">
+                <div class="scroll-spacer"></div>
+
+                <div class="carousel-item">
+                  <div class="carousel-card">
+                    <span class="carousel-card-label">Sep-Oct 2025</span>
+                    <h5>Fixed CTAs — "Choose room" anchor</h5>
+                    <p class="p-small">The booking button was at the bottom of infinite scroll.
+                    Solution: sticky "Choose Room" button always visible on HDP.
+                    Impact: +28% CR uplift on visible CTAs.</p>
+                  </div>
+                </div>
+
+                <div class="carousel-item">
+                  <div class="carousel-card">
+                    <span class="carousel-card-label">Oct 2025</span>
+                    <h5>Search persistence</h5>
+                    <p class="p-small">Filters scrolled away on SERP. Solution: fixed search, sort
+                    and filters at top. Filters stay applied across navigation and map.
+                    Impact: more exploration, fewer re-searches.</p>
+                  </div>
+                </div>
+
+                <div class="carousel-item">
+                  <div class="carousel-card">
+                    <span class="carousel-card-label">Q4 2025</span>
+                    <h5>Native onboarding</h5>
+                    <p class="p-small">Single-screen onboarding. One message: "Start searching for
+                    long stays." Impact: first-search completion +12%. Repeat rate 25% vs 23%.</p>
+                  </div>
+                </div>
+
+              </div>
+              <div class="carousel-controls">
+                <button class="carousel-btn carousel-btn--prev" id="supporting-prev" aria-label="Previous">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(270deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <button class="carousel-btn carousel-btn--next" id="supporting-next" aria-label="Next">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(90deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- / PATRÓN 14: supporting-carousel -->
+
+
+          <!-- PATRÓN 2B: iOS COMPLIANCE — light section -->
+          <div class="full-width-section section--light section-spacer reveal">
+            <div class="container-full">
+              <h6>EXTERNAL CONSTRAINT</h6>
+              <h3>iOS compliance challenge</h3>
+              <p class="p-small">
+                iOS rejected us three times when we tried to publish the app on the App Store.
+                Each rejection was feedback, not a blocker.
+              </p>
+            </div>
+          </div>
+          <!-- / PATRÓN 2B: iOS -->
+
+
+          <!-- PATRÓN 12: iOS REJECTIONS — light section -->
+          <div class="full-width-section section--light">
+            <div class="container-full" style="padding-top: 0;">
+
+              <div class="section-columns-text">
+                <div class="section-column">
+                  <h4>Rejection 1 — Missing ATT consent</h4>
+                </div>
+                <div class="section-column">
+                  <p class="small">Apple requires explicit permission before cookies track.
+                  We designed a GDPR/ATT consent flow that met both regulations.</p>
+                </div>
+              </div>
+
+              <div class="section-columns-text">
+                <div class="section-column">
+                  <h4>Rejection 2 — No Sign in with Apple</h4>
+                </div>
+                <div class="section-column">
+                  <p class="small">We had Google Sign-in, but Apple wanted theirs. I made a
+                  strategic choice: temporarily removed Google Sign-in, shipped email/password
+                  only, committed to adding it later. This unblocked us.</p>
+                </div>
+              </div>
+
+              <div class="section-columns-text">
+                <div class="section-column">
+                  <h4>Rejection 3 — No account deletion</h4>
+                </div>
+                <div class="section-column">
+                  <p class="small">I designed the flow, coordinated backend, shipped in one week.
+                  Each stung. But I reframed them: not obstacles, requirements. Apple was telling
+                  us what users needed. We listened.</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <!-- / PATRÓN 12: iOS rejections -->
+
+
+          <!-- PATRÓN 6: QUOTE 2 — light section -->
+          <div class="quote-section section--light section-spacer reveal">
+            <div class="quote-content">
+              <h4 style="margin: 0;">"The app feels like a web wrapped in a shell."</h4>
+              <p class="p-large" style="padding-top: 40px;">Post-launch usability testing, Q4 2025</p>
+            </div>
+          </div>
+          <!-- / PATRÓN 6 -->
+
+
+          <!-- PATRÓN 2A: RESEARCH-DRIVEN ITERATION — light section -->
+          <div class="full-width-section section--light section-spacer reveal">
+            <div class="container-full">
+              <h3>Research-driven iteration: from functional to native</h3>
+              <p class="p-small">
+                Post-launch research revealed we had solved usability, but not perception. Users
+                could tell it wasn't native. So I ran a second design pass focused entirely on
+                native micro-experiences: custom onboarding, gesture-based interactions,
+                native-style animations, loading states that signal "app."
+              </p>
+              <p class="p-small">
+                This wasn't a redesign. It was a refinement. But necessary. A functional app that
+                feels like a web wrapper is fragile. Users prefer the web. By making it feel native
+                (in experience, if not in code), we made it be native, increasing trust and
+                repeat usage.
+              </p>
+            </div>
+          </div>
+          <!-- / PATRÓN 2A: iteration -->
+
+
+          <!-- PATRÓN 2B: THE EXECUTION -->
+          <div class="section-text section-spacer reveal">
+            <h6>THE EXECUTION</h6>
+            <h3>Speed over perfection</h3>
+            <p class="p-small">
+              Android shipped in 6 weeks. Not because we worked overtime. Because we were ruthless
+              about scope.
+            </p>
+          </div>
+          <!-- / PATRÓN 2B: execution -->
+
+
+          <!-- PATRÓN 12: EXECUTION TIMELINE -->
+          <div class="container-full section-spacer reveal">
+
+            <div class="section-columns-text">
+              <div class="section-column">
+                <h4>Android — 6 weeks to public launch</h4>
+              </div>
+              <div class="section-column">
+                <p class="small">Jun 12: Channel created. Reskyt evaluated and rejected.
+                Jun 26: Kickoff. Goal: MVP by end Q3. Jul 25: PoC with tracking, internal testing.
+                Aug 1: Beta on Google Play. Sep 1: Public launch. Google's more permissive.
+                We shipped MVP, not perfection. Iterated on feedback.</p>
+              </div>
+            </div>
+
+            <div class="section-columns-text">
+              <div class="section-column">
+                <h4>iOS — 6 months, 3 rejections, 1 tradeoff</h4>
+              </div>
+              <div class="section-column">
+                <p class="small">Jan 18, 2026: approved after months of back and forth.
+                Jan 25, 2026: sessions explode — 2,000 to 13,600 in 7 days. The delay was
+                the cost of Apple's bar. But the tradeoff taught us: constraints force clarity.
+                We shipped faster. Users adapted.</p>
+              </div>
+            </div>
+
+            <div class="section-columns-text">
+              <div class="section-column">
+                <h4>Team dynamics</h4>
+              </div>
+              <div class="section-column">
+                <p class="small">I was autonomous on design, but never alone. Engineering Manager
+                on feasibility. Staff FE on tech debt. CRM on push notifications. PM on product
+                direction. Cross-functional tension made decisions better.</p>
+              </div>
+            </div>
+
+          </div>
+          <!-- / PATRÓN 12: execution -->
+
+
+          <!-- PATRÓN 2B: THE RESULTS — light section -->
+          <div class="full-width-section section--light section-spacer reveal">
+            <div class="container-full">
+              <h6>THE RESULTS</h6>
+              <h3>The numbers that matter</h3>
+              <p class="p-large">
+                By the metrics that matter — revenue, retention, user growth — the app was a game
+                changer. €9.2M in 9 months. Users voted with their feet.
+              </p>
+            </div>
+          </div>
+          <!-- / PATRÓN 2B: results -->
+
+
+          <!-- PATRÓN 7: METRICS GRID — light section -->
+          <div class="full-width-section section--light">
+            <div class="container-full" style="padding-top: 0;">
+
+              <div class="section-columns section-columns--metrics section-spacer">
+                <div class="section-column reveal reveal-delay-1" style="text-align: center;">
+                  <div class="data-card">
+                    <h2 style="margin: 0;">+66%</h2>
+                  </div>
+                  <h5 style="padding-top: 16px;">Mobile conversion rate (1.5% → 2.5–3.0%)</h5>
+                </div>
+                <div class="section-column reveal reveal-delay-2" style="text-align: center;">
+                  <div class="data-card">
+                    <h2 style="margin: 0;">+33%</h2>
+                  </div>
+                  <h5 style="padding-top: 16px;">Repeat rate year-over-year (18% → 24%)</h5>
+                </div>
+              </div>
+
+              <div class="section-columns section-columns--metrics">
+                <div class="section-column reveal reveal-delay-1" style="text-align: center;">
+                  <div class="data-card">
+                    <h2 style="margin: 0;">+17%</h2>
+                  </div>
+                  <h5 style="padding-top: 16px;">Customer LTV year-over-year (€45.49 → €53.36)</h5>
+                </div>
+                <div class="section-column reveal reveal-delay-2" style="text-align: center;">
+                  <div class="data-card">
+                    <h2 style="margin: 0;">€9.2M</h2>
+                  </div>
+                  <h5 style="padding-top: 16px;">Gross GMV in 9 months (20% of company total)</h5>
+                </div>
+              </div>
+
+              <div class="section-columns section-columns--metrics">
+                <div class="section-column reveal reveal-delay-1" style="text-align: center;">
+                  <div class="data-card">
+                    <h2 style="margin: 0;">133K</h2>
+                  </div>
+                  <h5 style="padding-top: 16px;">Total downloads (53K Android + 80K iOS)</h5>
+                </div>
+                <div class="section-column reveal reveal-delay-2" style="text-align: center;">
+                  <div class="data-card">
+                    <h2 style="margin: 0;">4.4★</h2>
+                  </div>
+                  <h5 style="padding-top: 16px;">App Store rating — top decile in category</h5>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <!-- / PATRÓN 7: metrics -->
+
+
+          <!-- PATRÓN 3: GMV GROWTH CHART — light section -->
+          <div class="full-width-section section--light">
+            <div class="container-full" style="padding-top: 0;">
+              <div class="section-image reveal">
+                <img src="/images/projects/mobile-app/gmv-growth-chart.webp" alt="GMV growth chart — from €200K month 1 to €1.8M holiday peak, 20% share">
+              </div>
+              <p class="p-small pie-foto">Gross GMV contribution: €200K (Aug 2025) → €1.8M (Dec 2025) → 20% of total GMV (Apr 2026).</p>
+            </div>
+          </div>
+          <!-- / PATRÓN 3: gmv chart -->
+
+
+          <!-- PATRÓN 4: PLATFORM SPLIT INSIGHTS -->
+          <div class="full-width-section background-section section-spacer reveal">
+            <div class="container-full">
+
+              <h3>Platform split insights</h3>
+              <p class="p-large">
+                iOS launched 4 months after Android and immediately showed a different behavior.
+                This data shaped V2 strategy.
+              </p>
+
+              <div class="section-columns section-columns--no-margin">
+                <div class="section-column reveal reveal-delay-1">
+                  <img class="image-grid" src="/images/projects/mobile-app/android-abv.webp" alt="Android ABV data">
+                  <h4>Android — €640 to €950 ABV</h4>
+                  <p class="p-small">First to launch. More permissive app store process.
+                  Users adapted quickly. Solid baseline retention.</p>
+                </div>
+                <div class="section-column reveal reveal-delay-2">
+                  <img class="image-grid" src="/images/projects/mobile-app/ios-abv.webp" alt="iOS ABV data">
+                  <h4>iOS — €850 to €1,200 ABV (25–40% premium)</h4>
+                  <p class="p-small">Users skew affluent. They value native experience.
+                  They pay more. This insight directly informed V2 pricing strategy.</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <!-- / PATRÓN 4: platform insights -->
+
+
+          <!-- PATRÓN 2B: THE HARD PART -->
+          <div class="section-text section-spacer reveal">
+            <h6>THE HARD PART</h6>
+            <h3>The moment that almost broke us</h3>
+            <p class="p-small">The "almost failure" wasn't one thing. It was three things colliding.</p>
+          </div>
+          <!-- / PATRÓN 2B: hard part -->
+
+
+          <!-- PATRÓN 12: THE HARD PART — details -->
+          <div class="container-full section-spacer reveal">
+
+            <div class="section-columns-text">
+              <div class="section-column">
+                <h4>Iterable failed (Aug–Oct 2025)</h4>
+              </div>
+              <div class="section-column">
+                <p class="small">Cookie tracking broken. Notifications never sent. Users weren't
+                re-engaged. Bookings stalled. I focused on the UX for the problem at hand: users
+                who received no notifications. Made opting in feel urgent, not spammy.
+                We re-engaged manually until Iterable fixed their side.</p>
+              </div>
+            </div>
+
+            <div class="section-columns-text">
+              <div class="section-column">
+                <h4>Apple's three rejections</h4>
+              </div>
+              <div class="section-column">
+                <p class="small">iOS delayed 6 months. We watched competitors gain ground.
+                I embraced the constraint. Each rejection was feedback. Instead of fighting
+                requirements, I designed for them. Removed Google Sign-in. Shipped faster.
+                Added it back later.</p>
+              </div>
+            </div>
+
+            <div class="section-columns-text">
+              <div class="section-column">
+                <h4>The psychological weight</h4>
+              </div>
+              <div class="section-column">
+                <p class="small">Small team. No safety net. One bad App Store review felt existential.
+                CEO and CTO sent clear signals: "You're not failing, you're figuring it out."
+                When iOS launched and sessions exploded 6x, the validation was immediate.</p>
+              </div>
+            </div>
+
+          </div>
+          <!-- / PATRÓN 12: hard part -->
+
+
+          <!-- PATRÓN 2B: LEARNINGS -->
+          <div class="section-text section-spacer reveal">
+            <h6>LEARNINGS</h6>
+            <h3>What I'd do differently</h3>
+          </div>
+          <!-- / PATRÓN 2B: learnings -->
+
+
+          <!-- PATRÓN 12: LEARNINGS — details -->
+          <div class="container-full section-spacer reveal">
+
+            <div class="section-columns-text">
+              <div class="section-column">
+                <h4>Anticipate Apple's requirements upfront</h4>
+              </div>
+              <div class="section-column">
+                <p class="small">I now know exactly what Apple asks for: ATT consent, Sign in with
+                Apple, in-app account deletion, privacy policy, data handling flows. On my next app,
+                I'd have all assets ready before submission 1. Cost: 1–2 weeks prep.
+                Benefit: 6 weeks saved.</p>
+              </div>
+            </div>
+
+            <div class="section-columns-text">
+              <div class="section-column">
+                <h4>Propose the wrapper solution earlier</h4>
+              </div>
+              <div class="section-column">
+                <p class="small">I should have connected the dots faster. The CTO had the PWA
+                insight. I had the heuristic evidence. We didn't align until June. If I had:
+                we'd have shipped in May, not September.</p>
+              </div>
+            </div>
+
+            <div class="section-columns-text">
+              <div class="section-column">
+                <h4>Reframe rejections as design requirements</h4>
+              </div>
+              <div class="section-column">
+                <p class="small">Apple rejections stung because I took them personally. But they
+                were feedback. Next time, I'll treat each rejection as a constraint that clarifies
+                design, not a setback.</p>
+              </div>
+            </div>
+
+          </div>
+          <!-- / PATRÓN 12: learnings -->
+
+
+          <!-- PATRÓN 14: CAROUSEL — surprises (3 cards) -->
+          <div class="section-spacer reveal">
+            <div class="carousel-wrapper">
+              <div class="carousel-track"
+                  id="surprises-carousel"
+                  data-cols-mobile="1.5"
+                  data-cols-tablet="2"
+                  data-cols-desktop="3">
+                <div class="scroll-spacer"></div>
+
+                <div class="carousel-item">
+                  <div class="carousel-card">
+                    <span class="carousel-card-label">What surprised us 1</span>
+                    <h5>The speed of iOS adoption</h5>
+                    <p class="p-small">Jan 25: iOS launched. Within 7 days, daily sessions went from
+                    2,000 to 13,600. iOS users booked immediately. Signal: they're affluent,
+                    willing to pay more (25–40% ABV premium proves it).</p>
+                  </div>
+                </div>
+
+                <div class="carousel-item">
+                  <div class="carousel-card">
+                    <span class="carousel-card-label">What surprised us 2</span>
+                    <h5>The stickiness of navigation</h5>
+                    <p class="p-small">Bottom navigation became our signature. Users internalized it
+                    fast. Onboarding was quicker because the UI was predictable.
+                    Obvious in hindsight. Not before.</p>
+                  </div>
+                </div>
+
+                <div class="carousel-item">
+                  <div class="carousel-card">
+                    <span class="carousel-card-label">What surprised us 3</span>
+                    <h5>Executive validation</h5>
+                    <p class="p-small">CEO and CTO sent personal congratulations in early 2026.
+                    Not ego — signal that the organization saw this as high-impact work.
+                    For a product designer, that matters.</p>
+                  </div>
+                </div>
+
+              </div>
+              <div class="carousel-controls">
+                <button class="carousel-btn carousel-btn--prev" id="surprises-prev" aria-label="Previous">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(270deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <button class="carousel-btn carousel-btn--next" id="surprises-next" aria-label="Next">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(90deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- / PATRÓN 14: surprises-carousel -->
+
+
+          <!-- PATRÓN 2B: THE BIGGER PICTURE — light section -->
+          <div class="full-width-section section--light section-spacer reveal">
+            <div class="container-full">
+              <h6>THE BIGGER PICTURE</h6>
+              <h3>Why this mattered</h3>
+              <p class="p-large">
+                Stayforlong's mobile app wasn't just a feature release. It was a strategic shift.
+                The company had been losing users to competitors with better mobile experiences.
+                The app changed the competitive equation.
+              </p>
+            </div>
+          </div>
+          <!-- / PATRÓN 2B: bigger picture -->
+
+
+          <!-- PATRÓN 12: BIGGER PICTURE — details — light section -->
+          <div class="full-width-section section--light">
+            <div class="container-full" style="padding-top: 0;">
+
+              <div class="section-columns-text">
+                <div class="section-column">
+                  <h4>For the company</h4>
+                </div>
+                <div class="section-column">
+                  <p class="small">€9.2M in new revenue. Higher repeat rate. Higher LTV. Direct
+                  relationship with users (push, offline support). 20% of GMV in 9 months.</p>
+                </div>
+              </div>
+
+              <div class="section-columns-text">
+                <div class="section-column">
+                  <h4>For the team</h4>
+                </div>
+                <div class="section-column">
+                  <p class="small">Proof that small teams ship ambitious products. New capability:
+                  mobile-first thinking. Momentum for V2 (pricing strategy, localization,
+                  in-app marketplace).</p>
+                </div>
+              </div>
+
+              <div class="section-columns-text">
+                <div class="section-column">
+                  <h4>For me as a designer</h4>
+                </div>
+                <div class="section-column">
+                  <p class="small">Evidence that design-led thinking unlocks business outcomes.
+                  Experience navigating complex external constraints (Apple).
+                  Credibility to propose riskier ideas.</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <!-- / PATRÓN 12: bigger picture -->
+
+
+          <!-- PATRÓN 2B: LOOKING AHEAD — light section -->
+          <div class="full-width-section section--light section-spacer reveal">
+            <div class="container-full">
+              <h6>LOOKING AHEAD</h6>
+              <h3>V2 is clear</h3>
+              <p class="p-small">
+                The app is stable. Retention is strong. But V2 is clear: Pricing strategy — iOS
+                users pay 25–40% more, iOS-specific pricing could unlock new revenue. In-app
+                marketplace — users trust the app, we can surface more inventory without sending
+                them to web. Offline browsing — long-stay users book in low-connectivity areas,
+                offline is a competitive edge.
+              </p>
+              <p class="p-small">
+                Those are V2 problems. V1 was about proving the app mattered.
+              </p>
+            </div>
+          </div>
+          <!-- / PATRÓN 2B: looking ahead -->
+
+
+          <!-- PATRÓN 2B: KEY TAKEAWAYS -->
+          <div class="section-text section-spacer reveal">
+            <h6>KEY TAKEAWAYS</h6>
+            <h3>What this taught me</h3>
+          </div>
+          <!-- / PATRÓN 2B: takeaways -->
+
+
+          <!-- PATRÓN 14: CAROUSEL — takeaways (6 cards) -->
+          <div class="section-spacer reveal">
+            <div class="carousel-wrapper">
+              <div class="carousel-track"
+                  id="takeaways-carousel"
+                  data-cols-mobile="1.5"
+                  data-cols-tablet="2"
+                  data-cols-desktop="3">
+                <div class="scroll-spacer"></div>
+
+                <div class="carousel-item">
+                  <div class="carousel-card">
+                    <span class="carousel-card-label">Takeaway 1</span>
+                    <h5>Constraints are design briefs</h5>
+                    <p class="p-small">No native devs + no budget = build a wrapper. Constraint forced
+                    clarity. We didn't waste time on things that didn't matter.</p>
+                  </div>
+                </div>
+
+                <div class="carousel-item">
+                  <div class="carousel-card">
+                    <span class="carousel-card-label">Takeaway 2</span>
+                    <h5>External constraints are requirements</h5>
+                    <p class="p-small">Apple's demands were painful. But they were feedback. Users need
+                    privacy. Apps need account deletion. Listen to constraints. Design for them.</p>
+                  </div>
+                </div>
+
+                <div class="carousel-item">
+                  <div class="carousel-card">
+                    <span class="carousel-card-label">Takeaway 3</span>
+                    <h5>Autonomy requires clarity</h5>
+                    <p class="p-small">I owned design decisions, but not alone. The best ideas came from
+                    friction with engineering and product. Seek that tension.</p>
+                  </div>
+                </div>
+
+                <div class="carousel-item">
+                  <div class="carousel-card">
+                    <span class="carousel-card-label">Takeaway 4</span>
+                    <h5>Speed over perfection, not over intention</h5>
+                    <p class="p-small">We shipped Android in 6 weeks, not perfectly, but intentionally.
+                    Every pattern served a purpose. Perfection would have delayed us months.</p>
+                  </div>
+                </div>
+
+                <div class="carousel-item">
+                  <div class="carousel-card">
+                    <span class="carousel-card-label">Takeaway 5</span>
+                    <h5>Storm from the first point</h5>
+                    <p class="p-small">Enter at full intensity. Ship. Learn. Ship again.</p>
+                  </div>
+                </div>
+
+                <div class="carousel-item">
+                  <div class="carousel-card">
+                    <span class="carousel-card-label">Takeaway 6</span>
+                    <h5>Measure what moves business</h5>
+                    <p class="p-small">Conversion rate. Retention. LTV. ABV by platform.
+                    These shaped decisions. Pretty UI means nothing if users don't book.</p>
+                  </div>
+                </div>
+
+              </div>
+              <div class="carousel-controls">
+                <button class="carousel-btn carousel-btn--prev" id="takeaways-prev" aria-label="Previous">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(270deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <button class="carousel-btn carousel-btn--next" id="takeaways-next" aria-label="Next">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="transform: rotate(90deg)">
+                    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- / PATRÓN 14: takeaways-carousel -->
+
+
+          <!-- PATRÓN 6: QUOTE FINAL -->
+          <div class="quote-section section-spacer reveal">
+            <div class="quote-content">
+              <h4 style="margin: 0;">"The best products aren't built by people without constraints. They're built
+              by people who understand their constraints so deeply that they become advantages."</h4>
+            </div>
+          </div>
+          <!-- / PATRÓN 6: final quote -->
+
+
+          <!-- PATRÓN 13: PROJECT HERO IMAGE — cierre visual -->
+          <div class="project-hero-image section-spacer reveal">
+            <img src="/images/projects/mobile-app/hero.webp" alt="Stayforlong mobile app — final screens">
+          </div>
+          <!-- / PATRÓN 13 -->
+
+
+          <!-- SEPARADOR -->
+          <hr style="margin: auto;">
+
+          <!-- MORE PROJECTS -->
+          <div id="more-projects-placeholder"></div>
+
+          <!-- FOOTER PROJECT -->
+          <div id="footer-project-placeholder"></div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <button id="scrollToTopBtn" class="scroll-to-top-btn" aria-label="Scroll to top">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <script type="module" src="/src/main.js"></script>
+
+</body>
+
+</html>
