@@ -33,7 +33,7 @@
   display: flex;
   flex-direction: column;
   background: var(--bg);
-  overflow: hidden; /* ← añade esto */
+  overflow: hidden;
   visibility: hidden;
   transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
               visibility 0s linear 0.45s;
@@ -85,9 +85,6 @@
   }
   .chatbot-panel.open {
     transform: translateX(0);
-  }
-  .chatbot-input-clear {
-    display: none;
   }
 }
 @media (min-width: 1300px) {
@@ -166,8 +163,8 @@
 }
 
 .chatbot-header-text h3 {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
   margin: 0 0 2px;
   color: var(--text-primary);
   font-family: 'Plus Jakarta Sans', sans-serif;
@@ -297,29 +294,6 @@
 
 .chatbot-typing span { display: none; }
 
-/* Halo exterior */
-.chatbot-typing::before {
-  content: '';
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,121,27,0.3) 0%, rgba(219,40,0,0.1) 50%, transparent 70%);
-  animation: orb-halo 2.4s ease-in-out infinite;
-}
-
-.chatbot-typing::after {
-  content: '';
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #FF791B, #db2800, #ad7608);
-  background-size: 300% 300%;
-  animation: orb-pulse 1s ease-out infinite, chatbot-gradient 12s ease infinite;
-  box-shadow: 0 0 8px 3px rgba(255, 121, 27, 0.4), 0 0 16px 6px rgba(219, 40, 0, 0.2);
-}
-
 .chatbot-typing::before {
   content: '';
   position: absolute;
@@ -330,6 +304,18 @@
   border-radius: 50%;
   background: radial-gradient(circle, rgba(255,121,27,0.25) 0%, transparent 70%);
   animation: orb-halo 1s ease-out infinite;
+}
+
+.chatbot-typing::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FF791B, #db2800, #ad7608);
+  background-size: 300% 300%;
+  animation: orb-pulse 1s ease-out infinite;
+  box-shadow: 0 0 8px 3px rgba(255, 121, 27, 0.4), 0 0 16px 6px rgba(219, 40, 0, 0.2);
 }
 
 @keyframes orb-pulse {
@@ -344,7 +330,7 @@
   50%, 100% { transform: scale(1); opacity: 0; }
 }
 
-/* ── Suggestion chips — inside messages area ── */
+/* ── Suggestion chips ── */
 .chatbot-suggestions {
   display: flex;
   flex-wrap: wrap;
@@ -386,7 +372,6 @@
   flex-shrink: 0;
 }
 
-/* Mobile: fondo sólido para cubrir teclado */
 @media (max-width: 768px) {
   .chatbot-input-area {
     background: transparent;
@@ -395,7 +380,6 @@
   }
 }
 
-/* Desktop: efecto blur/gradiente */
 @media (min-width: 769px) {
   .chatbot-input-area {
     padding: 24px 16px 16px;
@@ -410,27 +394,18 @@
 }
 
 /* ════════════════════════════════════════════════════════════
-   INPUT MOBILE — animación de crecimiento al ganar foco
-   Solo afecta a ≤768px. Desktop sin cambios.
-
-   Técnica sin layout shift:
-   - .chatbot-input-card: envuelve el pill. Transiciona solo
-     border-radius, box-shadow, border-color (GPU).
-   - .chatbot-input-actions: height FIJA 52px siempre.
-     Aparece con opacity+translateY. Cero reflow.
-   - .chatbot-input-row .chatbot-send: fade-out con foco.
-     Sigue ocupando espacio (display:flex, no display:none).
-   - .input-focused: clase en .chatbot-panel, añadida por JS.
+   INPUT MOBILE — crecimiento suave al ganar foco (≤768px)
 ════════════════════════════════════════════════════════════ */
+
 @media (min-width: 769px) {
-  .chatbot-input-actions{
-    display: none;
-  }
+  .chatbot-input-actions { display: none; }
+  .chatbot-input-clear   { display: none; }
+  .chatbot-input-backdrop { display: none; }
 }
 
 @media (max-width: 768px) {
 
-  /* Backdrop — cubre mensajes sin moverlos */
+  /* Backdrop */
   .chatbot-input-backdrop {
     position: absolute;
     inset: 0;
@@ -446,7 +421,7 @@
     pointer-events: all;
   }
 
-  /* Input area en flujo (no absolute) */
+  /* Input area en flujo */
   .chatbot-input-area {
     position: relative !important;
     bottom: auto !important;
@@ -459,8 +434,11 @@
     z-index: 2;
   }
 
-  /* Card — pill por defecto, card con foco.
-     SOLO transiciona propiedades compositor (sin reflow). */
+  /*
+   * Send: position absolute esquina inferior derecha del card.
+   * Siempre fijo, independiente del grid.
+   * Textarea: crece con min-height al ganar foco.
+   */
   .chatbot-input-card {
     display: grid;
     grid-template-rows: auto 0fr;
@@ -475,13 +453,13 @@
       0 1px 0 rgba(255,255,255,0.04) inset;
     transition:
       grid-template-rows 0.32s cubic-bezier(0.4, 0, 0.2, 1),
-      border-radius 0.32s cubic-bezier(0.4, 0, 0.2, 1),
-      box-shadow    0.32s cubic-bezier(0.4, 0, 0.2, 1),
-      border-color  0.32s ease;
+      border-radius      0.32s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow         0.32s cubic-bezier(0.4, 0, 0.2, 1),
+      border-color       0.32s ease;
   }
 
   .chatbot-panel.input-focused .chatbot-input-card {
-    grid-template-rows: auto fr;
+    grid-template-rows: auto 1fr;
     border-radius: 26px;
     border-color: rgba(255,255,255,0.11);
     box-shadow:
@@ -491,91 +469,112 @@
       0 0 0 1px rgba(255,121,27,0.04);
   }
 
-  /* Fila superior — padding fijo, sin transición de layout */
+  /* Fila superior: padding-right reserva espacio para send+X */
   .chatbot-input-row {
-    padding: 8px 8px 8px 16px !important;
+    padding: 12px 52px 12px 16px !important;
     background: transparent !important;
     border: none !important;
     border-radius: 0 !important;
     backdrop-filter: none !important;
     box-shadow: none !important;
+    align-items: flex-start !important;
   }
 
-  /* Fila inferior — HEIGHT FIJA 52px siempre.
-     Animación: solo opacity + translateY. Cero reflow. */
-  .chatbot-input-actions {
-    display: none;
-    align-items: self-end;
-    justify-content: flex-end;
-    padding: 4px 8px 8px;
-    height: 80px;
-    flex-shrink: 0;
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(4px);
-    transition:
-      opacity   0s ease,
-      transform 0s cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* Textarea: crece para usar el espacio ganado */
+  .chatbot-panel.input-focused .chatbot-input {
+    min-height: 111px;
+    transition: min-height 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: pre-wrap;
+    overflow-y: auto;
+    text-overflow: clip;
   }
 
-  .chatbot-panel.input-focused .chatbot-input-actions {
-    display: flex;
-    opacity: 1;
-    pointer-events: all;
-    transform: translateY(0);
+  /* Sin foco: vuelve a una línea con elipsis */
+  .chatbot-input {
+    min-height: 22px;
+    max-height: 22px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    transition: min-height 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+                max-height 0.32s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* Send en pill: siempre en flujo, se desvanece con foco */
+  /* Con foco: textarea multilinea normal */
+  .chatbot-panel.input-focused .chatbot-input {
+    max-height: 204px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    text-overflow: clip;
+  }
+
+  /* Send en input-row: oculto en mobile, vive absolute */
   .chatbot-input-row .chatbot-send {
-    display: flex !important;
-    width: 34px !important;
-    height: 34px !important;
-    align-self: center;
-    flex-shrink: 0;
-    transition: opacity 0s ease;
+    display: none !important;
   }
 
-  .chatbot-panel.input-focused .chatbot-input-row .chatbot-send {
-    opacity: 0;
-    pointer-events: none;
+  /* Send absolute — siempre fijo en esquina inferior derecha */
+  .chatbot-input-actions {
+    overflow: hidden;
+    min-height: 0;
+    /* el grid colapsa esta fila, no necesita contenido visible */
   }
 
-  /* Send en actions */
   .chatbot-input-actions .chatbot-send {
-    display: flex;
-    width: 34px; height: 34px;
+    display: none;
   }
 
-  /* X — visible solo con foco */
+  /* Send fijo — position absolute en el card */
+  .chatbot-send--mobile {
+    display: flex !important;
+    position: absolute !important;
+    bottom: 6px !important;
+    right: 6px !important;
+    width: 36px !important;
+    height: 36px !important;
+    z-index: 4;
+  }
+
+  /*
+   * CAMBIO 3 — X en esquina superior derecha, position absolute
+   */
   .chatbot-input-clear {
+    display: flex;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 28px;
+    height: 28px;
     background: transparent;
     border: none;
     cursor: pointer;
-    display: flex;
-    position: absolute;
-    top: 9px;
-    right: 8px;
-    opacity: 0;
-    pointer-events: none;
-    width: 34px;
-    height: 34px;
-    border-radius: 500px;
-    color: var(--text-primary);
-    display: flex;
+    border-radius: 50%;
     align-items: center;
     justify-content: center;
-    transition: background 0.15s ease;
-    flex-shrink: 0;
+    padding: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, background 0.15s ease, transform 0.1s ease;
+    z-index: 3;
+  }
 
-   
+  .chatbot-input-clear svg {
+    width: 24px;
+    height: 24px;
+    stroke: rgba(255,255,255,0.75);
+    stroke-width: 2.5;
   }
 
   .chatbot-panel.input-focused .chatbot-input-clear {
     opacity: 1;
     pointer-events: all;
   }
+
+  .chatbot-input-clear:hover  { background: rgba(255,255,255,0.2); transform: scale(1.08); }
+  .chatbot-input-clear:active { transform: scale(0.9); }
 }
 
+/* ── Input row (estilos base — desktop) ── */
 .chatbot-input-row {
   display: flex;
   align-items: center;
@@ -675,7 +674,7 @@
   cursor: not-allowed;
 }
 
-/* ── Chatbot icon — anula el filtro global invert para respetar SVG multicolor ── */
+/* ── Chatbot icon ── */
 .dark-mode-toggle-btn .dark-mode-icon-img {
   filter: none !important;
 }
@@ -686,7 +685,6 @@
   background-color: rgba(255, 121, 27, 0.15) !important;
 }
 
-/* Activo: strokes blancos → naranja (la estrella ya era naranja, el filtro la mantiene) */
 .chatbot-trigger--active .dark-mode-icon-img {
   filter: brightness(0) saturate(100%) invert(52%) sepia(89%) saturate(700%) hue-rotate(346deg) brightness(105%) contrast(98%) !important;
 }
@@ -699,21 +697,19 @@
   justify-content: center;
 }
 
-/* Sidebar: tooltip a la derecha */
 .sidebar .chatbot-tooltip {
   top: 50% !important;
   transform: translateY(-50%);
   left: 64px !important;
 }
 
-/* Header: tooltip debajo y a la izquierda */
 .header .chatbot-tooltip {
   top: 48px !important;
   left: auto !important;
   right: 0 !important;
 }
 
-/* ── CTA buttons — estilo botón primario ── */
+/* ── CTA buttons ── */
 .chatbot-cta-btn {
   background: #ffffff !important;
   color: #000000 !important;
@@ -730,9 +726,7 @@
   transition: opacity 0.15s ease !important;
 }
 
-.chatbot-cta-btn:hover {
-  opacity: 0.85 !important;
-}
+.chatbot-cta-btn:hover { opacity: 0.85 !important; }
 
 .chatbot-cta-btn::after {
   content: '→';
@@ -763,10 +757,7 @@
   position: relative;
 }
 
-/* Mostrar al hover del mensaje */
-.chatbot-msg:hover .chatbot-feedback-btn {
-  opacity: 1;
-}
+.chatbot-msg:hover .chatbot-feedback-btn { opacity: 1; }
 
 .chatbot-feedback-btn:hover:not(:disabled) {
   background: var(--surface);
@@ -780,17 +771,15 @@
   background-color: var(--surface);
   animation: feedback-bg 0.4s ease;
 }
+
 @keyframes feedback-bg {
   0%   { background: transparent; }
   50%  { background: rgba(255, 121, 27, 0.15); }
   100% { background: transparent; }
 }
 
-.chatbot-feedback-btn:disabled {
-  cursor: default;
-}
+.chatbot-feedback-btn:disabled { cursor: default; }
 
-/* Tooltip */
 .chatbot-feedback-btn::after {
   content: attr(data-tooltip);
   position: absolute;
@@ -810,9 +799,7 @@
   transition: opacity 0.15s ease;
 }
 
-.chatbot-feedback-btn:hover::after {
-  opacity: 1;
-}
+.chatbot-feedback-btn:hover::after { opacity: 1; }
 
 .chatbot-feedback-btn svg {
   stroke: var(--text-secondary);
@@ -831,6 +818,7 @@
   filter: none !important;
   animation: thumb-pop 0.35s cubic-bezier(0.2, 1.4, 0.4, 1);
 }
+
 @keyframes thumb-pop {
   0%   { transform: scale(1); }
   40%  { transform: scale(1.35) rotate(-8deg); }

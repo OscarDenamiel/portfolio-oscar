@@ -404,6 +404,7 @@ class OscarChatbot {
             document.activeElement !== this.clearBtn) {
           this.panel.classList.remove('input-focused');
           this.messagesEl.style.overflowY = '';
+          this.inputEl.style.height = '';
         }
       }, 150);
     });
